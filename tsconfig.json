@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "ES2017",
+		"lib": [ "ES2017", "DOM" ],
+		"outFile": "app.js",
+		"sourceMap": false,
+		"emitBOM": true,
+		"strict": true,
+	},
+	"files": [
+		"ts/classes.ts",
+		"ts/app.ts"
+	]
+}

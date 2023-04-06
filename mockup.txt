@@ -1,0 +1,50 @@
+
+Rhythm - pre-definido, bloco dura 1 Measure
+Harmony - pre-definido, bloco dura 1 Riff
+Melody - RNG, bloco dura 1 Measure
+
+
+Ordem dos eventos:
+    -Escolhe o estilo
+        -define sessions[], bpm, key, samples
+
+    -For length sessions[]:
+        -Generate session
+        {
+            -for length RNG^2 de riffs:
+                -Generate Riff
+                {
+                    -escolhe Riff.Harmonia dentre as opções, para tipo de seção, para estilo
+                    
+                    -Generate Riff.Rhythm
+                    {
+                        -escolhe Riff.Rhythm dentre as opções, para tipo de seção, para estilo
+                        -for length RNG^2 de Measures:
+                            -Measure.Rhythm %mutação? %mutações : null
+                    }
+
+                    -Generate Riff.Melody
+                    {
+                        -for length RNG^2 de Measures:
+                            -Generate Measure.Melody 
+                                { -cria melodia confome Regras* (Rhythm cell, Chord, Key, Note by Position, etc)}
+                            -Measure.Melody %nova? GenerateMeasure() : (%mutacao? mutate() : copy())
+                    }
+                }
+                -(Riff.Melody, Riff.Harmony, Riff.Measure) %mutação? mutate() : null
+            
+            -BuildUp()? (add/remove instruments for each riff)
+            -GenerateTransition()?
+        }
+
+
+-------------------
+
+arquivos e pastas:
+    app (setup)
+    player
+    sampleset
+    style
+    song
+    /sheets (por estilo)
+    /samples (wavs)
