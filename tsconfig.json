@@ -8,7 +8,13 @@
 		"strict": true,
 	},
 	"files": [
-		"ts/classes.ts",
+		"ts/enums.ts",
+		"ts/interfaces.ts",
+		"ts/session.ts",
+		"ts/style.ts",
+		"ts/styles/forro.ts",
+		"ts/sampleSet.ts",
+		"ts/player.ts",
 		"ts/app.ts",
 	]
 }

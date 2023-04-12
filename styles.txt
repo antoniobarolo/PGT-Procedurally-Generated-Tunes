@@ -10,3 +10,15 @@ Forró
 
     melody:
         accordeon
+
+
+Sample Fonts:
+    funkybass - kontakt
+    xylo - alto xylophone
+    accordion - akkordica
+    triangle
+        https://samplefocus.com/samples/percussion-triangle
+        https://samplefocus.com/samples/percussive-hit-triangle-short
+        https://samplefocus.com/samples/percussive-hit-triangle-quick
+    zabumba e berimbau
+        https://www.youtube.com/watch?v=BqmAljA4tW4&ab_channel=ADGrava%C3%A7%C3%B5es

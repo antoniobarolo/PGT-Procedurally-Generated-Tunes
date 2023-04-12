@@ -1,5 +1,4 @@
 ﻿"use strict";
-//Diagrama de classes
 var StyleName;
 (function (StyleName) {
     StyleName[StyleName["Forro"] = 0] = "Forro";
@@ -19,9 +18,63 @@ var SessionType;
     SessionType[SessionType["Ponte"] = 2] = "Ponte";
     SessionType[SessionType["Verso"] = 3] = "Verso";
 })(SessionType || (SessionType = {}));
+class Session {
+    constructor(type, progressions, bpm) {
+        this.bpm = bpm;
+        // Assuming 120 BPM (120 = 0.5)
+        this.beatDuration = 30 / bpm;
+        this.type = type;
+        this.progressions = progressions;
+        this.maxSheetLength = new Array(progressions.length);
+        let totalSheetLength = 0;
+        for (let p = progressions.length - 1; p >= 0; p--) {
+            let maxSheetLength = 0;
+            const sequences = progressions[p].sequences;
+            for (let s = sequences.length - 1; s >= 0; s--) {
+                const sheet = sequences[s].sheet;
+                for (let i = sheet.length - 1; i >= 0; i--) {
+                    // Procura pela última entrada não-nula
+                    if (sheet[i]) {
+                        i++;
+                        if (maxSheetLength < i)
+                            maxSheetLength = i;
+                        break;
+                    }
+                }
+            }
+            totalSheetLength += maxSheetLength;
+            this.maxSheetLength[p] = maxSheetLength;
+        }
+        this.duration = this.beatDuration * totalSheetLength;
+    }
+    play(player, startTime) {
+        const beatDuration = this.beatDuration;
+        const progressions = this.progressions;
+        const maxSheetLength = this.maxSheetLength;
+        let totalSheetLength = 0;
+        for (let p = 0; p < progressions.length; p++) {
+            const sequences = progressions[p].sequences;
+            for (let s = 0; s < sequences.length; s++) {
+                const sequence = sequences[s];
+                const instrumentNamePrefix = sequence.instrumentName;
+                const sheet = sequence.sheet;
+                for (let i = 0; i < sheet.length; i++) {
+                    if (sheet[i]) {
+                        const sample = SampleSet.getSample(instrumentNamePrefix + "_" + sheet[i]);
+                        if (!sample)
+                            throw new Error("Missing sample: " + instrumentNamePrefix + "_" + sheet[i]);
+                        player.playSample(sample, startTime + ((totalSheetLength + i) * beatDuration));
+                    }
+                }
+            }
+            totalSheetLength += maxSheetLength[p];
+        }
+    }
+}
 class Style {
-    constructor(name) {
+    constructor(name, defaultBpm) {
         this.name = name;
+        this.defaultBpm = defaultBpm;
         this.harmony = new Map();
         this.rhythm = new Map();
         this.melody = new Map();
@@ -72,15 +125,17 @@ class Style {
             while (i < count) {
                 char = sheet.charAt(i);
                 i++;
-                if (char === ' ' || char === '\t')
+                if (char === ' ' || char === '\t') {
+                    i--;
                     break;
+                }
                 note += char;
             }
             notes.push(note.toLowerCase());
         }
         return notes;
     }
-    generateSession(sessionType) {
+    generateSession(sessionType, bpm) {
         const progressions = [];
         const progressionCount = this.getNextProgressionCount(sessionType);
         for (let progression = 0; progression < progressionCount; progression++) {
@@ -122,8 +177,8 @@ class Style {
                     if (typeof sheet !== "string")
                         sheet = sheet.generate(this.name, MeasureCategory.Rhythm, progression, progressionCount, measure, measureCount);
                     const parsedSheet = Style.parseSheet(sheet, sheetPadding);
-                    if (maxMeasureSheet < parsedSheet.length)
-                        maxMeasureSheet = parsedSheet.length;
+                    if (maxMeasureSheet < parsedSheet.length - sheetPadding)
+                        maxMeasureSheet = parsedSheet.length - sheetPadding;
                     sequences.push({
                         instrumentName,
                         sheet: parsedSheet
@@ -138,8 +193,8 @@ class Style {
                     if (typeof sheet !== "string")
                         sheet = sheet.generate(this.name, MeasureCategory.Melody, progression, progressionCount, measure, measureCount);
                     const parsedSheet = Style.parseSheet(sheet, sheetPadding);
-                    if (maxMeasureSheet < parsedSheet.length)
-                        maxMeasureSheet = parsedSheet.length;
+                    if (maxMeasureSheet < parsedSheet.length - sheetPadding)
+                        maxMeasureSheet = parsedSheet.length - sheetPadding;
                     sequences.push({
                         instrumentName,
                         sheet: parsedSheet
@@ -159,15 +214,12 @@ class Style {
                 sequences
             });
         }
-        return {
-            type: sessionType,
-            progressions
-        };
+        return new Session(sessionType, progressions, bpm || this.defaultBpm);
     }
 }
 class Forro extends Style {
     constructor() {
-        super(StyleName.Forro);
+        super(StyleName.Forro, 240);
     }
     generateHarmony(sessionType) {
         switch (sessionType) {
@@ -335,28 +387,11 @@ class Forro extends Style {
         return 4;
     }
 }
-class Player {
-    constructor() {
-        this.nextGrooveTime = -1;
-    }
-    playSample(sample, time) {
-        const source = ctx.createBufferSource();
-        source.buffer = sample;
-        source.connect(ctx.destination);
-        source.start(time);
-    }
-    playGroove(groove) {
-        const currentTime = ctx.currentTime;
-        const startTime = ((this.nextGrooveTime < currentTime) ? currentTime : this.nextGrooveTime);
-        this.nextGrooveTime = startTime + groove.duration;
-        groove.play(this, startTime);
-    }
-}
 class SampleSet {
     static async loadSample(path) {
         const response = await fetch('samples/' + path + '.wav');
         const arrayBuffer = await response.arrayBuffer();
-        const decodedAudio = await ctx.decodeAudioData(arrayBuffer);
+        const decodedAudio = await audioContext.decodeAudioData(arrayBuffer);
         SampleSet.samples.set(path, decodedAudio);
     }
     static async loadSamples() {
@@ -369,48 +404,29 @@ class SampleSet {
         return SampleSet.samples.get(name);
     }
 }
-SampleSet.samplePaths = ['kick', 'snare', 'hihat', 'zabumba_k1', 'zabumba_k2', 'zabumba_s', 'triangle_1', 'triangle_2', 'triangle_3',
-    'xylo_a4', 'xylo_c5', 'xylo_d5', 'xylo_e5', 'xylo_g5', 'xylo_a5',
-    'funkybass_a2', 'funkybass_b2', 'funkybass_c3', 'funkybass_d3', 'funkybass_e3', 'funkybass_f3', 'funkybass_g3',
-    'funkybass_a3', 'funkybass_b3', 'funkybass_c4', 'funkybass_d4', 'funkybass_e4', 'funkybass_f4', 'funkybass_g4', 'funkybass_a4',
-    'accordion_a3', 'accordion_b3', 'accordion_c4', 'accordion_d4', 'accordion_e4', 'accordion_f4', 'accordion_g4', 'accordion_a4', 'accordion_b4', 'accordion_c5', 'accordion_d5', 'accordion_e5', 'accordion_f5', 'accordion_g5', 'accordion_a5', 'accordion_b5', 'accordion_c6', 'accordion_d6', 'accordion_e6', 'accordion_f6', 'accordion_g6', 'accordion_a6',
-];
+SampleSet.samplePaths = ["accordion_a3", "accordion_a4", "accordion_a5", "accordion_a6", "accordion_b3", "accordion_b4", "accordion_b5", "accordion_c4", "accordion_c5", "accordion_c6", "accordion_d4", "accordion_d5", "accordion_d6", "accordion_e4", "accordion_e5", "accordion_e6", "accordion_f4", "accordion_f5", "accordion_f6", "accordion_g4", "accordion_g5", "accordion_g6", "funkybass_a2", "funkybass_a3", "funkybass_a4", "funkybass_b2", "funkybass_b3", "funkybass_c3", "funkybass_c4", "funkybass_d3", "funkybass_d4", "funkybass_e3", "funkybass_e4", "funkybass_f3", "funkybass_f4", "funkybass_g3", "funkybass_g4", "hihat", "kick", "snare", "triangle", "triangle_1", "triangle_2", "triangle_3", "xylo_a4", "xylo_a5", "xylo_b4", "xylo_c4", "xylo_c5", "xylo_d4", "xylo_d5", "xylo_e4", "xylo_e5", "xylo_f4", "xylo_f5", "xylo_g4", "xylo_g5", "zabumba_k1", "zabumba_k2", "zabumba_s"];
 SampleSet.samples = new Map();
-class Groove {
-    constructor(bpm, notes) {
-        this.bpm = bpm;
-        // Assuming 120 BPM (120 = 0.5)
-        this.beatDuration = 30 / bpm;
-        this.tracks = [];
-        let maxLength = 0;
-        for (let note in notes) {
-            const sample = SampleSet.getSample(note);
-            if (!sample)
-                throw new Error("Unknown sample: " + note);
-            const sheet = notes[note];
-            if (maxLength < sheet.length)
-                maxLength = sheet.length;
-            this.tracks.push({
-                sampleName: note,
-                sample,
-                sheet
-            });
-        }
-        this.duration = this.beatDuration * maxLength;
+class Player {
+    constructor() {
+        this.nextTime = -1;
     }
-    play(player, startTime) {
-        for (let i = 0; i < this.tracks.length; i++) {
-            const track = this.tracks[i];
-            for (let j = 0; j < track.sheet.length; j++) {
-                if (track.sheet[j] == '1')
-                    player.playSample(track.sample, startTime + (j * this.beatDuration));
-            }
-        }
+    playSample(sample, time) {
+        const source = audioContext.createBufferSource();
+        source.buffer = sample;
+        source.connect(audioContext.destination);
+        source.start(time);
+    }
+    playSession(session) {
+        const currentTime = audioContext.currentTime;
+        if (this.nextTime < 0)
+            audioContext.resume().catch(console.error);
+        const startTime = ((this.nextTime < currentTime) ? (currentTime + 0.075) : this.nextTime);
+        this.nextTime = startTime + session.duration;
+        session.play(this, startTime);
     }
 }
-const ctx = new AudioContext();
+const audioContext = new AudioContext();
 const player = new Player();
-let forro, rock, powermetal, xylo1, xylo2, xylo3, xylo4;
 async function setup() {
     try {
         await SampleSet.loadSamples();
@@ -419,106 +435,10 @@ async function setup() {
         console.error("Error loading the samples: " + (ex.message || ex));
         return;
     }
-    forro = new Groove(190, {
-        kick: '10010001',
-        snare: '00010010',
-        hihat: '10011101'
-    });
-    rock = new Groove(190, {
-        kick: '10001000',
-        snare: '00100010',
-        hihat: '11111111'
-    });
-    powermetal = new Groove(380, {
-        kick: '10001100',
-        snare: '00100010',
-        hihat: '10001000'
-    });
-    xylo1 = new Groove(200, {
-        kick: '1010101010101111',
-        xylo_a4: '1011011010110000',
-        xylo_e5: '0000000000001010'
-    });
-    xylo2 = new Groove(200, {
-        kick: '1010101010101111',
-        xylo_a4: '0001000010110010',
-        xylo_c5: '0010000010001101',
-        xylo_e5: '1100001010110000'
-    });
-    xylo3 = new Groove(200, {
-        kick: '1000000010010010',
-        xylo_a4: '1000000010010010',
-        xylo_c5: '0000000000000010',
-        xylo_e5: '0000100000010000',
-        xylo_a5: '0000000010000000'
-    });
-    xylo4 = new Groove(200, {
-        kick: '1111011111110111',
-        hihat: '1000100010001010',
-        xylo_c5: '100100100000101',
-        xylo_e5: '000000001001010'
-    });
-}
-function xyloSong() {
-    player.playGroove(xylo1);
-    player.playGroove(xylo1);
-    player.playGroove(xylo2);
-    player.playGroove(xylo2);
-    player.playGroove(xylo1);
-    player.playGroove(xylo1);
-    player.playGroove(xylo1);
-    player.playGroove(xylo3);
-    player.playGroove(xylo4);
-    player.playGroove(xylo4);
-    player.playGroove(xylo4);
-    player.playGroove(xylo1);
-    player.playGroove(xylo4);
-    player.playGroove(xylo4);
-    player.playGroove(xylo4);
-    player.playGroove(xylo1);
-}
-function rngGroove() {
-    let length = 32;
-    function roll() {
-        return (Math.floor(Math.random() * Math.pow(2, 8)) >>> 0).toString(2);
-    }
-    let groove = new Groove(200, {
-        kick: roll(),
-        hihat: roll(),
-        snare: roll(),
-        xylo_a4: roll(),
-        xylo_c5: roll(),
-        xylo_e5: roll(),
-        xylo_g5: roll(),
-        xylo_a5: roll(),
-    });
-    console.log(groove);
-    return groove;
-}
-function makeSong() {
-    let a = rngGroove();
-    let b = rngGroove();
-    let c = rngGroove();
-    for (let i = 0; i < 4; i++) {
-        player.playGroove(a);
-    }
-    for (let i = 0; i < 4; i++) {
-        player.playGroove(b);
-    }
-    for (let i = 0; i < 2; i++) {
-        player.playGroove(a);
-    }
-    for (let i = 0; i < 2; i++) {
-        player.playGroove(b);
-    }
-    for (let i = 0; i < 4; i++) {
-        player.playGroove(c);
-    }
-    for (let i = 0; i < 4; i++) {
-        player.playGroove(b);
-    }
 }
 setup();
-const forr = new Forro();
-const teste = forr.generateSession(SessionType.Intro);
-debugger;
+function test(session) {
+    const forr = new Forro();
+    const teste = forr.generateSession(session);
+    player.playSession(teste);
+}
