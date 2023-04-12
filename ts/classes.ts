@@ -261,57 +261,58 @@ class Forro extends Style {
 			case SessionType.Intro:
 				return [
 					{
-						xylo: "a b c"
+						funkybass: 'a3 - b3 - ',
+						accordion: 'd4 - g4 - ',
+						xylo: 'f5 - g5 - ',
 					},
 					{
-						xylo: "d e f"
+						funkybass: 'd3 f4 e3 f4 ',
+						accordion: 'd4 - g4 - ',
 					},
 					{
-						xylo: "g a b a",
-						funkybass: "d e f a"
+						funkybass: 'd3 f4 e3 f4 ',
+						accordion: 'd4 - b4 a4',
 					}
 				];
 
 			case SessionType.Ponte:
 				return [
 					{
-						xylo: "a b c"
+						funkybass: 'd3 c4',
+						accordion: 'd4 - ',
 					},
 					{
-						xylo: "d e f"
+						funkybass: 'd3 f4 e3 f4 d3 f4 e3 f4',
+						accordion: 'f4 - - - g4 - - -',
 					},
 					{
-						xylo: "g a b a",
-						funkybass: "d e f a"
+						funkybass: 'a2 - - - ',
+						accordion: 'a4 - - -',
 					}
 				];
 
 			case SessionType.Verso:
 				return [
 					{
-						xylo: "a b c"
+						funkybass: 'a3 - b3 - ',
+						accordion: 'd4 - g4 - ',
+						xylo: 'f5 - g5 - ',
 					},
 					{
-						xylo: "d e f"
+						funkybass: 'd3 f4 e3 f4 ',
+						accordion: 'd4 - g4 - ',
 					},
 					{
-						xylo: "g a b a",
-						funkybass: "d e f a"
+						funkybass: 'd3 f4 e3 f4 ',
+						accordion: 'd4 - b4 a4',
 					}
 				];
 
 			default:
 				return [
 					{
-						xylo: "a b c"
+						funkybass: "d3 - - a2"
 					},
-					{
-						xylo: "d e f"
-					},
-					{
-						xylo: "g a b a",
-						funkybass: "d e f a"
-					}
 				];
 		}
 	}
@@ -321,57 +322,42 @@ class Forro extends Style {
 			case SessionType.Intro:
 				return [
 					{
-						xylo: "a b c"
+						zabumba: "k1 - s k2 - - - k1",
+						triangle: "1 2 3 2 1 2 3 2"
 					},
-					{
-						xylo: "d e f"
-					},
-					{
-						xylo: "g a b a",
-						funkybass: "d e f a"
-					}
 				];
 
 			case SessionType.Ponte:
 				return [
 					{
-						xylo: "a b c"
+						zabumba: "k1 - s k2 - - - k1",
+						triangle: "1 2 3 2 1 2 3 2"
 					},
 					{
-						xylo: "d e f"
+						zabumba: "k1 - s k2 - - - k1",
 					},
 					{
-						xylo: "g a b a",
-						funkybass: "d e f a"
-					}
+						zabumba: "k1 - - - - - - k1",
+					},
 				];
 
 			case SessionType.Verso:
 				return [
 					{
-						xylo: "a b c"
+						zabumba: "k1 - s k2 - - - k1",
+						triangle: "1 2 3 2 1 2 3 2"
 					},
 					{
-						xylo: "d e f"
+						zabumba: "k1 - s k2 - - - k1",
 					},
-					{
-						xylo: "g a b a",
-						funkybass: "d e f a"
-					}
 				];
 
 			default:
 				return [
 					{
-						xylo: "a b c"
+						zabumba: "k1 - s k2 - - - k1",
+						triangle: "1 2 3 2 1 2 3 2"
 					},
-					{
-						xylo: "d e f"
-					},
-					{
-						xylo: "g a b a",
-						funkybass: "d e f a"
-					}
 				];
 		}
 	}
@@ -381,57 +367,62 @@ class Forro extends Style {
 			case SessionType.Intro:
 				return [
 					{
-						xylo: "a b c"
+						accordion: "d5 f5 e5 d5"
 					},
 					{
-						xylo: "d e f"
+						accordion: "b5 - a5"
 					},
-					{
-						xylo: "g a b a",
-						funkybass: "d e f a"
-					}
 				];
 
 			case SessionType.Ponte:
 				return [
 					{
-						xylo: "a b c"
+						accordion: "c5 - f5 e5"
 					},
 					{
-						xylo: "d e f"
+						accordion: "d5 - b4 c4"
 					},
-					{
-						xylo: "g a b a",
-						funkybass: "d e f a"
-					}
 				];
 
 			case SessionType.Verso:
 				return [
 					{
-						xylo: "a b c"
+						accordion: "d5 f5 e5 d5"
 					},
 					{
-						xylo: "d e f"
+						accordion: "b5 - a5"
 					},
 					{
-						xylo: "g a b a",
-						funkybass: "d e f a"
-					}
+						accordion: "d5 - - d5"
+					},
+					{
+						accordion: "a5 g5 f5 e5"
+					},
+					{
+						accordion: "d5 e5 f5 g5"
+					},
+					{
+						accordion: "f5 - g5"
+					},
+					{
+						accordion: "g5 - f5"
+					},
+					{
+						accordion: "d5 - c5 e5"
+					},
+					{
+						accordion: "- - d5 e5"
+					},
 				];
 
 			default:
 				return [
 					{
-						xylo: "a b c"
+						accordion: "d5 f5 e5 d5"
 					},
 					{
-						xylo: "d e f"
+						accordion: "b5 - a5"
 					},
-					{
-						xylo: "g a b a",
-						funkybass: "d e f a"
-					}
 				];
 		}
 	}

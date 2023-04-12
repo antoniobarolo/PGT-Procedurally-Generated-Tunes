@@ -9,6 +9,6 @@
 	},
 	"files": [
 		"ts/classes.ts",
-		"ts/app.ts"
+		"ts/app.ts",
 	]
 }

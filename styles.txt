@@ -1,0 +1,12 @@
+Forró
+    rhythm:
+        kick = zabumba
+        snare = zabumba hit
+        hihat = triangle, agogo?
+
+    harmony:
+        accordeon
+        funkybass?
+
+    melody:
+        accordeon
