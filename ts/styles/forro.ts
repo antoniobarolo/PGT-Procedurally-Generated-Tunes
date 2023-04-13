@@ -15,22 +15,24 @@ class Forro extends Style {
 					{
 						funkybass: 'd3 f4 e3 f4 ',
 						accordion: 'd4 - g4 - ',
+						xylo: 'd4 d5 d4 d5 ',
 					},
 					{
 						funkybass: 'd3 f4 e3 f4 ',
 						accordion: 'd4 - b4 a4',
+						xylo: 'd4 - - -',
 					}
 				];
 
 			case SessionType.Ponte:
 				return [
 					{
-						funkybass: 'd3 c4',
-						accordion: 'd4 - ',
+						funkybass: 'd3 c4 a4 a4',
+						accordion: 'd4 - a4 e5',
 					},
 					{
-						funkybass: 'd3 f4 e3 f4 d3 f4 e3 f4',
-						accordion: 'f4 - - - g4 - - -',
+						funkybass: 'd3 f4 d3 f4',
+						accordion: 'f4 - g4 -',
 					},
 					{
 						funkybass: 'a2 - - - ',
@@ -78,7 +80,6 @@ class Forro extends Style {
 				return [
 					{
 						zabumba: "k1 - s k2 - - - k1",
-						triangle: "1 2 3 2 1 2 3 2"
 					},
 					{
 						zabumba: "k1 - s k2 - - - k1",
@@ -114,20 +115,41 @@ class Forro extends Style {
 			case SessionType.Intro:
 				return [
 					{
-						accordion: "d5 f5 e5 d5"
+						accordion: "d5 f5 e5 d5 a5 g5 f5 g5"
 					},
 					{
-						accordion: "b5 - a5"
+						accordion: "b5 - a5 - d5 d5 d5 d5"
+					},
+					{
+						accordion: "d6 b5 c6 a5 b5 f5 a5 f5"
+					},
+					{
+						accordion: "b5 b5 a5 a5"
+					},
+					{
+						accordion: "d5 d4 d4 d5 d4 d4 b4 c4"
+					},
+					{
+						accordion: "d5 - - - c6 a5 b5 - "
+					},
+					{
+						accordion: "a5 - f5 - a4 - d5 - "
+					},
+					{
+						accordion: "d5 - a4 - d5 - a4 - "
+					},
+					{
+						accordion: "d5 - - a4 d5 - - a4 "
 					},
 				];
 
 			case SessionType.Ponte:
 				return [
 					{
-						accordion: "c5 - f5 e5"
+						accordion: "c5 - - f5"
 					},
 					{
-						accordion: "d5 - b4 c4"
+						accordion: "d5 - - c5"
 					},
 				];
 
@@ -137,7 +159,7 @@ class Forro extends Style {
 						accordion: "d5 f5 e5 d5"
 					},
 					{
-						accordion: "b5 - a5"
+						accordion: "c6 - b5"
 					},
 					{
 						accordion: "d5 - - d5"

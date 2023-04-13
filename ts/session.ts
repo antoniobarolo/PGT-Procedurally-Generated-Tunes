@@ -54,7 +54,8 @@ class Session {
 		let totalSheetLength = 0;
 
 		for (let p = 0; p < progressions.length; p++) {
-			const sequences = progressions[p].sequences;
+			//progressions[0] p repetir ou progressions[p] pra nao
+			const sequences = progressions[0].sequences;
 
 			for (let s = 0; s < sequences.length; s++) {
 				const sequence = sequences[s];
