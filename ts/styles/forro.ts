@@ -141,6 +141,15 @@ class Forro extends Style {
 					{
 						accordion: "d5 - - a4 d5 - - a4 "
 					},
+					{
+						accordion: "- - d5 d5 d5 d5 d5 e5"
+					},
+					{
+						accordion: 'f5 f5 f5 f5 e5 d5 d5 d5'
+					},
+					{
+						accordion: 'd5 - - c5 e5 - c5 - '
+					},
 				];
 
 			case SessionType.Ponte:
@@ -150,6 +159,15 @@ class Forro extends Style {
 					},
 					{
 						accordion: "d5 - - c5"
+					},
+					{
+						accordion: "c5 c5 c5 d5"
+					},
+					{
+						accordion: "f5 e5 e5 d5"
+					},
+					{
+						accordion: "d5 a5 a5 a5"
 					},
 				];
 
