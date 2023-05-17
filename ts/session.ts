@@ -1,13 +1,13 @@
-class Session {
+class Section {
 	public readonly bpm: number;
 	public readonly beatDuration: number;
 	public readonly duration: number;
 
-	private readonly type: SessionType;
+	private readonly type: SectionType;
 	private readonly progressions: Progression[];
 	private readonly maxSheetLength: number[];
 
-	public constructor(type: SessionType, progressions: Progression[], bpm: number) {
+	public constructor(type: SectionType, progressions: Progression[], bpm: number) {
 		this.bpm = bpm;
 		// Assuming 120 BPM (120 = 0.5)
 		this.beatDuration = 30 / bpm;

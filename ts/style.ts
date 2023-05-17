@@ -1,39 +1,39 @@
 abstract class Style {
 	public readonly name: StyleName;
 	public readonly defaultBpm: number;
-	protected readonly harmony: Map<SessionType, InstrumentSet[]>;
-	protected readonly rhythm: Map<SessionType, InstrumentSet[]>;
-	protected readonly melody: Map<SessionType, InstrumentSet[]>;
+	protected readonly harmony: Map<SectionType, InstrumentSet[]>;
+	protected readonly rhythm: Map<SectionType, InstrumentSet[]>;
+	protected readonly melody: Map<SectionType, InstrumentSet[]>;
 
 	constructor(name: StyleName, defaultBpm: number) {
 		this.name = name;
 		this.defaultBpm = defaultBpm;
 
-		this.harmony = new Map<SessionType, InstrumentSet[]>();
-		this.rhythm = new Map<SessionType, InstrumentSet[]>();
-		this.melody = new Map<SessionType, InstrumentSet[]>();
+		this.harmony = new Map<SectionType, InstrumentSet[]>();
+		this.rhythm = new Map<SectionType, InstrumentSet[]>();
+		this.melody = new Map<SectionType, InstrumentSet[]>();
 
-		this.harmony.set(SessionType.Intro, this.generateHarmony(SessionType.Intro));
-		this.harmony.set(SessionType.Ponte, this.generateHarmony(SessionType.Ponte));
-		this.harmony.set(SessionType.Refrao, this.generateHarmony(SessionType.Refrao));
-		this.harmony.set(SessionType.Verso, this.generateHarmony(SessionType.Verso));
+		this.harmony.set(SectionType.Intro, this.generateHarmony(SectionType.Intro));
+		this.harmony.set(SectionType.Ponte, this.generateHarmony(SectionType.Ponte));
+		this.harmony.set(SectionType.Refrao, this.generateHarmony(SectionType.Refrao));
+		this.harmony.set(SectionType.Verso, this.generateHarmony(SectionType.Verso));
 
-		this.rhythm.set(SessionType.Intro, this.generateRhythm(SessionType.Intro));
-		this.rhythm.set(SessionType.Ponte, this.generateRhythm(SessionType.Ponte));
-		this.rhythm.set(SessionType.Refrao, this.generateRhythm(SessionType.Refrao));
-		this.rhythm.set(SessionType.Verso, this.generateRhythm(SessionType.Verso));
+		this.rhythm.set(SectionType.Intro, this.generateRhythm(SectionType.Intro));
+		this.rhythm.set(SectionType.Ponte, this.generateRhythm(SectionType.Ponte));
+		this.rhythm.set(SectionType.Refrao, this.generateRhythm(SectionType.Refrao));
+		this.rhythm.set(SectionType.Verso, this.generateRhythm(SectionType.Verso));
 
-		this.melody.set(SessionType.Intro, this.generateMelody(SessionType.Intro));
-		this.melody.set(SessionType.Ponte, this.generateMelody(SessionType.Ponte));
-		this.melody.set(SessionType.Refrao, this.generateMelody(SessionType.Refrao));
-		this.melody.set(SessionType.Verso, this.generateMelody(SessionType.Verso));
+		this.melody.set(SectionType.Intro, this.generateMelody(SectionType.Intro));
+		this.melody.set(SectionType.Ponte, this.generateMelody(SectionType.Ponte));
+		this.melody.set(SectionType.Refrao, this.generateMelody(SectionType.Refrao));
+		this.melody.set(SectionType.Verso, this.generateMelody(SectionType.Verso));
 	}
 
-	protected abstract generateHarmony(sessionType: SessionType): InstrumentSet[];
-	protected abstract generateRhythm(sessionType: SessionType): InstrumentSet[];
-	protected abstract generateMelody(sessionType: SessionType): InstrumentSet[];
-	protected abstract getNextProgressionCount(sessionType: SessionType): number;
-	protected abstract getNextMeasureCount(sessionType: SessionType, progressionIndex: number, progressionCount: number): number;
+	protected abstract generateHarmony(sectionType: SectionType): InstrumentSet[];
+	protected abstract generateRhythm(sectionType: SectionType): InstrumentSet[];
+	protected abstract generateMelody(sectionType: SectionType): InstrumentSet[];
+	protected abstract getNextProgressionCount(sectionType: SectionType): number;
+	protected abstract getNextMeasureCount(sectionType: SectionType, progressionIndex: number, progressionCount: number): number;
 
 	private static pickInstrumentSet(instrumentSet: InstrumentSet[]): InstrumentSet {
 		// Math.trunc(Math.random() * 4)
@@ -90,15 +90,15 @@ abstract class Style {
 		return notes;
 	}
 
-	public generateSession(sessionType: SessionType, bpm?: number | null): Session {
+	public generateSection(sectionType: SectionType, bpm?: number | null): Section {
 		const progressions: Progression[] = [];
 
-		const progressionCount = this.getNextProgressionCount(sessionType);
+		const progressionCount = this.getNextProgressionCount(sectionType);
 
 		for (let progression = 0; progression < progressionCount; progression++) {
 			const sequences: Sequence[] = [];
 
-			const instrumentSetArray = this.harmony.get(sessionType);
+			const instrumentSetArray = this.harmony.get(sectionType);
 			if (!instrumentSetArray)
 				throw new Error("instrumentSetArray is null");
 
@@ -137,7 +137,7 @@ abstract class Style {
 			for (let measure = 0; measure < measureCount; measure++) {
 				let maxMeasureSheet = 0;
 
-				let instrumentSetArray = this.rhythm.get(sessionType);
+				let instrumentSetArray = this.rhythm.get(sectionType);
 				if (!instrumentSetArray)
 					throw new Error("instrumentSetArray is null");
 
@@ -158,7 +158,7 @@ abstract class Style {
 					});
 				}
 
-				instrumentSetArray = this.melody.get(sessionType);
+				instrumentSetArray = this.melody.get(sectionType);
 				if (!instrumentSetArray)
 					throw new Error("instrumentSetArray is null");
 
@@ -198,6 +198,6 @@ abstract class Style {
 			});
 		}
 
-		return new Session(sessionType, progressions, bpm || this.defaultBpm);
+		return new Section(sectionType, progressions, bpm || this.defaultBpm);
 	}
 }

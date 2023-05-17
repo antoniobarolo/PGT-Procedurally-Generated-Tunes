@@ -12,8 +12,8 @@ async function setup(): Promise<void> {
 
 setup();
 
-function test(session : SessionType) {
+function test(section : SectionType) {
 	const forr = new Forro();
-	const teste = forr.generateSession(session);
-	player.playSession(teste);
+	const teste = forr.generateSection(section);
+	player.playSection(teste);
 }

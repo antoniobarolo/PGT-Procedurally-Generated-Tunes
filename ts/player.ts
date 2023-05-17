@@ -12,7 +12,7 @@ class Player {
 		source.start(time);
 	}
 
-	public playSession(session: Session): void {
+	public playSection(section: Section): void {
 		const currentTime = audioContext.currentTime;
 
 		if (this.nextTime < 0)
@@ -20,8 +20,8 @@ class Player {
 
 		const startTime = ((this.nextTime < currentTime) ? (currentTime + 0.075) : this.nextTime);
 
-		this.nextTime = startTime + session.duration;
+		this.nextTime = startTime + section.duration;
 
-		session.play(this, startTime);
+		section.play(this, startTime);
 	}
 }

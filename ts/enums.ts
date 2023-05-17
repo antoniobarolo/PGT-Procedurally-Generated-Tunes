@@ -10,7 +10,7 @@ enum MeasureCategory {
 	Melody = 2
 }
 
-enum SessionType {
+enum SectionType {
 	Intro = 0,
 	Refrao = 1,
 	Ponte = 2,

@@ -3,9 +3,9 @@ class Forro extends Style {
 		super(StyleName.Forro, 240);
 	}
 
-	protected generateHarmony(sessionType: SessionType): InstrumentSet[] {
-		switch (sessionType) {
-			case SessionType.Intro:
+	protected generateHarmony(sectionType: SectionType): InstrumentSet[] {
+		switch (sectionType) {
+			case SectionType.Intro:
 				return [
 					{
 						funkybass: 'a3 - b3 - ',
@@ -24,7 +24,7 @@ class Forro extends Style {
 					}
 				];
 
-			case SessionType.Ponte:
+			case SectionType.Ponte:
 				return [
 					{
 						funkybass: 'd3 c4 a4 a4',
@@ -40,7 +40,7 @@ class Forro extends Style {
 					}
 				];
 
-			case SessionType.Verso:
+			case SectionType.Verso:
 				return [
 					{
 						funkybass: 'a3 - b3 - ',
@@ -66,9 +66,9 @@ class Forro extends Style {
 		}
 	}
 
-	protected generateRhythm(sessionType: SessionType): InstrumentSet[] {
-		switch (sessionType) {
-			case SessionType.Intro:
+	protected generateRhythm(sectionType: SectionType): InstrumentSet[] {
+		switch (sectionType) {
+			case SectionType.Intro:
 				return [
 					{
 						zabumba: "k1 - s k2 - - - k1",
@@ -76,7 +76,7 @@ class Forro extends Style {
 					},
 				];
 
-			case SessionType.Ponte:
+			case SectionType.Ponte:
 				return [
 					{
 						zabumba: "k1 - s k2 - - - k1",
@@ -89,7 +89,7 @@ class Forro extends Style {
 					},
 				];
 
-			case SessionType.Verso:
+			case SectionType.Verso:
 				return [
 					{
 						zabumba: "k1 - s k2 - - - k1",
@@ -110,9 +110,9 @@ class Forro extends Style {
 		}
 	}
 
-	protected generateMelody(sessionType: SessionType): InstrumentSet[] {
-		switch (sessionType) {
-			case SessionType.Intro:
+	protected generateMelody(sectionType: SectionType): InstrumentSet[] {
+		switch (sectionType) {
+			case SectionType.Intro:
 				return [
 					{
 						accordion: "d5 f5 e5 d5 a5 g5 f5 g5"
@@ -152,7 +152,7 @@ class Forro extends Style {
 					},
 				];
 
-			case SessionType.Ponte:
+			case SectionType.Ponte:
 				return [
 					{
 						accordion: "c5 - - f5"
@@ -171,7 +171,7 @@ class Forro extends Style {
 					},
 				];
 
-			case SessionType.Verso:
+			case SectionType.Verso:
 				return [
 					{
 						accordion: "d5 f5 e5 d5"
@@ -214,11 +214,11 @@ class Forro extends Style {
 		}
 	}
 
-	protected getNextProgressionCount(sessionType: SessionType): number {
+	protected getNextProgressionCount(sectionType: SectionType): number {
 		return 4;
 	}
 
-	protected getNextMeasureCount(sessionType: SessionType, progressionIndex: number, progressionCount: number): number {
+	protected getNextMeasureCount(sectionType: SectionType, progressionIndex: number, progressionCount: number): number {
 		return 4;
 	}
 }
