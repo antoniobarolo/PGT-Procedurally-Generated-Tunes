@@ -11,14 +11,14 @@ var MeasureCategory;
     MeasureCategory[MeasureCategory["Rhythm"] = 1] = "Rhythm";
     MeasureCategory[MeasureCategory["Melody"] = 2] = "Melody";
 })(MeasureCategory || (MeasureCategory = {}));
-var SessionType;
-(function (SessionType) {
-    SessionType[SessionType["Intro"] = 0] = "Intro";
-    SessionType[SessionType["Refrao"] = 1] = "Refrao";
-    SessionType[SessionType["Ponte"] = 2] = "Ponte";
-    SessionType[SessionType["Verso"] = 3] = "Verso";
-})(SessionType || (SessionType = {}));
-class Session {
+var SectionType;
+(function (SectionType) {
+    SectionType[SectionType["Intro"] = 0] = "Intro";
+    SectionType[SectionType["Refrao"] = 1] = "Refrao";
+    SectionType[SectionType["Ponte"] = 2] = "Ponte";
+    SectionType[SectionType["Verso"] = 3] = "Verso";
+})(SectionType || (SectionType = {}));
+class Section {
     constructor(type, progressions, bpm) {
         this.bpm = bpm;
         // Assuming 120 BPM (120 = 0.5)
@@ -79,18 +79,18 @@ class Style {
         this.harmony = new Map();
         this.rhythm = new Map();
         this.melody = new Map();
-        this.harmony.set(SessionType.Intro, this.generateHarmony(SessionType.Intro));
-        this.harmony.set(SessionType.Ponte, this.generateHarmony(SessionType.Ponte));
-        this.harmony.set(SessionType.Refrao, this.generateHarmony(SessionType.Refrao));
-        this.harmony.set(SessionType.Verso, this.generateHarmony(SessionType.Verso));
-        this.rhythm.set(SessionType.Intro, this.generateRhythm(SessionType.Intro));
-        this.rhythm.set(SessionType.Ponte, this.generateRhythm(SessionType.Ponte));
-        this.rhythm.set(SessionType.Refrao, this.generateRhythm(SessionType.Refrao));
-        this.rhythm.set(SessionType.Verso, this.generateRhythm(SessionType.Verso));
-        this.melody.set(SessionType.Intro, this.generateMelody(SessionType.Intro));
-        this.melody.set(SessionType.Ponte, this.generateMelody(SessionType.Ponte));
-        this.melody.set(SessionType.Refrao, this.generateMelody(SessionType.Refrao));
-        this.melody.set(SessionType.Verso, this.generateMelody(SessionType.Verso));
+        this.harmony.set(SectionType.Intro, this.generateHarmony(SectionType.Intro));
+        this.harmony.set(SectionType.Ponte, this.generateHarmony(SectionType.Ponte));
+        this.harmony.set(SectionType.Refrao, this.generateHarmony(SectionType.Refrao));
+        this.harmony.set(SectionType.Verso, this.generateHarmony(SectionType.Verso));
+        this.rhythm.set(SectionType.Intro, this.generateRhythm(SectionType.Intro));
+        this.rhythm.set(SectionType.Ponte, this.generateRhythm(SectionType.Ponte));
+        this.rhythm.set(SectionType.Refrao, this.generateRhythm(SectionType.Refrao));
+        this.rhythm.set(SectionType.Verso, this.generateRhythm(SectionType.Verso));
+        this.melody.set(SectionType.Intro, this.generateMelody(SectionType.Intro));
+        this.melody.set(SectionType.Ponte, this.generateMelody(SectionType.Ponte));
+        this.melody.set(SectionType.Refrao, this.generateMelody(SectionType.Refrao));
+        this.melody.set(SectionType.Verso, this.generateMelody(SectionType.Verso));
     }
     static pickInstrumentSet(instrumentSet) {
         // Math.trunc(Math.random() * 4)
@@ -136,12 +136,12 @@ class Style {
         }
         return notes;
     }
-    generateSession(sessionType, bpm) {
+    generateSection(sectionType, bpm) {
         const progressions = [];
-        const progressionCount = this.getNextProgressionCount(sessionType);
+        const progressionCount = this.getNextProgressionCount(sectionType);
         for (let progression = 0; progression < progressionCount; progression++) {
             const sequences = [];
-            const instrumentSetArray = this.harmony.get(sessionType);
+            const instrumentSetArray = this.harmony.get(sectionType);
             if (!instrumentSetArray)
                 throw new Error("instrumentSetArray is null");
             const harmonyInstrumentSet = Style.pickInstrumentSet(instrumentSetArray);
@@ -169,7 +169,7 @@ class Style {
             let sheetPadding = 0;
             for (let measure = 0; measure < measureCount; measure++) {
                 let maxMeasureSheet = 0;
-                let instrumentSetArray = this.rhythm.get(sessionType);
+                let instrumentSetArray = this.rhythm.get(sectionType);
                 if (!instrumentSetArray)
                     throw new Error("instrumentSetArray is null");
                 const rhythmInstrumentSet = Style.pickInstrumentSet(instrumentSetArray);
@@ -185,7 +185,7 @@ class Style {
                         sheet: parsedSheet
                     });
                 }
-                instrumentSetArray = this.melody.get(sessionType);
+                instrumentSetArray = this.melody.get(sectionType);
                 if (!instrumentSetArray)
                     throw new Error("instrumentSetArray is null");
                 const melodyInstrumentSet = Style.pickInstrumentSet(instrumentSetArray);
@@ -215,16 +215,16 @@ class Style {
                 sequences
             });
         }
-        return new Session(sessionType, progressions, bpm || this.defaultBpm);
+        return new Section(sectionType, progressions, bpm || this.defaultBpm);
     }
 }
 class Forro extends Style {
     constructor() {
         super(StyleName.Forro, 240);
     }
-    generateHarmony(sessionType) {
-        switch (sessionType) {
-            case SessionType.Intro:
+    generateHarmony(sectionType) {
+        switch (sectionType) {
+            case SectionType.Intro:
                 return [
                     {
                         funkybass: 'a3 - b3 - ',
@@ -242,7 +242,7 @@ class Forro extends Style {
                         xylo: 'd4 - - -',
                     }
                 ];
-            case SessionType.Ponte:
+            case SectionType.Ponte:
                 return [
                     {
                         funkybass: 'd3 c4 a4 a4',
@@ -257,7 +257,7 @@ class Forro extends Style {
                         accordion: 'a4 - - -',
                     }
                 ];
-            case SessionType.Verso:
+            case SectionType.Verso:
                 return [
                     {
                         funkybass: 'a3 - b3 - ',
@@ -281,16 +281,16 @@ class Forro extends Style {
                 ];
         }
     }
-    generateRhythm(sessionType) {
-        switch (sessionType) {
-            case SessionType.Intro:
+    generateRhythm(sectionType) {
+        switch (sectionType) {
+            case SectionType.Intro:
                 return [
                     {
                         zabumba: "k1 - s k2 - - - k1",
                         triangle: "1 2 3 2 1 2 3 2"
                     },
                 ];
-            case SessionType.Ponte:
+            case SectionType.Ponte:
                 return [
                     {
                         zabumba: "k1 - s k2 - - - k1",
@@ -302,7 +302,7 @@ class Forro extends Style {
                         zabumba: "k1 - - - - - - k1",
                     },
                 ];
-            case SessionType.Verso:
+            case SectionType.Verso:
                 return [
                     {
                         zabumba: "k1 - s k2 - - - k1",
@@ -321,9 +321,9 @@ class Forro extends Style {
                 ];
         }
     }
-    generateMelody(sessionType) {
-        switch (sessionType) {
-            case SessionType.Intro:
+    generateMelody(sectionType) {
+        switch (sectionType) {
+            case SectionType.Intro:
                 return [
                     {
                         accordion: "d5 f5 e5 d5 a5 g5 f5 g5"
@@ -362,7 +362,7 @@ class Forro extends Style {
                         accordion: 'd5 - - c5 e5 - c5 - '
                     },
                 ];
-            case SessionType.Ponte:
+            case SectionType.Ponte:
                 return [
                     {
                         accordion: "c5 - - f5"
@@ -380,7 +380,7 @@ class Forro extends Style {
                         accordion: "d5 a5 a5 a5"
                     },
                 ];
-            case SessionType.Verso:
+            case SectionType.Verso:
                 return [
                     {
                         accordion: "d5 f5 e5 d5"
@@ -421,10 +421,10 @@ class Forro extends Style {
                 ];
         }
     }
-    getNextProgressionCount(sessionType) {
+    getNextProgressionCount(sectionType) {
         return 4;
     }
-    getNextMeasureCount(sessionType, progressionIndex, progressionCount) {
+    getNextMeasureCount(sectionType, progressionIndex, progressionCount) {
         return 4;
     }
 }
@@ -457,13 +457,13 @@ class Player {
         source.connect(audioContext.destination);
         source.start(time);
     }
-    playSession(session) {
+    playSection(section) {
         const currentTime = audioContext.currentTime;
         if (this.nextTime < 0)
             audioContext.resume().catch(console.error);
         const startTime = ((this.nextTime < currentTime) ? (currentTime + 0.075) : this.nextTime);
-        this.nextTime = startTime + session.duration;
-        session.play(this, startTime);
+        this.nextTime = startTime + section.duration;
+        section.play(this, startTime);
     }
 }
 const audioContext = new AudioContext();
@@ -478,8 +478,8 @@ async function setup() {
     }
 }
 setup();
-function test(session) {
+function test(section) {
     const forr = new Forro();
-    const teste = forr.generateSession(session);
-    player.playSession(teste);
+    const teste = forr.generateSection(section);
+    player.playSection(teste);
 }

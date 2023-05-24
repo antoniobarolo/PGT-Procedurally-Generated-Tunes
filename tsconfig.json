@@ -10,7 +10,7 @@
 	"files": [
 		"ts/enums.ts",
 		"ts/interfaces.ts",
-		"ts/session.ts",
+		"ts/section.ts",
 		"ts/style.ts",
 		"ts/styles/forro.ts",
 		"ts/sampleSet.ts",
