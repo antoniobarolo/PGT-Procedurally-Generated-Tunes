@@ -16,5 +16,6 @@
 		"ts/sampleSet.ts",
 		"ts/player.ts",
 		"ts/app.ts",
+		"ts/visualizer.ts",
 	]
 }

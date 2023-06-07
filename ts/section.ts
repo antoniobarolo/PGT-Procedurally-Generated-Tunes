@@ -64,9 +64,10 @@ class Section {
 
 				for (let i = 0; i < sheet.length; i++) {
 					if (sheet[i]) {
-						const sample = SampleSet.getSample(instrumentNamePrefix + "_" + sheet[i]);
+						const sampleName = instrumentNamePrefix + "_" + sheet[i];
+						const sample = SampleSet.getSample(sampleName);
 						if (!sample)
-							throw new Error("Missing sample: " + instrumentNamePrefix + "_" + sheet[i]);
+							throw new Error("Missing sample: " + sampleName);
 
 						player.playSample(sample, startTime + ((totalSheetLength + i) * beatDuration));
 					}

@@ -1,15 +1,20 @@
 class Player {
 	private nextTime: number;
+	public visualizer: Visualizer | null;
 
 	public constructor() {
 		this.nextTime = -1;
+		this.visualizer = null;
 	}
 
-	public playSample(sample: AudioBuffer, time: number): void {
+	public playSample(sample: Sample, time: number): void {
 		const source = audioContext.createBufferSource();
-		source.buffer = sample;
+		source.buffer = sample.buffer;
 		source.connect(audioContext.destination);
 		source.start(time);
+
+		if (this.visualizer)
+			this.visualizer.playSample(sample, time);
 	}
 
 	public playSection(section: Section): void {
