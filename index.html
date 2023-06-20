@@ -6,58 +6,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            margin-top: 100px;
-            background-color: #54543a;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        button {
-            width: 200px;
-            height: 100px;
-            font-size: 24px;
-            padding: 30px;
-        }
-
-        div {
-            margin: 50px;
-        }
-
-        section {
-            width: 48vw;
-            text-align: center;
-            display: inline-block;
-            margin: 0 auto;
-            vertical-align: top;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <section>
-        <h1>Procedural Grooves</h1>
-        <br>
-        <h2>Forró</h2>
-        <div>
-            <button onclick="test(SectionType.Intro)">forró Intro</button>
+    <div class="sidebar">
+
+        <div class="logo">
+            <h1>PGT</h1>
+            <h2>Procedurally Generated Tunes</h2>
+        </div>
+        <ul>
+            <div class="new-tune">
+                <button class="new-tune-btn">New Tune</button>
+            </div>
+
+            <li class="active">Forró Tune</li>
+            <li>Tune 2</li>
+            <li>Tune 3</li>
+            <li>Tune 4</li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <main>
+            <div class="inner-div">
+                <h3>Forró Tune</h3>
+                <!-- <div class="play-buttons">
+            <button >forró Intro</button> 
             <button onclick="test(SectionType.Verso)">forró Verso</button>
             <button onclick="test(SectionType.Ponte)">forró Ponte</button>
-        </div>
-    </section>
-    <section>
-        <div id="structure">
-          <canvas id="canvas"></canvas>
-            <!--<img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F1372390%3Fv%3D4&f=1&nofb=1&ipt=6ddd318fc032a095d7cb57cb649bf348211b4603bf11729c792321c51c4ba3eb&ipo=images" alt="">-->
-        </div>
-     
-    </section>
-</body>
-<!-- <script src="script.js"></script> -->
-<script src="app.js"></script>
+            </div>
+            -->
+
+                <div id="visuals">
+                    <canvas id="canvas"></canvas>
+                </div>
+
+                <div class="play-buttons">
+                    <button class="new-tune-btn" onclick="test(SectionType.Intro)">Play</button>
+                </div>
+            </div>
+        </main>
+
+    </div>
+    <script src="app.js"></script>
 
 </html>

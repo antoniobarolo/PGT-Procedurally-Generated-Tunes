@@ -14,11 +14,11 @@ class Visualizer {
 	public constructor() {
 		this.samples = [];
 		this.canvas = document.getElementById("canvas") as HTMLCanvasElement;
-		this.canvasWidth = 300 * devicePixelRatio;
+		this.canvasWidth = 800 * devicePixelRatio;
 		this.canvasHeight = 400 * devicePixelRatio;
 		this.canvas.width = this.canvasWidth;
 		this.canvas.height = this.canvasHeight;
-		this.canvas.style.width = "300px";
+		this.canvas.style.width = "800px";
 		this.canvas.style.height = "400px";
 		this.context = this.canvas.getContext("2d", { alpha: false }) as CanvasRenderingContext2D;
 		this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
@@ -56,7 +56,7 @@ class Visualizer {
 
 			const y = canvasHeight - (canvasHeight * (sample.time - currentTime) / 4);
 			context.fillStyle = sample.sample.color;
-			context.fillRect(sample.sample.index * 5, y - 10, 5, 10);
+			context.fillRect(sample.sample.index * 14, y - 28, 14, 28);
 		}
 	}
 
