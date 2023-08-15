@@ -87,7 +87,6 @@ abstract class Style {
 
 			notes.push(note.toLowerCase());
 		}
-
 		return notes;
 	}
 

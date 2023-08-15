@@ -1,6 +1,6 @@
 enum StyleName {
 	Forro = 0,
-	Pop = 1,
+	Jazz = 1,
 	Rock = 2
 }
 

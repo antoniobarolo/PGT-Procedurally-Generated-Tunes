@@ -13,6 +13,7 @@
 		"ts/section.ts",
 		"ts/style.ts",
 		"ts/styles/forro.ts",
+		"ts/styles/jazz.ts",
 		"ts/sampleSet.ts",
 		"ts/player.ts",
 		"ts/app.ts",

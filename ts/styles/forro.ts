@@ -150,6 +150,45 @@ class Forro extends Style {
 					{
 						accordion: 'd5 - - c5 e5 - c5 - '
 					},
+					{
+						accordion: 'f5 - g5 - a5 - - - '
+					},
+					{
+						accordion: 'g5 - - - f5 - - - '
+					},
+					{
+						accordion: 'c6 b5 - - a5 g5 f5 - '
+					},
+					{
+						accordion: 'f4 - a4 - c5 - a4 g4'
+					},
+					{
+						accordion: 'f4 - a4 - c5 - a4 g4'
+					},
+					{
+						accordion: 'f4 - g4 - a4 - c6 - '
+					},
+					{
+						accordion: 'g5 - - f5 a5 g5 - -'
+					},
+					{
+						accordion: 'f5 a5 g5 - - f5 e5'
+					},
+					{
+						accordion: 'g6 f6 e6 d6 c6 e6 d6 -'
+					},
+					{
+						accordion: 'd6 c6 b5 a5 f5 a5 g5 -'
+					},
+					{
+						accordion: 'g5 - - a5 g5 -- f5'
+					},
+					{
+						accordion: 'g5 - - d5 g5 g5 d5 g5'
+					},
+					{
+						accordion: 'f5 g5 a5 - - - g5 -'
+					},
 				];
 
 			case SectionType.Ponte:

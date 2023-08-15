@@ -17,3 +17,8 @@ function test(section : SectionType) {
 	const teste = forr.generateSection(section);
 	player.playSection(teste);
 }
+
+function playStyle(style: Style, section: SectionType) {
+    const generatedSection = style.generateSection(section);
+    player.playSection(generatedSection);
+}

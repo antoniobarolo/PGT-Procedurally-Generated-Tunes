@@ -21,8 +21,8 @@
                 <button class="new-tune-btn">New Tune</button>
             </div>
 
-            <li class="active">Forró Tune</li>
-            <li><a href="jazz.html">Jazz</a></li>
+            <li class="active">Jazz Tune</li>
+            <li><a href="index.html">Forró</a></li>
             <li>Tune 3</li>
             <li>Tune 4</li>
         </ul>
@@ -31,20 +31,15 @@
     <div class="content">
         <main>
             <div class="inner-div">
-                <h3>Forró Tune</h3>
-                <!-- <div class="play-buttons">
-            <button >forró Intro</button> 
-            <button onclick="test(SectionType.Verso)">forró Verso</button>
-            <button onclick="test(SectionType.Ponte)">forró Ponte</button>
-            </div>
-            -->
+                <h3>Jazz Tune</h3>
+        
 
                 <div id="visuals">
                     <canvas id="canvas"></canvas>
                 </div>
 
                 <div class="play-buttons">
-                    <button class="new-tune-btn" onclick="test(SectionType.Intro)">Play</button>
+                    <button class="new-tune-btn" onclick="{	const jazz = new Jazz(); playStyle(jazz, SectionType.Intro)}">Play</button>
                 </div>
             </div>
             
