@@ -1,6 +1,16 @@
 const audioContext = new AudioContext();
 const player = new Player();
 
+const volumeSlider = document.getElementById('volumeSlider') as HTMLInputElement;
+const gainNode = audioContext.createGain();
+
+volumeSlider.addEventListener('input', () => {
+    const volume = parseFloat(volumeSlider.value);
+    gainNode.gain.value = volume;
+});
+volumeSlider.value = '0.5';
+
+
 async function setup(): Promise<void> {
 	try {
 		await SampleSet.loadSamples();

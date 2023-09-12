@@ -800,7 +800,8 @@ class Player {
     playSample(sample, time) {
         const source = audioContext.createBufferSource();
         source.buffer = sample.buffer;
-        source.connect(audioContext.destination);
+        source.connect(gainNode);
+        gainNode.connect(audioContext.destination);
         source.start(time);
         if (this.visualizer)
             this.visualizer.playSample(sample, time);
@@ -816,6 +817,13 @@ class Player {
 }
 const audioContext = new AudioContext();
 const player = new Player();
+const volumeSlider = document.getElementById('volumeSlider');
+const gainNode = audioContext.createGain();
+volumeSlider.addEventListener('input', () => {
+    const volume = parseFloat(volumeSlider.value);
+    gainNode.gain.value = volume;
+});
+volumeSlider.value = '0.5';
 async function setup() {
     try {
         await SampleSet.loadSamples();

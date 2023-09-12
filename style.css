@@ -98,3 +98,7 @@ new tune button
 .new-tune-btn:hover {
     background-color:  #5ea05e;
 }
+
+.slider{
+    margin-top: 20px;
+}

@@ -10,7 +10,8 @@ class Player {
 	public playSample(sample: Sample, time: number): void {
 		const source = audioContext.createBufferSource();
 		source.buffer = sample.buffer;
-		source.connect(audioContext.destination);
+		source.connect(gainNode);
+		gainNode.connect(audioContext.destination);
 		source.start(time);
 
 		if (this.visualizer)
