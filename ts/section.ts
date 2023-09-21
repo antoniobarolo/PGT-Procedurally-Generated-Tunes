@@ -1,16 +1,15 @@
 class Section {
 	public readonly bpm: number;
-	public readonly beatDuration: number;
+	public readonly noteDuration: number;
 	public readonly duration: number;
 
 	private readonly type: SectionType;
 	private readonly progressions: Progression[];
 	private readonly maxSheetLength: number[];
 
-	public constructor(type: SectionType, progressions: Progression[], bpm: number) {
+	public constructor(type: SectionType, progressions: Progression[], bpm: number, noteDuration: number) {
 		this.bpm = bpm;
-		// Assuming 120 BPM (120 = 0.5)
-		this.beatDuration = 30 / bpm;
+		this.noteDuration = noteDuration;
 
 		this.type = type;
 		this.progressions = progressions;
@@ -43,11 +42,11 @@ class Section {
 			this.maxSheetLength[p] = maxSheetLength;
 		}
 
-		this.duration = this.beatDuration * totalSheetLength;
+		this.duration = this.noteDuration * totalSheetLength;
 	}
 
 	public play(player: Player, startTime: number): void {
-		const beatDuration = this.beatDuration;
+		const noteDuration = this.noteDuration;
 		const progressions = this.progressions;
 		const maxSheetLength = this.maxSheetLength;
 
@@ -69,7 +68,7 @@ class Section {
 						if (!sample)
 							throw new Error("Missing sample: " + sampleName);
 
-						player.playSample(sample, startTime + ((totalSheetLength + i) * beatDuration));
+						player.playSample(sample, startTime + ((totalSheetLength + i) * noteDuration));
 					}
 				}
 			}

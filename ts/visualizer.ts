@@ -18,6 +18,7 @@ class Visualizer {
 		this.canvasHeight = 400 * devicePixelRatio;
 		this.canvas.width = this.canvasWidth;
 		this.canvas.height = this.canvasHeight;
+		this.canvas.style.maxWidth = "100%";
 		this.canvas.style.width = "800px";
 		this.canvas.style.height = "400px";
 		this.context = this.canvas.getContext("2d", { alpha: false }) as CanvasRenderingContext2D;

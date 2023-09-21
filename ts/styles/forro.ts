@@ -1,6 +1,6 @@
 class Forro extends Style {
 	constructor() {
-		super(StyleName.Forro, 240);
+		super(StyleName.Forro, 240, 0.125);
 	}
 
 	protected generateHarmony(sectionType: SectionType): InstrumentSet[] {

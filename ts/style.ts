@@ -1,13 +1,15 @@
 abstract class Style {
 	public readonly name: StyleName;
 	public readonly defaultBpm: number;
+	public readonly defaultNoteDuration: number;
 	protected readonly harmony: Map<SectionType, InstrumentSet[]>;
 	protected readonly rhythm: Map<SectionType, InstrumentSet[]>;
 	protected readonly melody: Map<SectionType, InstrumentSet[]>;
 
-	constructor(name: StyleName, defaultBpm: number) {
+	constructor(name: StyleName, defaultBpm: number, defaultNoteDuration: number) {
 		this.name = name;
 		this.defaultBpm = defaultBpm;
+		this.defaultNoteDuration = defaultNoteDuration;
 
 		this.harmony = new Map<SectionType, InstrumentSet[]>();
 		this.rhythm = new Map<SectionType, InstrumentSet[]>();
@@ -90,7 +92,7 @@ abstract class Style {
 		return notes;
 	}
 
-	public generateSection(sectionType: SectionType, bpm?: number | null): Section {
+	public generateSection(sectionType: SectionType, bpm?: number | null, noteDuration?: number | null): Section {
 		const progressions: Progression[] = [];
 
 		const progressionCount = this.getNextProgressionCount(sectionType);
@@ -198,6 +200,6 @@ abstract class Style {
 			});
 		}
 
-		return new Section(sectionType, progressions, bpm || this.defaultBpm);
+		return new Section(sectionType, progressions, bpm || this.defaultBpm, noteDuration || this.defaultNoteDuration);
 	}
 }

@@ -4,6 +4,9 @@ body {
     margin: 0;
     padding: 0;
     color: #ccc;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 /*
@@ -11,9 +14,8 @@ main
 */
 
 .content {
-    display: inline-block;
-    vertical-align: middle;
-    width: calc(100% - 254px);
+    flex: 1 1 auto;
+    min-height: 100vh;
     text-align: center;
 }
 
@@ -34,9 +36,10 @@ sidebar
 
 .sidebar {
     width: 250px;
+    min-width: 250px;
+    max-width: 250px;
     background-color: #202020;
-    height: 100vh;
-    display: inline-block;
+    min-height: 100vh;
 }
 
 ul {

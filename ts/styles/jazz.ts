@@ -1,6 +1,6 @@
 class Jazz extends Style {
 	constructor() {
-		super(StyleName.Jazz, 100);
+		super(StyleName.Jazz, 100, 0.6);
 	}
 
 	protected generateHarmony(sectionType: SectionType): InstrumentSet[] {
