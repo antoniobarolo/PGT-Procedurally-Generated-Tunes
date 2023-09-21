@@ -1,5 +1,4 @@
-﻿"use strict";
-var StyleName;
+﻿var StyleName;
 (function (StyleName) {
     StyleName[StyleName["Forro"] = 0] = "Forro";
     StyleName[StyleName["Jazz"] = 1] = "Jazz";
@@ -18,6 +17,91 @@ var SectionType;
     SectionType[SectionType["Ponte"] = 2] = "Ponte";
     SectionType[SectionType["Verso"] = 3] = "Verso";
 })(SectionType || (SectionType = {}));
+var ScaleDegree;
+(function (ScaleDegree) {
+    ScaleDegree[ScaleDegree["Root"] = 1] = "Root";
+    ScaleDegree[ScaleDegree["Second"] = 2] = "Second";
+    ScaleDegree[ScaleDegree["Third"] = 3] = "Third";
+    ScaleDegree[ScaleDegree["Fourth"] = 4] = "Fourth";
+    ScaleDegree[ScaleDegree["Fifth"] = 5] = "Fifth";
+    ScaleDegree[ScaleDegree["Sixth"] = 6] = "Sixth";
+    ScaleDegree[ScaleDegree["Seventh"] = 7] = "Seventh";
+    ScaleDegree[ScaleDegree["Silence"] = 0] = "Silence";
+})(ScaleDegree || (ScaleDegree = {}));
+// Enum para representar as notas musicais
+var Note;
+(function (Note) {
+    Note["A"] = "A";
+    Note["B"] = "B";
+    Note["C"] = "C";
+    Note["D"] = "D";
+    Note["E"] = "E";
+    Note["F"] = "F";
+    Note["G"] = "G";
+})(Note || (Note = {}));
+class Instrument {
+}
+var NoteNumber;
+(function (NoteNumber) {
+    NoteNumber[NoteNumber["A"] = 0] = "A";
+    NoteNumber[NoteNumber["A#"] = 1] = "A#";
+    NoteNumber[NoteNumber["B"] = 2] = "B";
+    NoteNumber[NoteNumber["C"] = 3] = "C";
+    NoteNumber[NoteNumber["C#"] = 4] = "C#";
+    NoteNumber[NoteNumber["D"] = 5] = "D";
+    NoteNumber[NoteNumber["D#"] = 6] = "D#";
+    NoteNumber[NoteNumber["E"] = 7] = "E";
+    NoteNumber[NoteNumber["F"] = 8] = "F";
+    NoteNumber[NoteNumber["F#"] = 9] = "F#";
+    NoteNumber[NoteNumber["G"] = 10] = "G";
+    NoteNumber[NoteNumber["G#"] = 11] = "G#";
+})(NoteNumber || (NoteNumber = {}));
+const noteNames = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
+const Minor = [0, 2, 3, 5, 7, 8, 10];
+const Dorian = [0, 2, 3, 5, 7, 9, 10];
+const Major = [0, 2, 4, 5, 7, 9, 11];
+const ExampleInstrument = {
+    centerOctave: 4,
+    samples: ['C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
+        'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
+        'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5',
+        'C6']
+};
+const sheet = [1, -7, 1, 3, 1, 0, 8, 0];
+function parseNumbers(sheet, Instrument, scale, rootNote) {
+    sheet = sheet.map((note) => {
+        if (note == 0)
+            return undefined;
+        if (note < 0) {
+            note = Math.abs(note);
+            note = scale[note - 1];
+            return note - 12 + rootNote;
+        }
+        if (note > scale.length) {
+            note = scale[note - scale.length - 1];
+            return note + 12 + rootNote;
+        }
+        return scale[note - 1] + rootNote;
+    });
+    const parsedSheet = sheet.map((noteNumber) => {
+        console.log(noteNumber);
+        if (noteNumber === undefined)
+            return "-";
+        let octaveShift = 0;
+        while (noteNumber < 0) {
+            noteNumber = noteNumber + noteNames.length;
+            octaveShift--;
+        }
+        while (noteNumber >= noteNames.length) {
+            noteNumber = noteNumber - noteNames.length;
+            octaveShift++;
+        }
+        return noteNames[noteNumber] + (Instrument.centerOctave + octaveShift);
+    });
+    console.log(parsedSheet);
+    return parsedSheet;
+}
+parseNumbers(sheet, ExampleInstrument, Minor, 0);
 class Section {
     constructor(type, progressions, bpm) {
         this.bpm = bpm;
@@ -730,6 +814,12 @@ class Jazz extends Style {
         return 4;
     }
 }
+// interface Sample {
+// 	index: number;
+// 	path: string;
+// 	color: string;
+// 	buffer: AudioBuffer;
+// }
 class SampleSet {
     static async loadSample(index) {
         const path = SampleSet.samplePaths[index];

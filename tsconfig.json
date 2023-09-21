@@ -5,7 +5,7 @@
 		"outFile": "app.js",
 		"sourceMap": false,
 		"emitBOM": true,
-		"strict": true,
+		"strict": false,
 	},
 	"files": [
 		"ts/enums.ts",

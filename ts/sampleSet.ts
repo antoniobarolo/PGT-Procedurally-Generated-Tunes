@@ -1,9 +1,9 @@
-interface Sample {
-	index: number;
-	path: string;
-	color: string;
-	buffer: AudioBuffer;
-}
+// interface Sample {
+// 	index: number;
+// 	path: string;
+// 	color: string;
+// 	buffer: AudioBuffer;
+// }
 
 class SampleSet {
 	private static readonly samplePaths = ["accordion_a3", "accordion_a4", "accordion_a5", "accordion_a6", "accordion_b3", "accordion_b4", "accordion_b5", "accordion_c4", "accordion_c5", "accordion_c6", "accordion_d4", "accordion_d5", "accordion_d6", "accordion_e4", "accordion_e5", "accordion_e6", "accordion_f4", "accordion_f5", "accordion_f6", "accordion_g4", "accordion_g5", "accordion_g6", "funkybass_a2", "funkybass_a3", "funkybass_a4", "funkybass_b2", "funkybass_b3", "funkybass_c3", "funkybass_c4", "funkybass_d3", "funkybass_d4", "funkybass_e3", "funkybass_e4", "funkybass_f3", "funkybass_f4", "funkybass_g3", "funkybass_g4",
