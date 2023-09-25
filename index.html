@@ -21,17 +21,17 @@
                 <button class="new-tune-btn">New Tune</button>
             </div>
 
-            <li class="active">Forró Tune</li>
-            <li><a href="jazz.html">Jazz</a></li>
-            <li>Tune 3</li>
-            <li>Tune 4</li>
+            <li id="itemForro"><a href="./">Forró</a></li>
+            <li id="itemJazz"><a href="./?style=jazz">Jazz</a></li>
+            <li id="itemRock"><a href="./?style=rock">Rock</a></li>
+            <li id="itemSamba"><a href="./?style=samba">Samba</a></li>
         </ul>
     </div>
 
     <div class="content">
         <main>
             <div class="inner-div">
-                <h3>Forró Tune</h3>
+                <h3 id="headingStyle"></h3>
                 <!-- <div class="play-buttons">
             <button >forró Intro</button> 
             <button onclick="test(SectionType.Verso)">forró Verso</button>
@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="play-buttons">
-                    <button class="new-tune-btn" onclick="test(SectionType.Intro)">Play</button>
+                    <button class="new-tune-btn" onclick="playCurrentStyle()">Play</button>
                 </div>
                 <input class='slider' type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
             </div>

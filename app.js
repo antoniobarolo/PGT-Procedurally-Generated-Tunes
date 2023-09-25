@@ -907,12 +907,48 @@ const audioContext = new AudioContext();
 const player = new Player();
 const volumeSlider = document.getElementById('volumeSlider');
 const gainNode = audioContext.createGain();
+let currentStyle = null;
 volumeSlider.addEventListener('input', () => {
 	const volume = parseFloat(volumeSlider.value);
 	gainNode.gain.value = volume;
 });
 volumeSlider.value = '0.5';
+function parseQueryString() {
+	const assoc = {};
+	const keyValues = location.search.substring(1).split("&");
+	for (let i in keyValues) {
+		const pair = keyValues[i].split("=");
+		if (pair.length > 1) {
+			assoc[decodeURIComponent(pair[0].replace(/\+/g, " "))] = decodeURIComponent(pair[1].replace(/\+/g, " "));
+		}
+	}
+	return assoc;
+}
+;
 async function setup() {
+	const queryString = parseQueryString();
+	let itemId;
+	switch (queryString["style"]) {
+		case "jazz":
+			currentStyle = new Jazz();
+			itemId = "itemJazz";
+			break;
+		case "rock":
+			//currentStyle = new Rock();
+			itemId = "itemRock";
+			break;
+		case "samba":
+			//currentStyle = new Samba();
+			itemId = "itemSamba";
+			break;
+		default:
+			currentStyle = new Forro();
+			itemId = "itemForro";
+			break;
+	}
+	const item = document.getElementById(itemId);
+	item.classList.add("active");
+	document.getElementById("headingStyle").textContent = item.textContent;
 	try {
 		await SampleSet.loadSamples();
 	}
@@ -922,14 +958,12 @@ async function setup() {
 	}
 }
 setup();
-function test(section) {
-	const forr = new Forro();
-	const teste = forr.generateSection(section);
-	player.playSection(teste);
-}
 function playStyle(style, section) {
 	const generatedSection = style.generateSection(section);
 	player.playSection(generatedSection);
+}
+function playCurrentStyle() {
+	playStyle(currentStyle, SectionType.Intro);
 }
 class Visualizer {
 	constructor() {
