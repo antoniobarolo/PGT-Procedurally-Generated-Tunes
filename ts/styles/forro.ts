@@ -1,6 +1,6 @@
 class Forro extends Style {
 	constructor() {
-		super(StyleName.Forro, 240, 0.125);
+		super(StyleName.Forro, 120, 4/8);
 	}
 
 	protected generateHarmony(sectionType: SectionType): InstrumentSet[] {
@@ -8,17 +8,17 @@ class Forro extends Style {
 			case SectionType.Intro:
 				return [
 					{
-						funkybass: 'a3 - b3 - ',
+						bass: 'a3 - b3 - ',
 						accordion: 'd4 - g4 - ',
 						xylo: 'f5 - g5 - ',
 					},
 					{
-						funkybass: 'd3 f4 e3 f4 ',
+						bass: 'd3 f4 e3 f4 ',
 						accordion: 'd4 - g4 - ',
 						xylo: 'd4 d5 d4 d5 ',
 					},
 					{
-						funkybass: 'd3 f4 e3 f4 ',
+						bass: 'd3 f4 e3 f4 ',
 						accordion: 'd4 - b4 a4',
 						xylo: 'd4 - - -',
 					}
@@ -27,15 +27,15 @@ class Forro extends Style {
 			case SectionType.Ponte:
 				return [
 					{
-						funkybass: 'd3 c4 a4 a4',
+						bass: 'd3 c4 a4 a4',
 						accordion: 'd4 - a4 e5',
 					},
 					{
-						funkybass: 'd3 f4 d3 f4',
+						bass: 'd3 f4 d3 f4',
 						accordion: 'f4 - g4 -',
 					},
 					{
-						funkybass: 'a2 - - - ',
+						bass: 'a2 - - - ',
 						accordion: 'a4 - - -',
 					}
 				];
@@ -43,16 +43,16 @@ class Forro extends Style {
 			case SectionType.Verso:
 				return [
 					{
-						funkybass: 'a3 - b3 - ',
+						bass: 'a3 - b3 - ',
 						accordion: 'd4 - g4 - ',
 						xylo: 'f5 - g5 - ',
 					},
 					{
-						funkybass: 'd3 f4 e3 f4 ',
+						bass: 'd3 f4 e3 f4 ',
 						accordion: 'd4 - g4 - ',
 					},
 					{
-						funkybass: 'd3 f4 e3 f4 ',
+						bass: 'd3 f4 e3 f4 ',
 						accordion: 'd4 - b4 a4',
 					}
 				];
@@ -60,7 +60,7 @@ class Forro extends Style {
 			default:
 				return [
 					{
-						funkybass: "d3 - - a2"
+						bass: "d3 - - a2"
 					},
 				];
 		}

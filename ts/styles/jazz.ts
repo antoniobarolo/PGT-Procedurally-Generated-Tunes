@@ -1,6 +1,6 @@
 class Jazz extends Style {
 	constructor() {
-		super(StyleName.Jazz, 100, 0.6);
+		super(StyleName.Jazz, 100, 1.2);
 	}
 
 	protected generateHarmony(sectionType: SectionType): InstrumentSet[] {
@@ -9,27 +9,35 @@ class Jazz extends Style {
 				return [
 					{
 						piano: 'c4 b3',
-						funkybass: 'a3 e3',
+						bass: 'a3 e3',
 					},
 					{
 						piano: 'e4 e4',
-						funkybass: 'a3 e3',
+						bass: 'a3 e3',
 					},
 					{
 						piano: 'g4 g4',
-						funkybass: 'a3 e3',
+						bass: 'a3 e3',
 					},
 					{
 						piano: 'd4 e4 a4 g4',
-						funkybass: 'b3 e3 a3 a3',
+						bass: 'b3 e3 a3 a3',
 					},
 					{
 						piano: 'd4 e4 d4 d4 c4 b3 c4 e4',
-						funkybass: 'b3 e3 g3 b3 a3 e3 f3 e3',
+						bass: 'b3 e3 g3 b3 a3 e3 f3 e3',
 					},
 					{
 						piano: 'g4 g4 g4 g4',
-						funkybass: 'a3 g3 f3 e3',
+						bass: 'a3 g3 f3 e3',
+					},
+				];
+
+			case SectionType.Ponte:
+				return [
+					{
+						piano: 'a4 b4 c5 b4',
+						bass: 'a3 g3 f3 e3',
 					},
 				];
 
@@ -37,7 +45,7 @@ class Jazz extends Style {
 				return [
 					{
 						piano: 'c4 b3',
-						funkybass: 'a3 e3',
+						bass: 'a3 e3',
 					},
 				];
 		}
@@ -73,6 +81,16 @@ class Jazz extends Style {
 						snare: '- 1 - 1 - 1'
 					},
 				];
+
+			case SectionType.Ponte:
+				return [
+					{
+						ride: '- 3 3 - 3 3',
+						kick: '1 - - - - -',
+						snare: '- - - 1 - 1'
+					},
+				];
+
 
 			default:
 				return [
@@ -111,10 +129,10 @@ class Jazz extends Style {
 						sax: 'c5 a4 - - - -'
 					},
 					{
-						sax: 'e5 eb5 c5 a4 - -'
+						sax: 'e5 d#5 c5 a4 - -'
 					},
 					{
-						sax: 'e5 - eb5 - - -'
+						sax: 'e5 - d#5 - - -'
 					},
 					{
 						sax: 'e4 - g4 - a4 -'
@@ -126,13 +144,13 @@ class Jazz extends Style {
 						sax: 'a5 c6 b5 a5 g5 a5'
 					},
 					{
-						sax: 'g5 e5 eb5 d5 c5 b5'
+						sax: 'g5 e5 d#5 d5 c5 b5'
 					},
 					{
-						sax: 'a4 e5 eb5 - - -'
+						sax: 'a4 e5 d#5 - - -'
 					},
 					{
-						sax: '- a4 e5 eb5 - - e5'
+						sax: '- a4 e5 d#5 - - e5'
 					},
 					{
 						sax: '- - - e4 g4 c5'
@@ -159,7 +177,7 @@ class Jazz extends Style {
 						sax: 'e5 - - - - -'
 					},
 					{
-						sax: '- e5 g5 e5 eb5 d5'
+						sax: '- e5 g5 e5 d#5 d5'
 					},
 					{
 						sax: '- - - - e4 g4'
@@ -168,10 +186,10 @@ class Jazz extends Style {
 						sax: '- - - - e5 g5'
 					},
 					{
-						sax: 'a4 c5 e5 eb5 - -'
+						sax: 'a4 c5 e5 d#5 - -'
 					},
 					{
-						sax: 'e5 eb5 c5 a4 - -'
+						sax: 'e5 d#5 c5 a4 - -'
 					},
 					{
 						sax: 'g5 b5 g5 b5 g5 -'
@@ -189,7 +207,7 @@ class Jazz extends Style {
 						sax: 'a4 c5 d5 c5 a5 -'
 					},
 					{
-						sax: '- - e5 eb5 e5 c5'
+						sax: '- - e5 d#5 e5 c5'
 					},
 					{
 						sax: 'e5 f5 e5 - e5 f5'
@@ -222,7 +240,7 @@ class Jazz extends Style {
 						sax: 'a5 g5 e5 d5 c5 a4'
 					},
 					{
-						sax: 'a5 g5 e5 eb5 - -'
+						sax: 'a5 g5 e5 d#5 - -'
 					},
 					{
 						sax: 'c5 - - - - -'
@@ -234,7 +252,7 @@ class Jazz extends Style {
 						sax: 'd5 - - - - -'
 					},
 					{
-						sax: 'eb5 - - - g5 e5'
+						sax: 'd#5 - - - g5 e5'
 					},
 					{
 						sax: 'g4 - - - b4 g4'
@@ -250,7 +268,28 @@ class Jazz extends Style {
 					},
 				];
 
-			
+			case SectionType.Ponte:
+				function randomNotes() {
+					let sheet = []
+					for (let note = 0; note < 6; note++) {
+						sheet.push(roll(9) - 1)
+					}
+					return sheet
+				}
+				const ExInstrument = {
+					centerOctave: 4,
+					samples: ['C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
+						'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
+						'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5',
+						'C6']
+				}
+				const Minor = [0, 2, 3, 5, 7, 8, 10]
+				return [
+					{
+						sax: parseNumbers(randomNotes(), ExInstrument, Minor, 0)
+					}
+				];
+
 
 			default:
 				return [

@@ -1,7 +1,8 @@
 enum StyleName {
 	Forro = 0,
 	Jazz = 1,
-	Rock = 2
+	Samba = 2,
+	Funk = 3
 }
 
 enum MeasureCategory {
@@ -82,9 +83,9 @@ const ExampleInstrument = {
 		'C6']
 }
 
-const sheet = [1, -7, 1, 3, 1, 0, 8, 0];
+const exampleSheet = [1, -7, 1, 3, 1, 0, 8, 0];
 
-function parseNumbers(sheet: number[], Instrument, scale, rootNote: number): string[] {
+function parseNumbers(sheet: number[], Instrument, scale, rootNote: number): string {
 	sheet = sheet.map((note) => {
 		if (note == 0)
 			return undefined
@@ -113,7 +114,6 @@ function parseNumbers(sheet: number[], Instrument, scale, rootNote: number): str
 		}
 		return noteNames[noteNumber] + (Instrument.centerOctave + octaveShift)
 	})
-	return parsedSheet
+	return parsedSheet.join(" ")
 }
-
-parseNumbers(sheet, ExampleInstrument, Minor, 0)
+const parsedSheet = parseNumbers(exampleSheet, ExampleInstrument, Minor, 0)

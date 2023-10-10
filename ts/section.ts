@@ -9,7 +9,7 @@ class Section {
 
 	public constructor(type: SectionType, progressions: Progression[], bpm: number, noteDuration: number) {
 		this.bpm = bpm;
-		this.noteDuration = noteDuration;
+		this.noteDuration = noteDuration / bpm * 60;
 
 		this.type = type;
 		this.progressions = progressions;
@@ -63,7 +63,8 @@ class Section {
 
 				for (let i = 0; i < sheet.length; i++) {
 					if (sheet[i]) {
-						const sampleName = instrumentNamePrefix + "_" + sheet[i];
+						//const sampleName = instrumentNamePrefix + "_" + sheet[i];
+						const sampleName = instrumentNamePrefix + "/" + sheet[i];
 						const sample = SampleSet.getSample(sampleName);
 						if (!sample)
 							throw new Error("Missing sample: " + sampleName);

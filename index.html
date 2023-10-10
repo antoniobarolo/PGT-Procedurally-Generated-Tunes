@@ -23,7 +23,7 @@
 
             <li id="itemForro"><a href="./">Forró</a></li>
             <li id="itemJazz"><a href="./?style=jazz">Jazz</a></li>
-            <li id="itemRock"><a href="./?style=rock">Rock</a></li>
+            <li id="itemFunk"><a href="./?style=funk">Funk</a></li>
             <li id="itemSamba"><a href="./?style=samba">Samba</a></li>
         </ul>
     </div>
@@ -46,7 +46,7 @@
                 <div class="play-buttons">
                     <button class="new-tune-btn" onclick="playCurrentStyle()">Play</button>
                 </div>
-                <input class='slider' type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+                <input class='slider' type="range" id="volumeSlider" min="-40" max="0" step="1" value="-6" onchange="updateVolume()">
             </div>
             
         </main>

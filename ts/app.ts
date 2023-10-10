@@ -5,11 +5,13 @@ const volumeSlider = document.getElementById('volumeSlider') as HTMLInputElement
 const gainNode = audioContext.createGain();
 let currentStyle: Style = null;
 
-volumeSlider.addEventListener('input', () => {
-    const volume = parseFloat(volumeSlider.value);
-    gainNode.gain.value = volume;
-});
-volumeSlider.value = '0.5';
+function updateVolume() {
+    const dB = parseInt(volumeSlider.value);
+	// dB = 20.log Mag
+	// dB/20 = log Mag
+	// 10 ^ (dB/20) = Mag
+    gainNode.gain.value = (dB <= -40 ? 0 : Math.pow(10, dB / 20));
+}
 
 function parseQueryString(): { [key: string]: string } {
 	const assoc: { [key: string]: string } = {};
@@ -34,12 +36,12 @@ async function setup(): Promise<void> {
 			currentStyle = new Jazz();
 			itemId = "itemJazz";
 			break;
-		case "rock":
-			//currentStyle = new Rock();
-			itemId = "itemRock";
+		case "funk":
+			currentStyle = new Funk();
+			itemId = "itemFunk";
 			break;
 		case "samba":
-			//currentStyle = new Samba();
+			currentStyle = new Samba();
 			itemId = "itemSamba";
 			break;
 		default:
@@ -51,6 +53,8 @@ async function setup(): Promise<void> {
 	const item = document.getElementById(itemId);
 	item.classList.add("active");
 	document.getElementById("headingStyle").textContent = item.textContent;
+
+	updateVolume();
 
 	try {
 		await SampleSet.loadSamples();
@@ -68,5 +72,5 @@ function playStyle(style: Style, section: SectionType) {
 }
 
 function playCurrentStyle() {
-	playStyle(currentStyle, SectionType.Intro);
+	playStyle(currentStyle, SectionType.Ponte);
 }
