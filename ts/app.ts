@@ -72,5 +72,5 @@ function playStyle(style: Style, section: SectionType) {
 }
 
 function playCurrentStyle() {
-	playStyle(currentStyle, SectionType.Ponte);
+	playStyle(currentStyle, SectionType.Intro);
 }

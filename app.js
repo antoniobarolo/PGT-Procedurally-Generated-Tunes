@@ -309,7 +309,7 @@ class Style {
 }
 class Forro extends Style {
     constructor() {
-        super(StyleName.Forro, 120, 4 / 8);
+        super(StyleName.Forro, 115, 4 / 16);
     }
     generateHarmony(sectionType) {
         switch (sectionType) {
@@ -418,19 +418,19 @@ class Forro extends Style {
                         accordion: "d5 f5 e5 d5 a5 g5 f5 g5"
                     },
                     {
-                        accordion: "b5 - a5 - d5 d5 d5 d5"
+                        accordion: "b4 - a4 - d4 d4 d4 d4"
                     },
                     {
-                        accordion: "d6 b5 c6 a5 b5 f5 a5 f5"
+                        accordion: "d5 b4 c5 a4 b4 f4 a4 f4"
                     },
                     {
-                        accordion: "b5 b5 a5 a5"
+                        accordion: "b4 b4 a5 a5"
                     },
                     {
                         accordion: "d5 d4 d4 d5 d4 d4 b4 c4"
                     },
                     {
-                        accordion: "d5 - - - c6 a5 b5 - "
+                        accordion: "d4 - - - c5 a4 b4 - "
                     },
                     {
                         accordion: "a5 - f5 - a4 - d5 - "
@@ -457,7 +457,7 @@ class Forro extends Style {
                         accordion: 'g5 - - - f5 - - - '
                     },
                     {
-                        accordion: 'c6 b5 - - a5 g5 f5 - '
+                        accordion: 'c5 b4 - - a4 g4 f4 - '
                     },
                     {
                         accordion: 'f4 - a4 - c5 - a4 g4'
@@ -466,7 +466,7 @@ class Forro extends Style {
                         accordion: 'f4 - a4 - c5 - a4 g4'
                     },
                     {
-                        accordion: 'f4 - g4 - a4 - c6 - '
+                        accordion: 'f4 - g4 - a4 - c5 - '
                     },
                     {
                         accordion: 'g5 - - f5 a5 g5 - -'
@@ -475,10 +475,10 @@ class Forro extends Style {
                         accordion: 'f5 a5 g5 - - f5 e5'
                     },
                     {
-                        accordion: 'g6 f6 e6 d6 c6 e6 d6 -'
+                        accordion: 'g5 f5 e5 d5 c5 e5 d5 -'
                     },
                     {
-                        accordion: 'd6 c6 b5 a5 f5 a5 g5 -'
+                        accordion: 'd5 c5 b4 a4 f4 a4 g4 -'
                     },
                     {
                         accordion: 'g5 - - a5 g5 -- f5'
@@ -514,7 +514,7 @@ class Forro extends Style {
                         accordion: "d5 f5 e5 d5"
                     },
                     {
-                        accordion: "c6 - b5"
+                        accordion: "c5 - b4"
                     },
                     {
                         accordion: "d5 - - d5"
@@ -544,7 +544,7 @@ class Forro extends Style {
                         accordion: "d5 f5 e5 d5"
                     },
                     {
-                        accordion: "b5 - a5"
+                        accordion: "b4 - a4"
                     },
                 ];
         }
@@ -1062,7 +1062,33 @@ class SampleSet {
         return SampleSet.samples.get(name);
     }
 }
-SampleSet.samplePaths = ["accordion_a3", "accordion_a4", "accordion_a5", "accordion_a6", "accordion_b3", "accordion_b4", "accordion_b5", "accordion_c4", "accordion_c5", "accordion_c6", "accordion_d4", "accordion_d5", "accordion_d6", "accordion_e4", "accordion_e5", "accordion_e6", "accordion_f4", "accordion_f5", "accordion_f6", "accordion_g4", "accordion_g5", "accordion_g6",
+SampleSet.samplePaths = [
+    //accordion
+    "accordion/a3",
+    "accordion/a#3",
+    "accordion/b3",
+    "accordion/c4",
+    "accordion/c#4",
+    "accordion/d4",
+    "accordion/d#4",
+    "accordion/e4",
+    "accordion/f4",
+    "accordion/f#4",
+    "accordion/g4",
+    "accordion/g#4",
+    "accordion/a4",
+    "accordion/a#4",
+    "accordion/b4",
+    "accordion/c5",
+    "accordion/c#5",
+    "accordion/d5",
+    "accordion/d#5",
+    "accordion/e5",
+    "accordion/f5",
+    "accordion/f#5",
+    "accordion/g5",
+    "accordion/g#5",
+    "accordion/a5",
     // "funkybass_a2", "funkybass_a3", "funkybass_a4", "funkybass_b2", "funkybass_b3", "funkybass_c3", "funkybass_c4", "funkybass_d3", "funkybass_d4", "funkybass_e3", "funkybass_e4", "funkybass_f3", "funkybass_f4", "funkybass_g3", "funkybass_g4",
     //percussion
     "ride/3", "hihat/1", "kick/1", "snare/1", "snare/2", "snare/3", "snare/4", "snare/5",
@@ -1319,7 +1345,7 @@ function playStyle(style, section) {
     player.playSection(generatedSection);
 }
 function playCurrentStyle() {
-    playStyle(currentStyle, SectionType.Ponte);
+    playStyle(currentStyle, SectionType.Intro);
 }
 class Visualizer {
     constructor() {

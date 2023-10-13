@@ -1,6 +1,6 @@
 class Forro extends Style {
 	constructor() {
-		super(StyleName.Forro, 120, 4/8);
+		super(StyleName.Forro, 115, 4/16);
 	}
 
 	protected generateHarmony(sectionType: SectionType): InstrumentSet[] {
@@ -118,19 +118,19 @@ class Forro extends Style {
 						accordion: "d5 f5 e5 d5 a5 g5 f5 g5"
 					},
 					{
-						accordion: "b5 - a5 - d5 d5 d5 d5"
+						accordion: "b4 - a4 - d4 d4 d4 d4"
 					},
 					{
-						accordion: "d6 b5 c6 a5 b5 f5 a5 f5"
+						accordion: "d5 b4 c5 a4 b4 f4 a4 f4"
 					},
 					{
-						accordion: "b5 b5 a5 a5"
+						accordion: "b4 b4 a5 a5"
 					},
 					{
 						accordion: "d5 d4 d4 d5 d4 d4 b4 c4"
 					},
 					{
-						accordion: "d5 - - - c6 a5 b5 - "
+						accordion: "d4 - - - c5 a4 b4 - "
 					},
 					{
 						accordion: "a5 - f5 - a4 - d5 - "
@@ -157,7 +157,7 @@ class Forro extends Style {
 						accordion: 'g5 - - - f5 - - - '
 					},
 					{
-						accordion: 'c6 b5 - - a5 g5 f5 - '
+						accordion: 'c5 b4 - - a4 g4 f4 - '
 					},
 					{
 						accordion: 'f4 - a4 - c5 - a4 g4'
@@ -166,7 +166,7 @@ class Forro extends Style {
 						accordion: 'f4 - a4 - c5 - a4 g4'
 					},
 					{
-						accordion: 'f4 - g4 - a4 - c6 - '
+						accordion: 'f4 - g4 - a4 - c5 - '
 					},
 					{
 						accordion: 'g5 - - f5 a5 g5 - -'
@@ -175,10 +175,10 @@ class Forro extends Style {
 						accordion: 'f5 a5 g5 - - f5 e5'
 					},
 					{
-						accordion: 'g6 f6 e6 d6 c6 e6 d6 -'
+						accordion: 'g5 f5 e5 d5 c5 e5 d5 -'
 					},
 					{
-						accordion: 'd6 c6 b5 a5 f5 a5 g5 -'
+						accordion: 'd5 c5 b4 a4 f4 a4 g4 -'
 					},
 					{
 						accordion: 'g5 - - a5 g5 -- f5'
@@ -216,7 +216,7 @@ class Forro extends Style {
 						accordion: "d5 f5 e5 d5"
 					},
 					{
-						accordion: "c6 - b5"
+						accordion: "c5 - b4"
 					},
 					{
 						accordion: "d5 - - d5"
@@ -247,7 +247,7 @@ class Forro extends Style {
 						accordion: "d5 f5 e5 d5"
 					},
 					{
-						accordion: "b5 - a5"
+						accordion: "b4 - a4"
 					},
 				];
 		}
