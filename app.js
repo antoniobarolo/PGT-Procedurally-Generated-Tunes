@@ -43,7 +43,7 @@ var Note;
     Note["F"] = "F";
     Note["G"] = "G";
 })(Note || (Note = {}));
-class Instrument {
+class Instrumento {
 }
 var NoteNumber;
 (function (NoteNumber) {
@@ -1033,6 +1033,40 @@ class Funk extends Style {
         return 4;
     }
 }
+class Instrument {
+    constructor(path, samples, centerOctave, color, role) {
+        this.path = path;
+        this.samples = samples;
+        this.centerOctave = centerOctave;
+        this.color = color;
+        this.role = role;
+    }
+}
+const bass = new Instrument('bass', ["bass/a2",
+    "bass/a#2",
+    "bass/b2",
+    "bass/c3",
+    "bass/c#3",
+    "bass/d3",
+    "bass/d#3",
+    "bass/e3",
+    "bass/f3",
+    "bass/f#3",
+    "bass/g3",
+    "bass/g#3",
+    "bass/a3",
+    "bass/a#3",
+    "bass/b3",
+    "bass/c4",
+    "bass/c#4",
+    "bass/d4",
+    "bass/d#4",
+    "bass/e4",
+    "bass/f4",
+    "bass/f#4",
+    "bass/g4",
+    "bass/g#4",
+    "bass/a4"], 3, "#FFFF00", 'Harmony');
 // interface Sample {
 // 	index: number;
 // 	path: string;
@@ -1062,6 +1096,7 @@ class SampleSet {
         return SampleSet.samples.get(name);
     }
 }
+SampleSet.instruments = [bass];
 SampleSet.samplePaths = [
     //accordion
     "accordion/a3",

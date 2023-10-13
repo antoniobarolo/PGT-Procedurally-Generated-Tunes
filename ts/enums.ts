@@ -41,7 +41,7 @@ enum Note {
 }
 
 
-class Instrument {
+class Instrumento {
 	centerOctave?: number;
 	notes: Sample[];
 }
