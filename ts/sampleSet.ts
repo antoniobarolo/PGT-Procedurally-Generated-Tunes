@@ -1,6 +1,6 @@
 class SampleSet {
-	private readonly instruments: Instrument[] = [bass, piano, sax, ride, kick, snare]
-	private samplePaths: string[] = this.instruments.reduce((accumulator, instrument) => {
+	private static readonly instruments: Instrument[] = [bass, piano, sax, ride, kick, snare]
+	private static readonly samplePaths: string[] = SampleSet.instruments.reduce((accumulator, instrument) => {
 		return accumulator.concat(instrument.samples);
 	}, [] as string[]);
 	private static readonly sampleColors = [];
