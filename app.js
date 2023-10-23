@@ -1102,7 +1102,7 @@ const piano = new Instrument('piano', ["piano/a2",
     "piano/f#6",
     "piano/g6",
     "piano/g#6",
-    "piano/a6",], 3, "#FFFF00", MeasureCategory.Harmony);
+    "piano/a6",], 3, "#596ABD", MeasureCategory.Harmony);
 const sax = new Instrument('sax', ["sax/a3",
     "sax/a#3",
     "sax/b3",
@@ -1130,14 +1130,14 @@ const sax = new Instrument('sax', ["sax/a3",
     "sax/a5",
     "sax/a#5",
     "sax/b5",
-    "sax/c6",], 4, "#FFFF00", MeasureCategory.Melody);
-const ride = new Instrument('ride', ["ride/3"], null, "#FFFF00", MeasureCategory.Rhythm);
-const kick = new Instrument('kick', ["kick/1"], null, "#FFFF00", MeasureCategory.Rhythm);
+    "sax/c6",], 4, "#CEC54A", MeasureCategory.Melody);
+const ride = new Instrument('ride', ["ride/3"], null, "#BD844B", MeasureCategory.Rhythm);
+const kick = new Instrument('kick', ["kick/1"], null, "#403420", MeasureCategory.Rhythm);
 const snare = new Instrument('snare', ["snare/1",
     "snare/2",
     "snare/3",
     "snare/4",
-    "snare/5"], null, "#FFFF00", MeasureCategory.Rhythm);
+    "snare/5"], null, "#D58548", MeasureCategory.Rhythm);
 const accordion = new Instrument('accordion', ["accordion/a3",
     "accordion/a#3",
     "accordion/b3",
@@ -1163,19 +1163,19 @@ const accordion = new Instrument('accordion', ["accordion/a3",
     "accordion/g5",
     "accordion/g#5",
     "accordion/a5",], 4, "#8B331D", MeasureCategory.Melody);
-const shaker = new Instrument('shaker', ["shaker/1", "shaker/2", "shaker/3", "shaker/4", "shaker/5",], null, "#FFFF00", MeasureCategory.Rhythm);
-const triangle = new Instrument('triangle', ["triangle/1", "triangle/2", "triangle/3", "triangle/4",], null, "#FFFF00", MeasureCategory.Rhythm);
-const xylo = new Instrument('xylo', ["xylo/a4", "xylo/a5", "xylo/b4", "xylo/c4", "xylo/c5", "xylo/d4", "xylo/d5", "xylo/e4", "xylo/e5", "xylo/f4", "xylo/f5", "xylo/g4", "xylo/g5"], null, "#FFFF00", MeasureCategory.Rhythm);
-const zabumba = new Instrument('zabumba', ["zabumba/k1", "zabumba/k2", "zabumba/s"], null, "#FFFF00", MeasureCategory.Melody);
-const tamborim = new Instrument('tamborim', ["tamborim/1", "tamborim/2", "tamborim/3", "tamborim/4",], null, "#FFFF00", MeasureCategory.Rhythm);
+const shaker = new Instrument('shaker', ["shaker/1", "shaker/2", "shaker/3", "shaker/4", "shaker/5",], null, "#77A176", MeasureCategory.Rhythm);
+const triangle = new Instrument('triangle', ["triangle/1", "triangle/2", "triangle/3", "triangle/4",], null, "#C0BEB0", MeasureCategory.Rhythm);
+const xylo = new Instrument('xylo', ["xylo/a4", "xylo/a5", "xylo/b4", "xylo/c4", "xylo/c5", "xylo/d4", "xylo/d5", "xylo/e4", "xylo/e5", "xylo/f4", "xylo/f5", "xylo/g4", "xylo/g5"], null, "#BA8DC3", MeasureCategory.Rhythm);
+const zabumba = new Instrument('zabumba', ["zabumba/k1", "zabumba/k2", "zabumba/s"], null, "#4B451F", MeasureCategory.Melody);
+const tamborim = new Instrument('tamborim', ["tamborim/1", "tamborim/2", "tamborim/3", "tamborim/4",], null, "#8ED3DB", MeasureCategory.Rhythm);
 const caixa = new Instrument('shaker', ["caixa/1", "caixa/2", "caixa/3", "caixa/4",
     "caixa/5", "caixa/6", "caixa/7", "caixa/8",
     "caixa/9", "caixa/10", "caixa/11", "caixa/12",
     "caixa/13", "caixa/14", "caixa/15", "caixa/16",], null, "#E49885", MeasureCategory.Rhythm);
-const surdo1 = new Instrument('surdo1', ["surdo1/1", "surdo1/2", "surdo1/3", "surdo1/4"], null, "#FFFF00", MeasureCategory.Rhythm);
-const surdo2 = new Instrument('surdo2', ["surdo2/1", "surdo2/2", "surdo2/3", "surdo2/4"], null, "#FFFF00", MeasureCategory.Rhythm);
-const surdo3 = new Instrument('surdo3', ["surdo3/1", "surdo3/2", "surdo3/3", "surdo3/4"], null, "#FFFF00", MeasureCategory.Rhythm);
-const ganza = new Instrument('shaker', ["ganza/1", "ganza/2", "ganza/3", "ganza/4",], null, "#FFFF00", MeasureCategory.Rhythm);
+const surdo1 = new Instrument('surdo1', ["surdo1/1", "surdo1/2", "surdo1/3", "surdo1/4"], null, "#384436", MeasureCategory.Rhythm);
+const surdo2 = new Instrument('surdo2', ["surdo2/1", "surdo2/2", "surdo2/3", "surdo2/4"], null, "#395447", MeasureCategory.Rhythm);
+const surdo3 = new Instrument('surdo3', ["surdo3/1", "surdo3/2", "surdo3/3", "surdo3/4"], null, "#41686C", MeasureCategory.Rhythm);
+const ganza = new Instrument('shaker', ["ganza/1", "ganza/2", "ganza/3", "ganza/4",], null, "#C4C68A", MeasureCategory.Rhythm);
 const stab = new Instrument('stab', ["stab/a2",
     "stab/a#2",
     "stab/b2",
@@ -1200,7 +1200,7 @@ const stab = new Instrument('stab', ["stab/a2",
     "stab/f#4",
     "stab/g4",
     "stab/g#4",
-    "stab/a4",], 3, "#FFFF00", MeasureCategory.Melody);
+    "stab/a4",], 3, "#943966", MeasureCategory.Melody);
 const darkKick = new Instrument('dark_kick', ["dark_kick/1"], null, "#380B3F", MeasureCategory.Rhythm);
 class SampleSet {
     static async loadSample(instrument, sample) {
@@ -1371,7 +1371,7 @@ class Visualizer {
             }
             const y = canvasHeight - (canvasHeight * (sample.time - currentTime) / 4);
             context.fillStyle = sample.sample.color;
-            context.fillRect(i * 14, y - 28, 14, 28);
+            context.fillRect(sample.sample.index * 14, y - 28, 14, 28);
         }
     }
     playSample(sample, time) {

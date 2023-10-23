@@ -50,5 +50,5 @@ const piano: Instrument =
             "piano/g#6",
             "piano/a6",],
         3,
-        "#FFFF00",
+        "#596ABD",
         MeasureCategory.Harmony)

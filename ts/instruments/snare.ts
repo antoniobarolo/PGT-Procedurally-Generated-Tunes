@@ -6,5 +6,5 @@ const snare: Instrument =
             "snare/4",
             "snare/5"],
         null,
-        "#FFFF00",
+        "#D58548",
         MeasureCategory.Rhythm)

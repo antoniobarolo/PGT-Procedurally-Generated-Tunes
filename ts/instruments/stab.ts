@@ -26,5 +26,5 @@ const stab: Instrument =
 		"stab/g#4",
 		"stab/a4",],
         3,
-        "#FFFF00",
+        "#943966",
         MeasureCategory.Melody)
