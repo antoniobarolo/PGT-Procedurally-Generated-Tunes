@@ -1,32 +1,43 @@
 class SampleSet {
-	private static readonly instruments: Instrument[] = [bass, piano, sax, ride, kick, snare]
-	private static readonly samplePaths: string[] = SampleSet.instruments.reduce((accumulator, instrument) => {
-		return accumulator.concat(instrument.samples);
-	}, [] as string[]);
-	private static readonly sampleColors = [];
-
+	private static readonly instruments: Instrument[] = [
+		bass,
+		piano,
+		sax,
+		ride,
+		kick,
+		snare,
+		accordion,
+		shaker,
+		triangle,
+		xylo,
+		zabumba,
+		tamborim,
+		caixa,
+		surdo1,
+		surdo2,
+		surdo3,
+		ganza,
+		stab,
+		darkKick]
 	private static readonly samples = new Map<string, Sample>();
 
-	private static async loadSample(index: number): Promise<void> {
-		const path = SampleSet.samplePaths[index];
+	private static async loadSample(instrument: Instrument, sample: string): Promise<void> {
+		const path = sample;
 		const response = await fetch('samples/' + path.replace("#", "%23") + '.wav');
 		const arrayBuffer = await response.arrayBuffer();
 		const decodedAudio = await audioContext.decodeAudioData(arrayBuffer);
 		SampleSet.samples.set(path, {
-			index,
+			index: 1,
 			path,
-			color: SampleSet.sampleColors[index],
+			color: instrument.color,
 			buffer: decodedAudio
 		});
 	}
 
 	public static async loadSamples(): Promise<void> {
-		const promises: Promise<void>[] = new Array(SampleSet.samplePaths.length);
-
-		for (let i = 0; i < SampleSet.samplePaths.length; i++)
-			promises[i] = SampleSet.loadSample(i);
-
-		await Promise.all(promises);
+		await Promise.all(SampleSet.instruments.map((instrument) => {
+			instrument.samples.map((sample) => SampleSet.loadSample(instrument, sample))
+		}))
 	}
 
 	public static getSample(name: string): Sample | undefined {

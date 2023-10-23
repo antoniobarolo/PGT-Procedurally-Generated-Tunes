@@ -32,19 +32,6 @@ var ScaleDegree;
     ScaleDegree[ScaleDegree["Seventh"] = 7] = "Seventh";
     ScaleDegree[ScaleDegree["Silence"] = 0] = "Silence";
 })(ScaleDegree || (ScaleDegree = {}));
-// Enum para representar as notas musicais
-var Note;
-(function (Note) {
-    Note["A"] = "A";
-    Note["B"] = "B";
-    Note["C"] = "C";
-    Note["D"] = "D";
-    Note["E"] = "E";
-    Note["F"] = "F";
-    Note["G"] = "G";
-})(Note || (Note = {}));
-class Instrumento {
-}
 var NoteNumber;
 (function (NoteNumber) {
     NoteNumber[NoteNumber["A"] = 0] = "A";
@@ -1066,7 +1053,7 @@ const bass = new Instrument('bass', ["bass/a2",
     "bass/f#4",
     "bass/g4",
     "bass/g#4",
-    "bass/a4"], 3, "#FFFF00", MeasureCategory.Harmony);
+    "bass/a4"], 3, "#2E149A", MeasureCategory.Harmony);
 const piano = new Instrument('piano', ["piano/a2",
     "piano/a#2",
     "piano/b2",
@@ -1143,42 +1130,121 @@ const sax = new Instrument('sax', ["sax/a3",
     "sax/a5",
     "sax/a#5",
     "sax/b5",
-    "sax/c6",], 3, "#FFFF00", MeasureCategory.Melody);
-const ride = new Instrument('ride', ["ride/3"], 3, "#FFFF00", MeasureCategory.Rhythm);
-const kick = new Instrument('kick', ["kick/1"], 3, "#FFFF00", MeasureCategory.Rhythm);
+    "sax/c6",], 4, "#FFFF00", MeasureCategory.Melody);
+const ride = new Instrument('ride', ["ride/3"], null, "#FFFF00", MeasureCategory.Rhythm);
+const kick = new Instrument('kick', ["kick/1"], null, "#FFFF00", MeasureCategory.Rhythm);
 const snare = new Instrument('snare', ["snare/1",
     "snare/2",
     "snare/3",
     "snare/4",
-    "snare/5"], 3, "#FFFF00", MeasureCategory.Rhythm);
+    "snare/5"], null, "#FFFF00", MeasureCategory.Rhythm);
+const accordion = new Instrument('accordion', ["accordion/a3",
+    "accordion/a#3",
+    "accordion/b3",
+    "accordion/c4",
+    "accordion/c#4",
+    "accordion/d4",
+    "accordion/d#4",
+    "accordion/e4",
+    "accordion/f4",
+    "accordion/f#4",
+    "accordion/g4",
+    "accordion/g#4",
+    "accordion/a4",
+    "accordion/a#4",
+    "accordion/b4",
+    "accordion/c5",
+    "accordion/c#5",
+    "accordion/d5",
+    "accordion/d#5",
+    "accordion/e5",
+    "accordion/f5",
+    "accordion/f#5",
+    "accordion/g5",
+    "accordion/g#5",
+    "accordion/a5",], 4, "#8B331D", MeasureCategory.Melody);
+const shaker = new Instrument('shaker', ["shaker/1", "shaker/2", "shaker/3", "shaker/4", "shaker/5",], null, "#FFFF00", MeasureCategory.Rhythm);
+const triangle = new Instrument('triangle', ["triangle/1", "triangle/2", "triangle/3", "triangle/4",], null, "#FFFF00", MeasureCategory.Rhythm);
+const xylo = new Instrument('xylo', ["xylo/a4", "xylo/a5", "xylo/b4", "xylo/c4", "xylo/c5", "xylo/d4", "xylo/d5", "xylo/e4", "xylo/e5", "xylo/f4", "xylo/f5", "xylo/g4", "xylo/g5"], null, "#FFFF00", MeasureCategory.Rhythm);
+const zabumba = new Instrument('zabumba', ["zabumba/k1", "zabumba/k2", "zabumba/s"], null, "#FFFF00", MeasureCategory.Melody);
+const tamborim = new Instrument('tamborim', ["tamborim/1", "tamborim/2", "tamborim/3", "tamborim/4",], null, "#FFFF00", MeasureCategory.Rhythm);
+const caixa = new Instrument('shaker', ["caixa/1", "caixa/2", "caixa/3", "caixa/4",
+    "caixa/5", "caixa/6", "caixa/7", "caixa/8",
+    "caixa/9", "caixa/10", "caixa/11", "caixa/12",
+    "caixa/13", "caixa/14", "caixa/15", "caixa/16",], null, "#E49885", MeasureCategory.Rhythm);
+const surdo1 = new Instrument('surdo1', ["surdo1/1", "surdo1/2", "surdo1/3", "surdo1/4"], null, "#FFFF00", MeasureCategory.Rhythm);
+const surdo2 = new Instrument('surdo2', ["surdo2/1", "surdo2/2", "surdo2/3", "surdo2/4"], null, "#FFFF00", MeasureCategory.Rhythm);
+const surdo3 = new Instrument('surdo3', ["surdo3/1", "surdo3/2", "surdo3/3", "surdo3/4"], null, "#FFFF00", MeasureCategory.Rhythm);
+const ganza = new Instrument('shaker', ["ganza/1", "ganza/2", "ganza/3", "ganza/4",], null, "#FFFF00", MeasureCategory.Rhythm);
+const stab = new Instrument('stab', ["stab/a2",
+    "stab/a#2",
+    "stab/b2",
+    "stab/c3",
+    "stab/c#3",
+    "stab/d3",
+    "stab/d#3",
+    "stab/e3",
+    "stab/f3",
+    "stab/f#3",
+    "stab/g3",
+    "stab/g#3",
+    "stab/a3",
+    "stab/a#3",
+    "stab/b3",
+    "stab/c4",
+    "stab/c#4",
+    "stab/d4",
+    "stab/d#4",
+    "stab/e4",
+    "stab/f4",
+    "stab/f#4",
+    "stab/g4",
+    "stab/g#4",
+    "stab/a4",], 3, "#FFFF00", MeasureCategory.Melody);
+const darkKick = new Instrument('dark_kick', ["dark_kick/1"], null, "#380B3F", MeasureCategory.Rhythm);
 class SampleSet {
-    static async loadSample(index) {
-        const path = SampleSet.samplePaths[index];
+    static async loadSample(instrument, sample) {
+        const path = sample;
         const response = await fetch('samples/' + path.replace("#", "%23") + '.wav');
         const arrayBuffer = await response.arrayBuffer();
         const decodedAudio = await audioContext.decodeAudioData(arrayBuffer);
         SampleSet.samples.set(path, {
-            index,
+            index: 1,
             path,
-            color: SampleSet.sampleColors[index],
+            color: instrument.color,
             buffer: decodedAudio
         });
     }
     static async loadSamples() {
-        const promises = new Array(SampleSet.samplePaths.length);
-        for (let i = 0; i < SampleSet.samplePaths.length; i++)
-            promises[i] = SampleSet.loadSample(i);
-        await Promise.all(promises);
+        await Promise.all(SampleSet.instruments.map((instrument) => {
+            instrument.samples.map((sample) => SampleSet.loadSample(instrument, sample));
+        }));
     }
     static getSample(name) {
         return SampleSet.samples.get(name);
     }
 }
-SampleSet.instruments = [bass, piano, sax, ride, kick, snare];
-SampleSet.samplePaths = SampleSet.instruments.reduce((accumulator, instrument) => {
-    return accumulator.concat(instrument.samples);
-}, []);
-SampleSet.sampleColors = [];
+SampleSet.instruments = [
+    bass,
+    piano,
+    sax,
+    ride,
+    kick,
+    snare,
+    accordion,
+    shaker,
+    triangle,
+    xylo,
+    zabumba,
+    tamborim,
+    caixa,
+    surdo1,
+    surdo2,
+    surdo3,
+    ganza,
+    stab,
+    darkKick
+];
 SampleSet.samples = new Map();
 class Player {
     constructor() {
@@ -1305,7 +1371,7 @@ class Visualizer {
             }
             const y = canvasHeight - (canvasHeight * (sample.time - currentTime) / 4);
             context.fillStyle = sample.sample.color;
-            context.fillRect(sample.sample.index * 14, y - 28, 14, 28);
+            context.fillRect(i * 14, y - 28, 14, 28);
         }
     }
     playSample(sample, time) {

@@ -29,23 +29,6 @@ enum ScaleDegree {
 	Silence = 0,
 }
 
-// Enum para representar as notas musicais
-enum Note {
-	A = 'A',
-	B = 'B',
-	C = 'C',
-	D = 'D',
-	E = 'E',
-	F = 'F',
-	G = 'G',
-}
-
-
-class Instrumento {
-	centerOctave?: number;
-	notes: Sample[];
-}
-
 interface Sample {
 	index: number;
 	path: string;

@@ -28,6 +28,6 @@ const sax: Instrument =
             "sax/a#5",
             "sax/b5",
             "sax/c6",],
-        3,
+        4,
         "#FFFF00",
         MeasureCategory.Melody)

@@ -1,6 +1,6 @@
 const kick: Instrument =
     new Instrument('kick',
         ["kick/1"],
-        3,
+        null,
         "#FFFF00",
         MeasureCategory.Rhythm)

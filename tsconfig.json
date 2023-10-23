@@ -17,6 +17,7 @@
 		"ts/styles/jazz.ts",
 		"ts/styles/samba.ts",
 		"ts/styles/funk.ts",
+
 		"ts/instrument.ts",
 		"ts/instruments/bass.ts",
 		"ts/instruments/piano.ts",
@@ -24,6 +25,22 @@
 		"ts/instruments/ride.ts",
 		"ts/instruments/kick.ts",
 		"ts/instruments/snare.ts",
+		"ts/instruments/accordion.ts",
+		"ts/instruments/shaker.ts",
+		"ts/instruments/triangle.ts",
+		"ts/instruments/xylo.ts",
+		"ts/instruments/zabumba.ts",
+
+		"ts/instruments/tamborim.ts",
+		"ts/instruments/caixa.ts",
+		"ts/instruments/surdo1.ts",
+		"ts/instruments/surdo2.ts",
+		"ts/instruments/surdo3.ts",
+		"ts/instruments/ganza.ts",
+
+		"ts/instruments/stab.ts",
+		"ts/instruments/dark-kick.ts",
+
 		"ts/sampleSet.ts",
 		"ts/player.ts",
 		"ts/app.ts",

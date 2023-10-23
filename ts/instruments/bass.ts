@@ -26,5 +26,5 @@ const bass: Instrument =
             "bass/g#4",
             "bass/a4"],
         3,
-        "#FFFF00",
+        "#2E149A",
         MeasureCategory.Harmony)
