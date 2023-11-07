@@ -1,6 +1,7 @@
 interface VisualizerSample {
 	sample: Sample,
-	time: number
+	time: number,
+	xIndex: number
 }
 
 class Visualizer {
@@ -10,6 +11,7 @@ class Visualizer {
 	private canvasWidth: number;
 	private canvasHeight: number;
 	private boundUpdateDisplay: any;
+	private maxInstrumentCount: number;
 
 	public constructor() {
 		this.samples = [];
@@ -23,6 +25,7 @@ class Visualizer {
 		this.canvas.style.height = "400px";
 		this.context = this.canvas.getContext("2d", { alpha: false }) as CanvasRenderingContext2D;
 		this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+		this.maxInstrumentCount = 1;
 
 		this.boundUpdateDisplay = this.updateDisplay.bind(this);
 
@@ -57,14 +60,19 @@ class Visualizer {
 
 			const y = canvasHeight - (canvasHeight * (sample.time - currentTime) / 4);
 			context.fillStyle = sample.sample.color;
-			context.fillRect(sample.sample.index * 14, y - 28, 14, 28);
+			//context.fillRect(sample.xIndex * 14, y - 28, 14, 28);
+			context.fillRect(14 + (canvasWidth - 28) * (sample.xIndex / this.maxInstrumentCount), y - 28, 14, 28);
 		}
 	}
 
-	public playSample(sample: Sample, time: number): void {
+	public playSample(sample: Sample, time: number, xIndex: number, maxInstrumentCount: number): void {
+		if (this.maxInstrumentCount < maxInstrumentCount)
+			this.maxInstrumentCount = maxInstrumentCount;
+
 		this.samples.push({
 			sample,
-			time
+			time,
+			xIndex
 		});
 	}
 }

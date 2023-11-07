@@ -1,9 +1,11 @@
 class Player {
 	private nextTime: number;
+	private samplePosition: Map<number, number>;
 	public visualizer: Visualizer | null;
 
 	public constructor() {
 		this.nextTime = -1;
+		this.samplePosition = new Map<number, number>();
 		this.visualizer = null;
 	}
 
@@ -14,8 +16,14 @@ class Player {
 		gainNode.connect(audioContext.destination);
 		source.start(time);
 
-		if (this.visualizer)
-			this.visualizer.playSample(sample, time);
+		if (this.visualizer) {
+			let xIndex = this.samplePosition.get(sample.index);
+			if (xIndex === undefined) {
+				xIndex = this.samplePosition.size;
+				this.samplePosition.set(sample.index, xIndex);
+			}
+			this.visualizer.playSample(sample, time, xIndex, this.samplePosition.size);
+		}
 	}
 
 	public playSection(section: Section): void {

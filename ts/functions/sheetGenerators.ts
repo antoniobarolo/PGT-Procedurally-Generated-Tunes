@@ -1,7 +1,3 @@
-function roll(size: number): number {
-    return Math.floor(Math.random() * size) + 1;
-}
-
 function randomNotes(measureLength: number) {
     let sheet: number[] = []
     for (let n = 0; n < measureLength; n++) {
@@ -11,8 +7,8 @@ function randomNotes(measureLength: number) {
 }
 
 //samba:
-function generateSectionRhythm() {
-    const progressionCount = 2 ** roll(3);
+function generateSectionRhythm(progressionCount?: number) {
+    progressionCount ?? 2 ** roll(3);
     let progressions: string[] = []
     let baseProgression = generateProgressionRhythm(progressions);
     for (let i = 0; i < progressionCount; i++) {
@@ -29,13 +25,13 @@ function generateProgressionRhythm(progressions: string[]) {
     let measures: string[] = []
     for (let m = 0; m < measureCount; m++) {
         progressions ?
-            measures.push(generateMeasureRhythm())
+            measures.push(generateMeasureRhythm(8) as string)
             : measures.push(alterMeasureRhythm())
     }
     return measures.join()
 }
 
-function generateMeasureRhythm() {
+function generateMeasureRhythm(measureLength: number): Sheet {
     if (roll(2) > 1) {
         //pickRandomMeasure()
     }
@@ -45,8 +41,12 @@ function generateMeasureRhythm() {
     //for i in Instrument
     //for n in timeSignature
     //n = 1 | 0
-
-    return "a"
+    let measure = ''
+    for (let index = 0; index < measureLength; index++) {
+        roll(2) > 1 ? measure += ' - ' :
+            measure += ` ${roll(4)} `
+    }
+    return measure
 }
 
 function alterMeasureRhythm() {
@@ -58,3 +58,16 @@ function alterProgressionRhythm(progression: string) { return progression }
 function setNewBaseProgression(progressions: string[]) {
     generateProgressionRhythm(progressions)
 }
+
+function generateChordNotesForMelody(chord: number) {
+    return Math.abs(chord) + roll(3) * 2
+}
+
+//TODO
+//se for pra fazer as funcoes que tao no texto tem que refazer a estrutura da sheets pra uma visao global a partir da section
+//  linear pattern: graus conjuntos entre notas de acorde
+//  gap fill: salto e dps preenchimento
+//  axial melodies: cobrinha
+// ou seja, generateSection tem que ir pro style
+//samples do funk
+//como nao vai ter linguagens formais ja podia fazer a funcao song que concatena tudo numa ordem especifica

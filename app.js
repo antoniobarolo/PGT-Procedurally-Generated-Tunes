@@ -32,19 +32,6 @@ var ScaleDegree;
     ScaleDegree[ScaleDegree["Seventh"] = 7] = "Seventh";
     ScaleDegree[ScaleDegree["Silence"] = 0] = "Silence";
 })(ScaleDegree || (ScaleDegree = {}));
-// Enum para representar as notas musicais
-var Note;
-(function (Note) {
-    Note["A"] = "A";
-    Note["B"] = "B";
-    Note["C"] = "C";
-    Note["D"] = "D";
-    Note["E"] = "E";
-    Note["F"] = "F";
-    Note["G"] = "G";
-})(Note || (Note = {}));
-class Instrument {
-}
 var NoteNumber;
 (function (NoteNumber) {
     NoteNumber[NoteNumber["A"] = 0] = "A";
@@ -64,15 +51,7 @@ const noteNames = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G
 const Minor = [0, 2, 3, 5, 7, 8, 10];
 const Dorian = [0, 2, 3, 5, 7, 9, 10];
 const Major = [0, 2, 4, 5, 7, 9, 11];
-const ExampleInstrument = {
-    centerOctave: 4,
-    samples: ['C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
-        'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
-        'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5',
-        'C6']
-};
-const exampleSheet = [1, -7, 1, 3, 1, 0, 8, 0];
-function parseNumbers(sheet, Instrument, scale, rootNote) {
+function parseNumbers(sheet, instrument, scale, rootNote) {
     sheet = sheet.map((note) => {
         if (note == 0)
             return undefined;
@@ -99,11 +78,19 @@ function parseNumbers(sheet, Instrument, scale, rootNote) {
             noteNumber = noteNumber - noteNames.length;
             octaveShift++;
         }
-        return noteNames[noteNumber] + (Instrument.centerOctave + octaveShift);
+        return noteNames[noteNumber] + (instrument.centerOctave + octaveShift);
     });
     return parsedSheet.join(" ");
 }
-const parsedSheet = parseNumbers(exampleSheet, ExampleInstrument, Minor, 0);
+// const ExampleInstrument = {
+// 	centerOctave: 4,
+// 	samples: ['C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
+// 		'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
+// 		'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5',
+// 		'C6']
+// }
+// const exampleSheet = [1, -7, 1, 3, 1, 0, 8, 0];
+//const parsedSheet = parseNumbers(exampleSheet, ExampleInstrument, Minor, 0)
 class Section {
     constructor(type, progressions, bpm, noteDuration) {
         this.bpm = bpm;
@@ -307,6 +294,71 @@ class Style {
         return new Section(sectionType, progressions, bpm || this.defaultBpm, noteDuration || this.defaultNoteDuration);
     }
 }
+function randomNotes(measureLength) {
+    let sheet = [];
+    for (let n = 0; n < measureLength; n++) {
+        sheet.push(roll(9) - 1);
+    }
+    return sheet;
+}
+//samba:
+function generateSectionRhythm(progressionCount) {
+    progressionCount !== null && progressionCount !== void 0 ? progressionCount : 2 ** roll(3);
+    let progressions = [];
+    let baseProgression = generateProgressionRhythm(progressions);
+    for (let i = 0; i < progressionCount; i++) {
+        progressions.push(baseProgression);
+    }
+    for (let p in progressions) {
+        p = alterProgressionRhythm(p);
+        roll(2) > 1 ? setNewBaseProgression(progressions) : null;
+    }
+}
+function generateProgressionRhythm(progressions) {
+    const measureCount = 2 ** roll(3);
+    let measures = [];
+    for (let m = 0; m < measureCount; m++) {
+        progressions ?
+            measures.push(generateMeasureRhythm(8))
+            : measures.push(alterMeasureRhythm());
+    }
+    return measures.join();
+}
+function generateMeasureRhythm(measureLength) {
+    if (roll(2) > 1) {
+        //pickRandomMeasure()
+    }
+    if (roll(2) > 1) {
+        //alterRandomMeasure()
+    }
+    //for i in Instrument
+    //for n in timeSignature
+    //n = 1 | 0
+    let measure = '';
+    for (let index = 0; index < measureLength; index++) {
+        roll(2) > 1 ? measure += ' - ' :
+            measure += ` ${roll(4)} `;
+    }
+    return measure;
+}
+function alterMeasureRhythm() {
+    return "a";
+}
+function alterProgressionRhythm(progression) { return progression; }
+function setNewBaseProgression(progressions) {
+    generateProgressionRhythm(progressions);
+}
+function generateChordNotesForMelody(chord) {
+    return Math.abs(chord) + roll(3) * 2;
+}
+//TODO
+//se for pra fazer as funcoes que tao no texto tem que refazer a estrutura da sheets pra uma visao global a partir da section
+//  linear pattern: graus conjuntos entre notas de acorde
+//  gap fill: salto e dps preenchimento
+//  axial melodies: cobrinha
+// ou seja, generateSection tem que ir pro style
+//samples do funk
+//como nao vai ter linguagens formais ja podia fazer a funcao song que concatena tudo numa ordem especifica
 class Forro extends Style {
     constructor() {
         super(StyleName.Forro, 115, 4 / 16);
@@ -817,25 +869,10 @@ class Jazz extends Style {
                         sax: '- - - - - g4'
                     },
                 ];
-            case SectionType.Ponte:
-                function randomNotes() {
-                    let sheet = [];
-                    for (let note = 0; note < 6; note++) {
-                        sheet.push(roll(9) - 1);
-                    }
-                    return sheet;
-                }
-                const ExInstrument = {
-                    centerOctave: 4,
-                    samples: ['C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
-                        'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
-                        'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5',
-                        'C6']
-                };
-                const Minor = [0, 2, 3, 5, 7, 8, 10];
+            case SectionType.Verso:
                 return [
                     {
-                        sax: parseNumbers(randomNotes(), ExInstrument, Minor, 0)
+                        sax: parseNumbers(randomNotes(6), sax, Minor, 0)
                     }
                 ];
             default:
@@ -860,6 +897,12 @@ class Samba extends Style {
     generateHarmony(sectionType) {
         switch (sectionType) {
             case SectionType.Intro:
+                return [
+                    {
+                        bass: '-'
+                    },
+                ];
+            case SectionType.Verso:
                 return [
                     {
                         bass: '-'
@@ -923,14 +966,40 @@ class Samba extends Style {
                         surdo3: '1 - - 1 - - 1 - - - 1 - 1 3 2 1',
                     }
                 ];
+            case SectionType.Verso:
+                return [{
+                        tamborim: generateMeasureRhythm(16),
+                        ganza: generateMeasureRhythm(16),
+                        caixa: generateMeasureRhythm(16),
+                        surdo1: generateMeasureRhythm(16),
+                        surdo2: generateMeasureRhythm(16),
+                        surdo3: generateMeasureRhythm(16)
+                    },
+                    {
+                        tamborim: generateMeasureRhythm(4) + ' - - - - ' + generateMeasureRhythm(8),
+                        ganza: '- - - - ' + generateMeasureRhythm(12),
+                        caixa: '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16',
+                        surdo1: '1 - - 1 - - 1 - - - 1 - 1 - - -',
+                        surdo2: '1 - - 1 - - 1 - - - 1 - 1 - - -',
+                        surdo3: generateMeasureRhythm(16)
+                    },
+                    {
+                        surdo1: generateMeasureRhythm(16),
+                        surdo2: generateMeasureRhythm(16),
+                        surdo3: generateMeasureRhythm(16)
+                    },
+                    {
+                        tamborim: generateMeasureRhythm(32),
+                    },
+                ];
             default:
                 return [
                     {
-                        tamborim: '1 - 2 - 3 - 4',
-                        ganza: '1 - 2 - 3 - 4',
-                        caixa: '1 - 2 - 3 - 4',
-                        surdo1: '1 - - -',
-                        surdo2: '- - 1 -',
+                        tamborim: '1 - 2 - 3 - 4 - ',
+                        ganza: '1 - 2 - 3 - 4 - ',
+                        caixa: '1 - 2 - 3 - 4 - ',
+                        surdo1: '1 - - - 1 - - -',
+                        surdo2: '- - 1 - - - 1 -',
                     },
                 ];
         }
@@ -938,6 +1007,10 @@ class Samba extends Style {
     generateMelody(sectionType) {
         switch (sectionType) {
             case SectionType.Intro:
+                return [{
+                        stab: '-'
+                    }];
+            case SectionType.Verso:
                 return [{
                         stab: '-'
                     }];
@@ -1033,72 +1106,41 @@ class Funk extends Style {
         return 4;
     }
 }
-// interface Sample {
-// 	index: number;
-// 	path: string;
-// 	color: string;
-// 	buffer: AudioBuffer;
-// }
-class SampleSet {
-    static async loadSample(index) {
-        const path = SampleSet.samplePaths[index];
-        const response = await fetch('samples/' + path.replace("#", "%23") + '.wav');
-        const arrayBuffer = await response.arrayBuffer();
-        const decodedAudio = await audioContext.decodeAudioData(arrayBuffer);
-        SampleSet.samples.set(path, {
-            index,
-            path,
-            color: SampleSet.sampleColors[index],
-            buffer: decodedAudio
-        });
-    }
-    static async loadSamples() {
-        const promises = new Array(SampleSet.samplePaths.length);
-        for (let i = 0; i < SampleSet.samplePaths.length; i++)
-            promises[i] = SampleSet.loadSample(i);
-        await Promise.all(promises);
-    }
-    static getSample(name) {
-        return SampleSet.samples.get(name);
+class Instrument {
+    constructor(path, samples, centerOctave, color, role) {
+        this.path = path;
+        this.samples = samples;
+        this.centerOctave = centerOctave;
+        this.color = color;
+        this.role = role;
     }
 }
-SampleSet.samplePaths = [
-    //accordion
-    "accordion/a3",
-    "accordion/a#3",
-    "accordion/b3",
-    "accordion/c4",
-    "accordion/c#4",
-    "accordion/d4",
-    "accordion/d#4",
-    "accordion/e4",
-    "accordion/f4",
-    "accordion/f#4",
-    "accordion/g4",
-    "accordion/g#4",
-    "accordion/a4",
-    "accordion/a#4",
-    "accordion/b4",
-    "accordion/c5",
-    "accordion/c#5",
-    "accordion/d5",
-    "accordion/d#5",
-    "accordion/e5",
-    "accordion/f5",
-    "accordion/f#5",
-    "accordion/g5",
-    "accordion/g#5",
-    "accordion/a5",
-    // "funkybass_a2", "funkybass_a3", "funkybass_a4", "funkybass_b2", "funkybass_b3", "funkybass_c3", "funkybass_c4", "funkybass_d3", "funkybass_d4", "funkybass_e3", "funkybass_e4", "funkybass_f3", "funkybass_f4", "funkybass_g3", "funkybass_g4",
-    //percussion
-    "ride/3", "hihat/1", "kick/1", "snare/1", "snare/2", "snare/3", "snare/4", "snare/5",
-    "shaker/1", "shaker/2", "shaker/3", "shaker/4", "shaker/5",
-    "triangle/1", "triangle/2", "triangle/3", "triangle/4",
-    "xylo/a4", "xylo/a5", "xylo/b4", "xylo/c4", "xylo/c5", "xylo/d4", "xylo/d5", "xylo/e4", "xylo/e5", "xylo/f4", "xylo/f5", "xylo/g4", "xylo/g5",
-    "zabumba/k1", "zabumba/k2", "zabumba/s",
-    //piano
-    //bass
-    "piano/a2",
+const bass = new Instrument('bass', ["bass/a2",
+    "bass/a#2",
+    "bass/b2",
+    "bass/c3",
+    "bass/c#3",
+    "bass/d3",
+    "bass/d#3",
+    "bass/e3",
+    "bass/f3",
+    "bass/f#3",
+    "bass/g3",
+    "bass/g#3",
+    "bass/a3",
+    "bass/a#3",
+    "bass/b3",
+    "bass/c4",
+    "bass/c#4",
+    "bass/d4",
+    "bass/d#4",
+    "bass/e4",
+    "bass/f4",
+    "bass/f#4",
+    "bass/g4",
+    "bass/g#4",
+    "bass/a4"], 3, "#2E149A", MeasureCategory.Harmony);
+const piano = new Instrument('piano', ["piano/a2",
     "piano/a#2",
     "piano/b2",
     "piano/c3",
@@ -1146,9 +1188,8 @@ SampleSet.samplePaths = [
     "piano/f#6",
     "piano/g6",
     "piano/g#6",
-    "piano/a6",
-    //sax
-    "sax/a3",
+    "piano/a6",], 3, "#596ABD", MeasureCategory.Harmony);
+const sax = new Instrument('sax', ["sax/a3",
     "sax/a#3",
     "sax/b3",
     "sax/c4",
@@ -1175,42 +1216,53 @@ SampleSet.samplePaths = [
     "sax/a5",
     "sax/a#5",
     "sax/b5",
-    "sax/c6",
-    //samba
-    "tamborim/1", "tamborim/2", "tamborim/3", "tamborim/4",
-    "surdo1/1", "surdo1/2", "surdo1/3", "surdo1/4",
-    "surdo2/1", "surdo2/2", "surdo2/3", "surdo2/4",
-    "surdo3/1", "surdo3/2", "surdo3/3", "surdo3/4",
-    "ganza/1", "ganza/2", "ganza/3", "ganza/4",
-    "caixa/1", "caixa/2", "caixa/3", "caixa/4", "caixa/5", "caixa/6", "caixa/7", "caixa/8", "caixa/9", "caixa/10", "caixa/11", "caixa/12", "caixa/13", "caixa/14", "caixa/15", "caixa/16",
-    //bass
-    "bass/a2",
-    "bass/a#2",
-    "bass/b2",
-    "bass/c3",
-    "bass/c#3",
-    "bass/d3",
-    "bass/d#3",
-    "bass/e3",
-    "bass/f3",
-    "bass/f#3",
-    "bass/g3",
-    "bass/g#3",
-    "bass/a3",
-    "bass/a#3",
-    "bass/b3",
-    "bass/c4",
-    "bass/c#4",
-    "bass/d4",
-    "bass/d#4",
-    "bass/e4",
-    "bass/f4",
-    "bass/f#4",
-    "bass/g4",
-    "bass/g#4",
-    "bass/a4",
-    //funk stab
-    "stab/a2",
+    "sax/c6",], 4, "#CEC54A", MeasureCategory.Melody);
+const ride = new Instrument('ride', ["ride/3"], null, "#BD844B", MeasureCategory.Rhythm);
+const kick = new Instrument('kick', ["kick/1"], null, "#403420", MeasureCategory.Rhythm);
+const snare = new Instrument('snare', ["snare/1",
+    "snare/2",
+    "snare/3",
+    "snare/4",
+    "snare/5"], null, "#D58548", MeasureCategory.Rhythm);
+const accordion = new Instrument('accordion', ["accordion/a3",
+    "accordion/a#3",
+    "accordion/b3",
+    "accordion/c4",
+    "accordion/c#4",
+    "accordion/d4",
+    "accordion/d#4",
+    "accordion/e4",
+    "accordion/f4",
+    "accordion/f#4",
+    "accordion/g4",
+    "accordion/g#4",
+    "accordion/a4",
+    "accordion/a#4",
+    "accordion/b4",
+    "accordion/c5",
+    "accordion/c#5",
+    "accordion/d5",
+    "accordion/d#5",
+    "accordion/e5",
+    "accordion/f5",
+    "accordion/f#5",
+    "accordion/g5",
+    "accordion/g#5",
+    "accordion/a5",], 4, "#8B331D", MeasureCategory.Melody);
+const shaker = new Instrument('shaker', ["shaker/1", "shaker/2", "shaker/3", "shaker/4", "shaker/5",], null, "#77A176", MeasureCategory.Rhythm);
+const triangle = new Instrument('triangle', ["triangle/1", "triangle/2", "triangle/3", "triangle/4",], null, "#C0BEB0", MeasureCategory.Rhythm);
+const xylo = new Instrument('xylo', ["xylo/a4", "xylo/a5", "xylo/b4", "xylo/c4", "xylo/c5", "xylo/d4", "xylo/d5", "xylo/e4", "xylo/e5", "xylo/f4", "xylo/f5", "xylo/g4", "xylo/g5"], null, "#BA8DC3", MeasureCategory.Rhythm);
+const zabumba = new Instrument('zabumba', ["zabumba/k1", "zabumba/k2", "zabumba/s"], null, "#4B451F", MeasureCategory.Melody);
+const tamborim = new Instrument('tamborim', ["tamborim/1", "tamborim/2", "tamborim/3", "tamborim/4",], null, "#8ED3DB", MeasureCategory.Rhythm);
+const caixa = new Instrument('shaker', ["caixa/1", "caixa/2", "caixa/3", "caixa/4",
+    "caixa/5", "caixa/6", "caixa/7", "caixa/8",
+    "caixa/9", "caixa/10", "caixa/11", "caixa/12",
+    "caixa/13", "caixa/14", "caixa/15", "caixa/16",], null, "#E49885", MeasureCategory.Rhythm);
+const surdo1 = new Instrument('surdo1', ["surdo1/1", "surdo1/2", "surdo1/3", "surdo1/4"], null, "#384436", MeasureCategory.Rhythm);
+const surdo2 = new Instrument('surdo2', ["surdo2/1", "surdo2/2", "surdo2/3", "surdo2/4"], null, "#395447", MeasureCategory.Rhythm);
+const surdo3 = new Instrument('surdo3', ["surdo3/1", "surdo3/2", "surdo3/3", "surdo3/4"], null, "#41686C", MeasureCategory.Rhythm);
+const ganza = new Instrument('shaker', ["ganza/1", "ganza/2", "ganza/3", "ganza/4",], null, "#C4C68A", MeasureCategory.Rhythm);
+const stab = new Instrument('stab', ["stab/a2",
     "stab/a#2",
     "stab/b2",
     "stab/c3",
@@ -1234,34 +1286,56 @@ SampleSet.samplePaths = [
     "stab/f#4",
     "stab/g4",
     "stab/g#4",
-    "stab/a4",
-    "dark_kick/1"
-];
-SampleSet.sampleColors = ["#FFFF00", "#FFFA00", "#FFF400", "#FFEF00", "#FFEA00", "#FFE500", "#FFE000", "#FFDB00", "#FFD600", "#FFD100", "#FFCC00", "#FFC700", "#FFC200", "#FFBD00", "#FFB800", "#FFB300", "#FFAE00", "#FFA900", "#FFA400", "#FF9F00", "#FF9A00", "#FF9500",
-    "#191970", "#22227A", "#2B2B84", "#34348E", "#3D3D98", "#4646A2", "#4F4FAC", "#5858B6", "#6161C0", "#6A6ACA", "#7373D4", "#7C7CDE", "#8585E8", "#8E8EF2", "#9797FC",
-    //percussion
-    "D7C385", "#0ff", "#00f", "#f0f", "884C4C", "884C4C", "884C4C", "884C4C",
-    //shaker
-    "#E5CBA7", "#D9B08A", "#CC956E", "#BF7A51", "#B25F35",
-    "#C0C0C0", "#C9C9C9", "#D2D2D2", "#DBDBDB",
-    "#ADFF2F", "#B5FF2C", "#BEFF29", "#C6FF26", "#CEFF23", "#D7FF20", "#DFFF1D", "#E7FF1A", "#F0FF17", "#F8FF14", "#FFFF11", "#FFFF0E", "#FFFF0B",
-    "#8B4513", "#A0522D", "#CD853F",
-    //piano
-    "#281E39", "#36244D", "#442B60", "#513176", "#5F388B", "#6D3FA0", "#7B46B4",
-    "#895DAB", "#9764BF", "#A66AD3", "#B471E8", "#C379FC", "#D081F7", "#DE88EB",
-    "#EC8FF0", "#F997E5", "#FF9EE0", "#FFA5DA", "#FFACD5", "#FFB3D0", "#FFBADB",
-    "#FFC2D6", "#FFC9D0", "#FFD0CB", "#FFD7C6", "#FFE0C4", "#FFE9C3", "#FFF2C2",
-    "#FFFBC1", "#FFFDB6",
-    //sax
-    "#CD7F32", "#C88C3E", "#C29A4B", "#BDA758", "#B8B465", "#AFC173", "#AACF80", "#A5DC8C",
-    "#9FE999", "#9AF6A6", "#95FFB3", "#90FFC0", "#8BFFCD", "#85FFDA", "#80FFE6", "#7BFFF3",
-    "#76FFFD", "#82FFFD", "#8EFFFD", "#9BFFFE", "#A7FFFE", "#B3FFFE", "#C0FFFF", "#CCFFFF",
-    "#D9FFFF"
+    "stab/a4",], 3, "#943966", MeasureCategory.Melody);
+const darkKick = new Instrument('dark_kick', ["dark_kick/1"], null, "#380B3F", MeasureCategory.Rhythm);
+class SampleSet {
+    static async loadSample(instrument, sample) {
+        const path = sample;
+        const response = await fetch('samples/' + path.replace("#", "%23") + '.wav');
+        const arrayBuffer = await response.arrayBuffer();
+        const decodedAudio = await audioContext.decodeAudioData(arrayBuffer);
+        SampleSet.samples.set(path, {
+            index: SampleSet.samples.size,
+            path,
+            color: instrument.color,
+            buffer: decodedAudio
+        });
+    }
+    static async loadSamples() {
+        await Promise.all(SampleSet.instruments.map((instrument) => {
+            instrument.samples.map((sample) => SampleSet.loadSample(instrument, sample));
+        }));
+    }
+    static getSample(name) {
+        return SampleSet.samples.get(name);
+    }
+}
+SampleSet.instruments = [
+    bass,
+    piano,
+    sax,
+    ride,
+    kick,
+    snare,
+    accordion,
+    shaker,
+    triangle,
+    xylo,
+    zabumba,
+    tamborim,
+    caixa,
+    surdo1,
+    surdo2,
+    surdo3,
+    ganza,
+    stab,
+    darkKick
 ];
 SampleSet.samples = new Map();
 class Player {
     constructor() {
         this.nextTime = -1;
+        this.samplePosition = new Map();
         this.visualizer = null;
     }
     playSample(sample, time) {
@@ -1270,8 +1344,14 @@ class Player {
         source.connect(gainNode);
         gainNode.connect(audioContext.destination);
         source.start(time);
-        if (this.visualizer)
-            this.visualizer.playSample(sample, time);
+        if (this.visualizer) {
+            let xIndex = this.samplePosition.get(sample.index);
+            if (xIndex === undefined) {
+                xIndex = this.samplePosition.size;
+                this.samplePosition.set(sample.index, xIndex);
+            }
+            this.visualizer.playSample(sample, time, xIndex, this.samplePosition.size);
+        }
     }
     playSection(section) {
         const currentTime = audioContext.currentTime;
@@ -1360,6 +1440,7 @@ class Visualizer {
         this.canvas.style.height = "400px";
         this.context = this.canvas.getContext("2d", { alpha: false });
         this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+        this.maxInstrumentCount = 1;
         this.boundUpdateDisplay = this.updateDisplay.bind(this);
         requestAnimationFrame(this.boundUpdateDisplay);
     }
@@ -1384,13 +1465,17 @@ class Visualizer {
             }
             const y = canvasHeight - (canvasHeight * (sample.time - currentTime) / 4);
             context.fillStyle = sample.sample.color;
-            context.fillRect(sample.sample.index * 14, y - 28, 14, 28);
+            //context.fillRect(sample.xIndex * 14, y - 28, 14, 28);
+            context.fillRect(14 + (canvasWidth - 28) * (sample.xIndex / this.maxInstrumentCount), y - 28, 14, 28);
         }
     }
-    playSample(sample, time) {
+    playSample(sample, time, xIndex, maxInstrumentCount) {
+        if (this.maxInstrumentCount < maxInstrumentCount)
+            this.maxInstrumentCount = maxInstrumentCount;
         this.samples.push({
             sample,
-            time
+            time,
+            xIndex
         });
     }
 }
