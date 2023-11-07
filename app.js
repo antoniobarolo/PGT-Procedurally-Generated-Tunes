@@ -51,15 +51,7 @@ const noteNames = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G
 const Minor = [0, 2, 3, 5, 7, 8, 10];
 const Dorian = [0, 2, 3, 5, 7, 9, 10];
 const Major = [0, 2, 4, 5, 7, 9, 11];
-const ExampleInstrument = {
-    centerOctave: 4,
-    samples: ['C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
-        'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
-        'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5',
-        'C6']
-};
-const exampleSheet = [1, -7, 1, 3, 1, 0, 8, 0];
-function parseNumbers(sheet, Instrument, scale, rootNote) {
+function parseNumbers(sheet, instrument, scale, rootNote) {
     sheet = sheet.map((note) => {
         if (note == 0)
             return undefined;
@@ -86,11 +78,19 @@ function parseNumbers(sheet, Instrument, scale, rootNote) {
             noteNumber = noteNumber - noteNames.length;
             octaveShift++;
         }
-        return noteNames[noteNumber] + (Instrument.centerOctave + octaveShift);
+        return noteNames[noteNumber] + (instrument.centerOctave + octaveShift);
     });
     return parsedSheet.join(" ");
 }
-const parsedSheet = parseNumbers(exampleSheet, ExampleInstrument, Minor, 0);
+// const ExampleInstrument = {
+// 	centerOctave: 4,
+// 	samples: ['C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
+// 		'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
+// 		'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5',
+// 		'C6']
+// }
+// const exampleSheet = [1, -7, 1, 3, 1, 0, 8, 0];
+//const parsedSheet = parseNumbers(exampleSheet, ExampleInstrument, Minor, 0)
 class Section {
     constructor(type, progressions, bpm, noteDuration) {
         this.bpm = bpm;
@@ -294,6 +294,71 @@ class Style {
         return new Section(sectionType, progressions, bpm || this.defaultBpm, noteDuration || this.defaultNoteDuration);
     }
 }
+function randomNotes(measureLength) {
+    let sheet = [];
+    for (let n = 0; n < measureLength; n++) {
+        sheet.push(roll(9) - 1);
+    }
+    return sheet;
+}
+//samba:
+function generateSectionRhythm(progressionCount) {
+    progressionCount !== null && progressionCount !== void 0 ? progressionCount : 2 ** roll(3);
+    let progressions = [];
+    let baseProgression = generateProgressionRhythm(progressions);
+    for (let i = 0; i < progressionCount; i++) {
+        progressions.push(baseProgression);
+    }
+    for (let p in progressions) {
+        p = alterProgressionRhythm(p);
+        roll(2) > 1 ? setNewBaseProgression(progressions) : null;
+    }
+}
+function generateProgressionRhythm(progressions) {
+    const measureCount = 2 ** roll(3);
+    let measures = [];
+    for (let m = 0; m < measureCount; m++) {
+        progressions ?
+            measures.push(generateMeasureRhythm(8))
+            : measures.push(alterMeasureRhythm());
+    }
+    return measures.join();
+}
+function generateMeasureRhythm(measureLength) {
+    if (roll(2) > 1) {
+        //pickRandomMeasure()
+    }
+    if (roll(2) > 1) {
+        //alterRandomMeasure()
+    }
+    //for i in Instrument
+    //for n in timeSignature
+    //n = 1 | 0
+    let measure = '';
+    for (let index = 0; index < measureLength; index++) {
+        roll(2) > 1 ? measure += ' - ' :
+            measure += ` ${roll(4)} `;
+    }
+    return measure;
+}
+function alterMeasureRhythm() {
+    return "a";
+}
+function alterProgressionRhythm(progression) { return progression; }
+function setNewBaseProgression(progressions) {
+    generateProgressionRhythm(progressions);
+}
+function generateChordNotesForMelody(chord) {
+    return Math.abs(chord) + roll(3) * 2;
+}
+//TODO
+//se for pra fazer as funcoes que tao no texto tem que refazer a estrutura da sheets pra uma visao global a partir da section
+//  linear pattern: graus conjuntos entre notas de acorde
+//  gap fill: salto e dps preenchimento
+//  axial melodies: cobrinha
+// ou seja, generateSection tem que ir pro style
+//samples do funk
+//como nao vai ter linguagens formais ja podia fazer a funcao song que concatena tudo numa ordem especifica
 class Forro extends Style {
     constructor() {
         super(StyleName.Forro, 115, 4 / 16);
@@ -804,25 +869,10 @@ class Jazz extends Style {
                         sax: '- - - - - g4'
                     },
                 ];
-            case SectionType.Ponte:
-                function randomNotes() {
-                    let sheet = [];
-                    for (let note = 0; note < 6; note++) {
-                        sheet.push(roll(9) - 1);
-                    }
-                    return sheet;
-                }
-                const ExInstrument = {
-                    centerOctave: 4,
-                    samples: ['C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
-                        'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
-                        'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5',
-                        'C6']
-                };
-                const Minor = [0, 2, 3, 5, 7, 8, 10];
+            case SectionType.Verso:
                 return [
                     {
-                        sax: parseNumbers(randomNotes(), ExInstrument, Minor, 0)
+                        sax: parseNumbers(randomNotes(6), sax, Minor, 0)
                     }
                 ];
             default:
@@ -847,6 +897,12 @@ class Samba extends Style {
     generateHarmony(sectionType) {
         switch (sectionType) {
             case SectionType.Intro:
+                return [
+                    {
+                        bass: '-'
+                    },
+                ];
+            case SectionType.Verso:
                 return [
                     {
                         bass: '-'
@@ -910,14 +966,40 @@ class Samba extends Style {
                         surdo3: '1 - - 1 - - 1 - - - 1 - 1 3 2 1',
                     }
                 ];
+            case SectionType.Verso:
+                return [{
+                        tamborim: generateMeasureRhythm(16),
+                        ganza: generateMeasureRhythm(16),
+                        caixa: generateMeasureRhythm(16),
+                        surdo1: generateMeasureRhythm(16),
+                        surdo2: generateMeasureRhythm(16),
+                        surdo3: generateMeasureRhythm(16)
+                    },
+                    {
+                        tamborim: generateMeasureRhythm(4) + ' - - - - ' + generateMeasureRhythm(8),
+                        ganza: '- - - - ' + generateMeasureRhythm(12),
+                        caixa: '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16',
+                        surdo1: '1 - - 1 - - 1 - - - 1 - 1 - - -',
+                        surdo2: '1 - - 1 - - 1 - - - 1 - 1 - - -',
+                        surdo3: generateMeasureRhythm(16)
+                    },
+                    {
+                        surdo1: generateMeasureRhythm(16),
+                        surdo2: generateMeasureRhythm(16),
+                        surdo3: generateMeasureRhythm(16)
+                    },
+                    {
+                        tamborim: generateMeasureRhythm(32),
+                    },
+                ];
             default:
                 return [
                     {
-                        tamborim: '1 - 2 - 3 - 4',
-                        ganza: '1 - 2 - 3 - 4',
-                        caixa: '1 - 2 - 3 - 4',
-                        surdo1: '1 - - -',
-                        surdo2: '- - 1 -',
+                        tamborim: '1 - 2 - 3 - 4 - ',
+                        ganza: '1 - 2 - 3 - 4 - ',
+                        caixa: '1 - 2 - 3 - 4 - ',
+                        surdo1: '1 - - - 1 - - -',
+                        surdo2: '- - 1 - - - 1 -',
                     },
                 ];
         }
@@ -925,6 +1007,10 @@ class Samba extends Style {
     generateMelody(sectionType) {
         switch (sectionType) {
             case SectionType.Intro:
+                return [{
+                        stab: '-'
+                    }];
+            case SectionType.Verso:
                 return [{
                         stab: '-'
                     }];
@@ -1209,7 +1295,7 @@ class SampleSet {
         const arrayBuffer = await response.arrayBuffer();
         const decodedAudio = await audioContext.decodeAudioData(arrayBuffer);
         SampleSet.samples.set(path, {
-            index: 1,
+            index: SampleSet.samples.size,
             path,
             color: instrument.color,
             buffer: decodedAudio
@@ -1249,6 +1335,7 @@ SampleSet.samples = new Map();
 class Player {
     constructor() {
         this.nextTime = -1;
+        this.samplePosition = new Map();
         this.visualizer = null;
     }
     playSample(sample, time) {
@@ -1257,8 +1344,14 @@ class Player {
         source.connect(gainNode);
         gainNode.connect(audioContext.destination);
         source.start(time);
-        if (this.visualizer)
-            this.visualizer.playSample(sample, time);
+        if (this.visualizer) {
+            let xIndex = this.samplePosition.get(sample.index);
+            if (xIndex === undefined) {
+                xIndex = this.samplePosition.size;
+                this.samplePosition.set(sample.index, xIndex);
+            }
+            this.visualizer.playSample(sample, time, xIndex, this.samplePosition.size);
+        }
     }
     playSection(section) {
         const currentTime = audioContext.currentTime;
@@ -1347,6 +1440,7 @@ class Visualizer {
         this.canvas.style.height = "400px";
         this.context = this.canvas.getContext("2d", { alpha: false });
         this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+        this.maxInstrumentCount = 1;
         this.boundUpdateDisplay = this.updateDisplay.bind(this);
         requestAnimationFrame(this.boundUpdateDisplay);
     }
@@ -1371,13 +1465,17 @@ class Visualizer {
             }
             const y = canvasHeight - (canvasHeight * (sample.time - currentTime) / 4);
             context.fillStyle = sample.sample.color;
-            context.fillRect(sample.sample.index * 14, y - 28, 14, 28);
+            //context.fillRect(sample.xIndex * 14, y - 28, 14, 28);
+            context.fillRect(14 + (canvasWidth - 28) * (sample.xIndex / this.maxInstrumentCount), y - 28, 14, 28);
         }
     }
-    playSample(sample, time) {
+    playSample(sample, time, xIndex, maxInstrumentCount) {
+        if (this.maxInstrumentCount < maxInstrumentCount)
+            this.maxInstrumentCount = maxInstrumentCount;
         this.samples.push({
             sample,
-            time
+            time,
+            xIndex
         });
     }
 }

@@ -27,7 +27,7 @@ class SampleSet {
 		const arrayBuffer = await response.arrayBuffer();
 		const decodedAudio = await audioContext.decodeAudioData(arrayBuffer);
 		SampleSet.samples.set(path, {
-			index: 1,
+			index: SampleSet.samples.size,
 			path,
 			color: instrument.color,
 			buffer: decodedAudio

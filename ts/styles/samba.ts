@@ -1,6 +1,6 @@
 class Samba extends Style {
 	constructor() {
-		super(StyleName.Samba, 144, 4/16);
+		super(StyleName.Samba, 144, 4 / 16);
 	}
 
 	protected generateHarmony(sectionType: SectionType): InstrumentSet[] {
@@ -11,7 +11,12 @@ class Samba extends Style {
 						bass: '-'
 					},
 				];
-
+			case SectionType.Verso:
+				return [
+					{
+						bass: '-'
+					},
+				];
 			default:
 				return [
 					{
@@ -75,17 +80,44 @@ class Samba extends Style {
 					surdo2: '1 - - 1 - - 1 - - - 1 - 1 - - -',
 					surdo3: '1 - - 1 - - 1 - - - 1 - 1 3 2 1',
 				}
-				
+
+				];
+			case SectionType.Verso:
+				return [{
+					tamborim: generateMeasureRhythm(16),
+					ganza: generateMeasureRhythm(16),
+					caixa: generateMeasureRhythm(16),
+					surdo1: generateMeasureRhythm(16),
+					surdo2: generateMeasureRhythm(16),
+					surdo3: generateMeasureRhythm(16)
+				},
+				{
+					tamborim: generateMeasureRhythm(4) + ' - - - - ' + generateMeasureRhythm(8),
+					ganza: '- - - - ' + generateMeasureRhythm(12),
+					caixa: '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16',
+					surdo1: '1 - - 1 - - 1 - - - 1 - 1 - - -',
+					surdo2: '1 - - 1 - - 1 - - - 1 - 1 - - -',
+					surdo3: generateMeasureRhythm(16)
+				},
+				{
+					surdo1: generateMeasureRhythm(16),
+					surdo2: generateMeasureRhythm(16),
+					surdo3: generateMeasureRhythm(16)
+				},
+				{
+					tamborim: generateMeasureRhythm(32),
+				},
+
 				];
 
 			default:
 				return [
 					{
-						tamborim: '1 - 2 - 3 - 4',
-						ganza: '1 - 2 - 3 - 4',
-						caixa: '1 - 2 - 3 - 4',
-						surdo1: '1 - - -',
-						surdo2: '- - 1 -',
+						tamborim: '1 - 2 - 3 - 4 - ',
+						ganza: '1 - 2 - 3 - 4 - ',
+						caixa: '1 - 2 - 3 - 4 - ',
+						surdo1: '1 - - - 1 - - -',
+						surdo2: '- - 1 - - - 1 -',
 					},
 				];
 		}
@@ -97,7 +129,10 @@ class Samba extends Style {
 				return [{
 					stab: '-'
 				}];
-
+			case SectionType.Verso:
+				return [{
+					stab: '-'
+				}];
 
 
 			default:

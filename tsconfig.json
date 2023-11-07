@@ -13,6 +13,8 @@
 		"ts/interfaces.ts",
 		"ts/section.ts",
 		"ts/style.ts",
+		"ts/functions/sheetGenerators.ts",
+
 		"ts/styles/forro.ts",
 		"ts/styles/jazz.ts",
 		"ts/styles/samba.ts",
