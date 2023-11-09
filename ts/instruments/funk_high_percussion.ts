@@ -1,0 +1,16 @@
+const funkHighPercussion: Instrument =
+    new Instrument('funk_high_percussion',
+        ["funk_high_percussion/1",
+            "funk_high_percussion/2",
+            "funk_high_percussion/3",
+            "funk_high_percussion/4",
+            "funk_high_percussion/5",
+            "funk_high_percussion/6",
+            "funk_high_percussion/7",
+            "funk_high_percussion/8",
+            "funk_high_percussion/9",
+            "funk_high_percussion/10",
+            "funk_high_percussion/11"],
+        null,
+        "#380B3F",
+        MeasureCategory.Rhythm)

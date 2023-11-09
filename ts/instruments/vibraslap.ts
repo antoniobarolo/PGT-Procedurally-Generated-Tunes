@@ -1,0 +1,17 @@
+const vibraslap: Instrument =
+    new Instrument('vibraslap',
+        ["vibraslap/1",
+            "vibraslap/2",
+            "vibraslap/3",
+            "vibraslap/4",
+            "vibraslap/5",
+            "vibraslap/6",
+            "vibraslap/7",
+            "vibraslap/8",
+            "vibraslap/9",
+            "vibraslap/10",
+            "vibraslap/11",
+            "vibraslap/12"],
+        null,
+        "#380B3F",
+        MeasureCategory.Rhythm)

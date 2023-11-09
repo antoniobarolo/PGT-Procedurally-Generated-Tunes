@@ -1,0 +1,15 @@
+const funkKick: Instrument =
+    new Instrument('funk_kick',
+        ["funk_kick/1",
+            "funk_kick/2",
+            "funk_kick/3",
+            "funk_kick/4",
+            "funk_kick/5",
+            "funk_kick/6",
+            "funk_kick/7",
+            "funk_kick/8",
+            "funk_kick/9",
+            "funk_kick/10"],
+        null,
+        "#380B3F",
+        MeasureCategory.Rhythm)
