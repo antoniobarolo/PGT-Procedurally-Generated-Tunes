@@ -25,19 +25,19 @@ class Funk extends Style {
 		switch (sectionType) {
 			case SectionType.Intro:
 				return [{
-					dark_kick: '1 - - - 1 - - - 1 - - - 1 - - -',
+					funk_kick: '5 - - - 5 - - - 5 - - - 5 - - -',
 				},
 				{
-					dark_kick: '1 - - - - - - - - - - - - - - -',
+					funk_kick: '5 - - - - - - - - - - - - - - -',
 				},
 				{
-					dark_kick: '- - - - - - - - - - - - - - - -',
+					funk_kick: '- - - - - - - - - - - - - - - -',
 				},
 				{
-					dark_kick: '1 - 1 - 1 - 1 - 1 1 1 1 1 1 1 1',
+					funk_kick: '5 - 5 - 5 - 5 - 5 5 5 5 5 5 5 5',
 				},
 				{
-					dark_kick: '1 - - - - - - - - - - - - - 1 1',
+					funk_kick: '5 - - - - - - - - - - - - - 5 5',
 				},
 				];
 
