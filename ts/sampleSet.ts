@@ -27,11 +27,14 @@ class SampleSet {
 		triangle,
 		vibraslap,
 		xylo,
-		zabumba,]
+		zabumba,
+		flute,
+		harpsichord,
+		dulcimer]
 	private static readonly samples = new Map<string, Sample>();
 
 	private static async loadSample(instrument: Instrument, sample: string): Promise<void> {
-		const path = sample;
+		const path = instrument.path + '/' + sample;
 		const response = await fetch('samples/' + path.replace("#", "%23") + '.wav');
 		const arrayBuffer = await response.arrayBuffer();
 		const decodedAudio = await audioContext.decodeAudioData(arrayBuffer);
@@ -51,5 +54,9 @@ class SampleSet {
 
 	public static getSample(name: string): Sample | undefined {
 		return SampleSet.samples.get(name);
+	}
+
+	public static getInstrumentByName(name: string): Instrument {
+		return SampleSet.instruments.find((instrument) => instrument.path === name)
 	}
 }

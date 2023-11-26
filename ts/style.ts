@@ -2,6 +2,7 @@ abstract class Style {
 	public readonly name: StyleName;
 	public readonly defaultBpm: number;
 	public readonly defaultNoteDuration: number;
+	public readonly sections: SectionType[];
 	protected readonly harmony: Map<SectionType, InstrumentSet[]>;
 	protected readonly rhythm: Map<SectionType, InstrumentSet[]>;
 	protected readonly melody: Map<SectionType, InstrumentSet[]>;
@@ -31,11 +32,13 @@ abstract class Style {
 		this.melody.set(SectionType.Verso, this.generateMelody(SectionType.Verso));
 	}
 
-	protected abstract generateHarmony(sectionType: SectionType): InstrumentSet[];
-	protected abstract generateRhythm(sectionType: SectionType): InstrumentSet[];
-	protected abstract generateMelody(sectionType: SectionType): InstrumentSet[];
+	protected abstract generateHarmony(sectionType: SectionType, song?: Section[]): InstrumentSet[];
+	protected abstract generateRhythm(sectionType: SectionType, song?: Section[]): InstrumentSet[];
+	protected abstract generateMelody(sectionType: SectionType, song?: Section[]): InstrumentSet[];
 	protected abstract getNextProgressionCount(sectionType: SectionType): number;
 	protected abstract getNextMeasureCount(sectionType: SectionType, progressionIndex: number, progressionCount: number): number;
+
+	public generateSong(): Section[] { return }
 
 	private static pickInstrumentSet(instrumentSet: InstrumentSet[]): InstrumentSet {
 		// Math.trunc(Math.random() * 4)
@@ -53,46 +56,7 @@ abstract class Style {
 		return instrumentSet[i];
 	}
 
-	private static parseSheet(sheet: string, sheetPadding: number): (string | null)[] {
-		// no prox semestre, no documento explicaremos a lógica de notação da sheet como ABNF
-		// "dm7 xyz8 a1 b3 c2c4c5"
-		const count = sheet.length;
-		const notes: (string | null)[] = new Array(sheetPadding);
-
-		for (let i = notes.length - 1; i >= 0; i--)
-			notes[i] = null;
-
-		for (let i = 0; i < count; i++) {
-			let char = sheet.charAt(i);
-			if (char === ' ' || char === '\t')
-				continue;
-
-			if (char === '-') {
-				notes.push(null);
-				continue;
-			}
-
-			let note = char;
-			i++;
-
-			while (i < count) {
-				char = sheet.charAt(i);
-				i++;
-
-				if (char === ' ' || char === '\t') {
-					i--;
-					break;
-				}
-
-				note += char;
-			}
-
-			notes.push(note.toLowerCase());
-		}
-		return notes;
-	}
-
-	public generateSection(sectionType: SectionType, bpm?: number | null, noteDuration?: number | null): Section {
+	public generateSection(sectionType: SectionType, song?: Section[], bpm?: number | null, noteDuration?: number | null): Section {
 		const progressions: Progression[] = [];
 
 		const progressionCount = this.getNextProgressionCount(sectionType);
@@ -105,15 +69,14 @@ abstract class Style {
 				throw new Error("instrumentSetArray is null");
 
 			const harmonyInstrumentSet = Style.pickInstrumentSet(instrumentSetArray);
-
 			let maxHarmonySheet = 0;
 
 			for (let instrumentName in harmonyInstrumentSet) {
 				let sheet = harmonyInstrumentSet[instrumentName];
-				if (typeof sheet !== "string")
-					sheet = sheet.generate(this.name, MeasureCategory.Harmony, progression, progressionCount, 0, 1);
+				// if (typeof sheet !== "string")
+				// 	sheet = sheet.generate(this.name, MeasureCategory.Harmony, progression, progressionCount, 0, 1);
 
-				const parsedSheet = Style.parseSheet(sheet as string, 0);
+				const parsedSheet = parseSheet(sheet as string, 0);
 				if (maxHarmonySheet < parsedSheet.length)
 					maxHarmonySheet = parsedSheet.length;
 
@@ -147,12 +110,12 @@ abstract class Style {
 
 				for (let instrumentName in rhythmInstrumentSet) {
 					let sheet = rhythmInstrumentSet[instrumentName];
-					if (typeof sheet !== "string")
-						sheet = sheet.generate(this.name, MeasureCategory.Rhythm, progression, progressionCount, measure, measureCount);
+					// if (typeof sheet !== "string")
+					// 	sheet = sheet.generate(this.name, MeasureCategory.Rhythm, progression, progressionCount, measure, measureCount);
 
-					const parsedSheet = Style.parseSheet(sheet as string, sheetPadding);
-					if (maxMeasureSheet < parsedSheet.length - sheetPadding)
-						maxMeasureSheet = parsedSheet.length - sheetPadding;
+					const parsedSheet = parseSheet(sheet as string, sheetPadding);
+					if (maxMeasureSheet < parsedSheet?.length - sheetPadding)
+						maxMeasureSheet = parsedSheet?.length - sheetPadding;
 
 					sequences.push({
 						instrumentName,
@@ -164,14 +127,19 @@ abstract class Style {
 				if (!instrumentSetArray)
 					throw new Error("instrumentSetArray is null");
 
-				const melodyInstrumentSet = Style.pickInstrumentSet(instrumentSetArray);
+				let melodyInstrumentSet = Style.pickInstrumentSet(instrumentSetArray);
+
+				///adaptar nota para encaixar com acorde
+				const bassSheet = findInstrumentWithLowestOctave(harmonyInstrumentSet) as string
+				const bassSheetNotes = parseSheet(bassSheet, 0)
+				melodyInstrumentSet = adjustMelodyToChordNote(melodyInstrumentSet, bassSheetNotes[measure])
 
 				for (let instrumentName in melodyInstrumentSet) {
 					let sheet = melodyInstrumentSet[instrumentName];
-					if (typeof sheet !== "string")
-						sheet = sheet.generate(this.name, MeasureCategory.Melody, progression, progressionCount, measure, measureCount);
+					// if (typeof sheet !== "string")
+					// 	sheet = sheet.generate(this.name, MeasureCategory.Melody, progression, progressionCount, measure, measureCount);
 
-					const parsedSheet = Style.parseSheet(sheet as string, sheetPadding);
+					const parsedSheet = parseSheet(sheet as string, sheetPadding);
 					if (maxMeasureSheet < parsedSheet.length - sheetPadding)
 						maxMeasureSheet = parsedSheet.length - sheetPadding;
 
@@ -194,7 +162,6 @@ abstract class Style {
 					sheetPadding += maxMeasureSheet;
 				}
 			}
-
 			progressions.push({
 				sequences
 			});

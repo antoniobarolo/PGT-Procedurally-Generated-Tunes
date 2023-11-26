@@ -1,6 +1,6 @@
 const zabumba: Instrument =
     new Instrument('zabumba',
-        ["zabumba/k1", "zabumba/k2", "zabumba/s"],
+        ["k1", "k2", "s"],
         null,
         "#4B451F",
         MeasureCategory.Melody)

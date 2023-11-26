@@ -1,5 +1,5 @@
 interface SheetGenerator {
-	generate(styleName: StyleName, measureCategory: MeasureCategory, progressionIndex: number, progressionCount: number, measureIndex: number, measureCount: number): string;
+	generate(styleName?: StyleName, measureCategory?: MeasureCategory, progressionIndex?: number, progressionCount?: number, measureIndex?: number, measureCount?: number): string;
 }
 
 type Sheet = string | SheetGenerator;

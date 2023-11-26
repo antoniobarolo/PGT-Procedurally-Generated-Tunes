@@ -6,11 +6,11 @@ const gainNode = audioContext.createGain();
 let currentStyle: Style = null;
 
 function updateVolume() {
-    const dB = parseInt(volumeSlider.value);
+	const dB = parseInt(volumeSlider.value);
 	// dB = 20.log Mag
 	// dB/20 = log Mag
 	// 10 ^ (dB/20) = Mag
-    gainNode.gain.value = (dB <= -40 ? 0 : Math.pow(10, dB / 20));
+	gainNode.gain.value = (dB <= -40 ? 0 : Math.pow(10, dB / 20));
 }
 
 function parseQueryString(): { [key: string]: string } {
@@ -66,11 +66,22 @@ async function setup(): Promise<void> {
 
 setup();
 
-function playStyle(style: Style, section: SectionType) {
-    const generatedSection = style.generateSection(section);
-    player.playSection(generatedSection);
+function playStyle(style: Style, section: SectionType): Section {
+	const generatedSection = style.generateSection(section);
+	player.playSection(generatedSection);
+	return generatedSection
 }
 
 function playCurrentStyle() {
-	playStyle(currentStyle, SectionType.Intro);
+	const generatedSections = [
+		currentStyle.generateSection(SectionType.Intro),
+		currentStyle.generateSection(SectionType.Verso),
+		currentStyle.generateSection(SectionType.Ponte),
+		currentStyle.generateSection(SectionType.Refrao)]
+
+	for (let index = 0; index < currentStyle.sections.length; index++) {
+		const currentSection = generatedSections.find(section => section.type === currentStyle.sections[index]);
+		player.playSection(currentSection)
+	}
+
 }

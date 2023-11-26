@@ -12,10 +12,10 @@ enum MeasureCategory {
 }
 
 enum SectionType {
-	Intro = 0,
-	Refrao = 1,
-	Ponte = 2,
-	Verso = 3
+	Intro = 'Intro',
+	Refrao = 'Refrao',
+	Ponte = 'Ponte',
+	Verso = 'Verso',
 }
 
 enum ScaleDegree {
@@ -35,7 +35,6 @@ interface Sample {
 	color: string;
 	buffer: AudioBuffer;
 }
-
 
 enum NoteNumber {
 	'A' = 0,
@@ -57,38 +56,9 @@ const noteNames = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G
 const Minor = [0, 2, 3, 5, 7, 8, 10]
 const Dorian = [0, 2, 3, 5, 7, 9, 10]
 const Major = [0, 2, 4, 5, 7, 9, 11]
+const Lydian = [0, 2, 4, 6, 7, 9, 11]
+const Mixolydian = [0, 2, 4, 5, 7, 9, 10]
 
-function parseNumbers(sheet: number[], instrument: Instrument, scale: number[], rootNote: number): string {
-	sheet = sheet.map((note) => {
-		if (note == 0)
-			return undefined
-		if (note < 0) {
-			note = Math.abs(note)
-			note = scale[note - 1]
-			return note - 12 + rootNote
-		}
-		if (note > scale.length) {
-			note = scale[note - scale.length - 1]
-			return note + 12 + rootNote
-		}
-		return scale[note - 1] + rootNote
-	})
-	const parsedSheet = sheet.map((noteNumber) => {
-		if (noteNumber === undefined)
-			return "-"
-		let octaveShift = 0
-		while (noteNumber < 0) {
-			noteNumber = noteNumber + noteNames.length
-			octaveShift--;
-		}
-		while (noteNumber >= noteNames.length) {
-			noteNumber = noteNumber - noteNames.length
-			octaveShift++;
-		}
-		return noteNames[noteNumber] + (instrument.centerOctave + octaveShift)
-	})
-	return parsedSheet.join(" ")
-}
 // const ExampleInstrument = {
 // 	centerOctave: 4,
 // 	samples: ['C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
