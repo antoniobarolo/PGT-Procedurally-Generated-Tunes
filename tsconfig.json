@@ -20,12 +20,12 @@
 		
 		"ts/instruments/accordion.ts",
 		"ts/instruments/bass.ts",
-		"ts/instruments/brass_stab.ts",
 		"ts/instruments/caixa.ts",
 		"ts/instruments/cuica.ts",
 		"ts/instruments/drop.ts",
 		"ts/instruments/dulcimer.ts",
 		"ts/instruments/flute.ts",
+		"ts/instruments/funk_brass.ts",
 		"ts/instruments/funk_high_percussion.ts",
 		"ts/instruments/funk_kick.ts",
 		"ts/instruments/funk_loop.ts",

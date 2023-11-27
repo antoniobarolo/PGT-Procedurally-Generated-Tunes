@@ -2,11 +2,11 @@ class SampleSet {
 	private static readonly instruments: Instrument[] = [
 		accordion,
 		bass,
-		brassStab,
 		caixa,
 		cuica,
 		drop,
 		funkHighPercussion,
+		funkBrass,
 		funkKick,
 		funkLoop,
 		funkVoice,
