@@ -227,7 +227,7 @@ class Funk extends Style {
 		const full8thNote = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
 		const highRegisterPiano = piano
 		highRegisterPiano.centerOctave = 5
-		const melodyFunkInstruments = [funkBrass, highRegisterPiano, stab, flute, harpsichord, dulcimer, brassStab]
+		const melodyFunkInstruments = [highRegisterPiano, stab, flute, harpsichord, dulcimer, brassStab]
 
 		const funkRaveSheets = [
 			'c3 - - c3 - - c3 - - - d3 - d3 - - -',

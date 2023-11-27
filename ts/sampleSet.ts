@@ -6,7 +6,6 @@ class SampleSet {
 		caixa,
 		cuica,
 		drop,
-		funkBrass,
 		funkHighPercussion,
 		funkKick,
 		funkLoop,

@@ -26,7 +26,6 @@
 		"ts/instruments/drop.ts",
 		"ts/instruments/dulcimer.ts",
 		"ts/instruments/flute.ts",
-		"ts/instruments/funk_brass.ts",
 		"ts/instruments/funk_high_percussion.ts",
 		"ts/instruments/funk_kick.ts",
 		"ts/instruments/funk_loop.ts",
