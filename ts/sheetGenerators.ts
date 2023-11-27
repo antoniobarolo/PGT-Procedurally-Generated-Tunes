@@ -137,5 +137,13 @@ function generateAxialMelodySheet(baseSheet: number[], chordNote?: number): numb
 
 //TEXTO
 //mudar arquitetura de classes
-//revisar
-//?
+
+//DIAGRAMA DE classes
+/*
+sem visualizer
+SampleSet -> losango (contains) Instrument
+SampleSet -> losango (contains) Sample
+
+tirar getNextMeasureCount (e outras coisas que sairam)
+*/
+

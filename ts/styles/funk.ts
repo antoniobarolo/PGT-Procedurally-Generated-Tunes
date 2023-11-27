@@ -127,7 +127,8 @@ class Funk extends Style {
 					funk_kick: loop4thNote(),
 					funk_high_percussion: claveToSheet(),
 					funk_loop: funkLoop.samples[roll(funkLoop.samples.length) - 1].toString()
-				}, {
+				},
+				{
 					funk_kick: loop4thNote(),
 					funk_high_percussion: claveToSheet(),
 				},
@@ -227,7 +228,7 @@ class Funk extends Style {
 		const full8thNote = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
 		const highRegisterPiano = piano
 		highRegisterPiano.centerOctave = 5
-		const melodyFunkInstruments = [highRegisterPiano, stab, flute, harpsichord, dulcimer, funkVoice]
+		const melodyFunkInstruments = [funkBrass, highRegisterPiano, stab, flute, harpsichord, dulcimer]
 
 		const funkRaveSheets = [
 			'c3 - - c3 - - c3 - - - d3 - d3 - - -',
@@ -305,16 +306,16 @@ class Funk extends Style {
 				if (roll(4) > 3) return [{ [chosenInstrument.path]: funkRaveSheets[roll(funkRaveSheets.length - 1)] }]
 
 				return [{
-					flute: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(clave)), flute, Minor, 3)
+					flute: Style.parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(clave)), flute, Minor, 3)
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
+					[chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Phrygian, 3),
+					[chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Phrygian, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
+					[chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
 				},
 				{
 					[chosenInstrument.path]: funkMelodySheets[roll(funkRaveSheets.length - 1)]
@@ -336,31 +337,31 @@ class Funk extends Style {
 			case SectionType.Refrao:
 
 				return [{
-					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
+					[chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument,  Phrygian, 3),
+					[chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Phrygian, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
+					[chosenInstrument.path]: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet([0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0,]), chosenInstrument, Minor, 3),
+					[chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet([0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0,]), chosenInstrument, Minor, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
+					[chosenInstrument.path]: Style.parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet([0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0]), chosenInstrument, Minor, 3),
+					[chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet([0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0]), chosenInstrument, Minor, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateRandomNotes(16), chosenInstrument, Minor, 3),
+					[chosenInstrument.path]: Style.parseNumbers(generateRandomNotes(16), chosenInstrument, Minor, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
+					[chosenInstrument.path]: Style.parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(clave)), chosenInstrument,  Phrygian, 3),
+					[chosenInstrument.path]: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Phrygian, 3),
 				},
 				{
 					[chosenInstrument.path]: funkRaveSheets[roll(funkRaveSheets.length - 1)]
@@ -410,9 +411,9 @@ class Funk extends Style {
 			case SectionType.Verso:
 				const verseChosenInstrument = melodyFunkInstruments[roll(melodyFunkInstruments.length) - 1]
 				return [
-					{ [verseChosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), verseChosenInstrument, Minor, 3) },
-					{ [verseChosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), verseChosenInstrument, Minor, 3) },
-					{ [verseChosenInstrument.path]: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(full8thNote)), verseChosenInstrument, Minor, 3) },
+					{ [verseChosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), verseChosenInstrument, Minor, 3) },
+					{ [verseChosenInstrument.path]: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), verseChosenInstrument, Minor, 3) },
+					{ [verseChosenInstrument.path]: Style.parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(full8thNote)), verseChosenInstrument, Minor, 3) },
 					{ [verseChosenInstrument.path]: funkRaveSheets[roll(funkRaveSheets.length - 1)] },
 					{ [verseChosenInstrument.path]: funkRaveSheets[roll(funkRaveSheets.length - 1)] },
 
@@ -428,9 +429,9 @@ class Funk extends Style {
 			case SectionType.Ponte:
 				const bridgeChosenInstrument = melodyFunkInstruments[roll(melodyFunkInstruments.length) - 1]
 				return [
-					{ [bridgeChosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), bridgeChosenInstrument, Minor, 3) },
-					{ [bridgeChosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), bridgeChosenInstrument, Minor, 3) },
-					{ [bridgeChosenInstrument.path]: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(full8thNote)), bridgeChosenInstrument, Minor, 3) },
+					{ [bridgeChosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), bridgeChosenInstrument, Minor, 3) },
+					{ [bridgeChosenInstrument.path]: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), bridgeChosenInstrument, Minor, 3) },
+					{ [bridgeChosenInstrument.path]: Style.parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(full8thNote)), bridgeChosenInstrument, Minor, 3) },
 					{ [bridgeChosenInstrument.path]: funkMelodySheets[roll(funkRaveSheets.length - 1)] },
 					{ [bridgeChosenInstrument.path]: funkMelodySheets[roll(funkRaveSheets.length - 1)] },
 					{ [chosenInstrument.path]: funkMelodySheets[roll(funkRaveSheets.length - 1)] },

@@ -440,25 +440,25 @@ class Forro extends Style {
 			case SectionType.Intro:
 				return [
 					{
-						accordion: parseNumbers(generateLinearPatternMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(generateLinearPatternMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove([1, 0, 1, 0, 1, 0, 1, 0,])), accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove([1, 0, 1, 0, 1, 0, 1, 0,])), accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(syncopations[roll(syncopations.length) - 1])), accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove(syncopations[roll(syncopations.length) - 1])), accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(generateAxialMelodySheet(mutateSheetGroove([1, 0, 1, 0, 1, 0, 1, 0,])), accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove([1, 0, 1, 0, 1, 0, 1, 0,])), accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(generateGapFillMelodySheet([1, 0, 1, 0, 1, 0, 1, 0,]), accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(generateGapFillMelodySheet([1, 0, 1, 0, 1, 0, 1, 0,]), accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
 					},
 					{
 						accordion: melodies8thNotes[roll(melodies8thNotes.length) - 1]
@@ -470,25 +470,25 @@ class Forro extends Style {
 			case SectionType.Verso:
 				return [
 					{
-						accordion: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(generateLinearPatternMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(generateLinearPatternMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(generateAxialMelodySheet([1, 0, 1, 0, 1, 0, 1, 0]), accordion, chosenScale, 5)
+						accordion: Style.parseNumbers(generateAxialMelodySheet([1, 0, 1, 0, 1, 0, 1, 0]), accordion, chosenScale, 5)
 					},
 					{
-						accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1] + ' ' + parseNumbers(generateAxialMelodySheet([1, 1, 1, 1,]), accordion, chosenScale, 5)
+						accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1] + ' ' + Style.parseNumbers(generateAxialMelodySheet([1, 1, 1, 1,]), accordion, chosenScale, 5)
 					},
 					{
-						accordion: parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5)
+						accordion: Style.parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5)
 					},
 					{
-						accordion: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(4)), accordion, chosenScale, 5) + ' ' + parseNumbers(generateAxialMelodySheet([1, 1, 1, 1]), accordion, chosenScale, 5)
+						accordion: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(4)), accordion, chosenScale, 5) + ' ' + Style.parseNumbers(generateAxialMelodySheet([1, 1, 1, 1]), accordion, chosenScale, 5)
 					},
 					{
 						accordion: melodies8thNotes[roll(melodies8thNotes.length) - 1]
@@ -497,16 +497,16 @@ class Forro extends Style {
 						accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1] + ' ' + melodies4thNotes[roll(melodies4thNotes.length) - 1]
 					},
 					{
-						accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
 					}
 				];
 			case SectionType.Refrao:
@@ -517,31 +517,31 @@ class Forro extends Style {
 					accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1] + ' ' + melodies4thNotes[roll(melodies4thNotes.length) - 1]
 				},
 				{
-					accordion: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
+					accordion: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
 				},
 				{
-					accordion: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
+					accordion: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
 				},
 				{
-					accordion: parseNumbers(generateLinearPatternMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5),
+					accordion: Style.parseNumbers(generateLinearPatternMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5),
 				},
 				{
-					accordion: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(syncopations[roll(syncopations.length) - 1])), accordion, chosenScale, 5),
+					accordion: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove(syncopations[roll(syncopations.length) - 1])), accordion, chosenScale, 5),
 				},
 				{
-					accordion: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(syncopations[roll(syncopations.length) - 1])), accordion, chosenScale, 5),
+					accordion: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(syncopations[roll(syncopations.length) - 1])), accordion, chosenScale, 5),
 				},
 				{
-					accordion: parseNumbers(generateAxialMelodySheet([1, 0, 1, 0, 1, 0, 1, 0]), accordion, chosenScale, 5)
+					accordion: Style.parseNumbers(generateAxialMelodySheet([1, 0, 1, 0, 1, 0, 1, 0]), accordion, chosenScale, 5)
 				},
 				{
-					accordion: parseNumbers(generateAxialMelodySheet([1, 1, 1, 1, 1, 1, 1, 1]), accordion, chosenScale, 5)
+					accordion: Style.parseNumbers(generateAxialMelodySheet([1, 1, 1, 1, 1, 1, 1, 1]), accordion, chosenScale, 5)
 				},
 				{
-					accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+					accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
 				},
 				{
-					accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+					accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
 				},
 				{
 					accordion: melodies8thNotes[roll(melodies8thNotes.length) - 1]
@@ -562,22 +562,22 @@ class Forro extends Style {
 						accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1]
 					},
 					{
-						accordion: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(4)), accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(4)), accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(4)), accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(4)), accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(mutateSheetGroove(generateLinearPatternMelodySheet([1, 0, 1, 0])), accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(mutateSheetGroove(generateLinearPatternMelodySheet([1, 0, 1, 0])), accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(generateLinearPatternMelodySheet([1, 0, 0, 1]), accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(generateLinearPatternMelodySheet([1, 0, 0, 1]), accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(generateAxialMelodySheet([1, 1, 1, 1]), accordion, chosenScale, 5),
+						accordion: Style.parseNumbers(generateAxialMelodySheet([1, 1, 1, 1]), accordion, chosenScale, 5),
 					},
 					{
-						accordion: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(2)), accordion, chosenScale, 5) + ' ' + parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(2)), accordion, chosenScale, 5)
+						accordion: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(2)), accordion, chosenScale, 5) + ' ' + Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(2)), accordion, chosenScale, 5)
 					},
 					{
 						accordion: "c4 - c4 - "
@@ -627,10 +627,6 @@ class Forro extends Style {
 	}
 
 	protected getNextProgressionCount(sectionType: SectionType): number {
-		return 4;
-	}
-
-	protected getNextMeasureCount(sectionType: SectionType, progressionIndex: number, progressionCount: number): number {
 		return 4;
 	}
 }

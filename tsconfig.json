@@ -13,8 +13,7 @@
 		"ts/interfaces.ts",
 		"ts/section.ts",
 		"ts/style.ts",
-		"ts/functions/parses.ts",
-		"ts/functions/sheetGenerators.ts",
+		"ts/sheetGenerators.ts",
 
 		"ts/instrument.ts",
 		

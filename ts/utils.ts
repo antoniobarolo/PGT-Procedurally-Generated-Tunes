@@ -44,7 +44,7 @@ function adjustMelodyToChordNote(instrumentSet: InstrumentSet, chord: string): I
     if (!newNote) return instrumentSet
 
     for (const instrumentName in instrumentSet) {
-        const notes = parseSheet(instrumentSet[instrumentName] as string, 0)
+        const notes = Style.parseSheet(instrumentSet[instrumentName] as string, 0)
         if (!!notes[0]) notes[0] = newNote + SampleSet.getInstrumentByName(instrumentName).centerOctave
 
         instrumentSet[instrumentName] = notes.join(' ')

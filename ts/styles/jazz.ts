@@ -340,28 +340,28 @@ class Jazz extends Style {
 			case SectionType.Ponte:
 				return [
 					{
-						piano: parseNumbers(generateRandomNotes(12), piano, Minor, 0)
+						piano: Style.parseNumbers(generateRandomNotes(12), piano, Minor, 0)
 					},
 					{
-						piano: jazzMelodies[roll(jazzMelodies.length - 1)] + ` ` + parseNumbers(generateRandomNotes(6), piano, Minor, 0)
+						piano: jazzMelodies[roll(jazzMelodies.length - 1)] + ` ` + Style.parseNumbers(generateRandomNotes(6), piano, Minor, 0)
 					},
 					{
-						piano: parseNumbers(generateRandomNotes(6), piano, Minor, 0) + ` ` + jazzMelodies[roll(jazzMelodies.length - 1)]
+						piano: Style.parseNumbers(generateRandomNotes(6), piano, Minor, 0) + ` ` + jazzMelodies[roll(jazzMelodies.length - 1)]
 					},
 					{
-						piano: jazzMelodies[roll(jazzMelodies.length - 1)] + ' ' + parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
+						piano: jazzMelodies[roll(jazzMelodies.length - 1)] + ' ' + Style.parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
 					},
 					{
-						piano: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + jazzMelodies[roll(jazzMelodies.length - 1)]
+						piano: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + jazzMelodies[roll(jazzMelodies.length - 1)]
 					},
 					{
-						piano: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(12)), piano, Minor, 0),
+						piano: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(12)), piano, Minor, 0),
 					},
 					{
-						piano: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
+						piano: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
 					},
 					{
-						piano: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
+						piano: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + Style.parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
 					},
 					{
 						piano: 'a5 b5 c6 d6 b5 - g5 a5 - - - -'
@@ -373,7 +373,7 @@ class Jazz extends Style {
 			default:
 				return [
 					{
-						sax: parseNumbers(generateRandomNotes(6), sax, Minor, 0)
+						sax: Style.parseNumbers(generateRandomNotes(6), sax, Minor, 0)
 					},
 					{
 						sax: jazzMelodies[roll(jazzMelodies.length - 1)]
@@ -388,13 +388,13 @@ class Jazz extends Style {
 						sax: jazzMelodies[roll(jazzMelodies.length - 1)]
 					},
 					{
-						sax: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(6)), sax, Minor, 0),
+						sax: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(6)), sax, Minor, 0),
 					},
 					{
-						sax: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), sax, Minor, 0),
+						sax: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), sax, Minor, 0),
 					},
 					{
-						sax: parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), sax, Minor, 0),
+						sax: Style.parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), sax, Minor, 0),
 					},
 				];
 		}

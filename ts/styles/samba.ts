@@ -389,37 +389,37 @@ class Samba extends Style {
 			default:
 				return [
 					{
-						flute: parseNumbers(generateAxialMelodySheet(generateSheetGroove(16)), flute, Mixolydian, 10),
+						flute: Style.parseNumbers(generateAxialMelodySheet(generateSheetGroove(16)), flute, Mixolydian, 10),
 					},
 					{
-						flute: parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10) + ' ' + parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10)
+						flute: Style.parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10) + ' ' + Style.parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10)
 					},
 					{
-						flute: parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10) + ' ' + parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), flute, Mixolydian, 10)
+						flute: Style.parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10) + ' ' + Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), flute, Mixolydian, 10)
 					},
 					{
-						flute: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), flute, Lydian, 10) + ' ' + parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), flute, Mixolydian, 10)
+						flute: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), flute, Lydian, 10) + ' ' + Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), flute, Mixolydian, 10)
 					},
 					{
-						flute: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(16)), flute, Mixolydian, 10),
+						flute: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(16)), flute, Mixolydian, 10),
 					},
 					{
-						flute: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), flute, Mixolydian, 10) + ' ' + parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), flute, Major, 10)
+						flute: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), flute, Mixolydian, 10) + ' ' + Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), flute, Major, 10)
 					},
 					{
-						flute: parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10) + ' ' + parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10),
+						flute: Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10) + ' ' + Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10),
 					},
 					{
-						flute: parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Lydian, 10) + ' ' + parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Lydian, 10),
+						flute: Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Lydian, 10) + ' ' + Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Lydian, 10),
 					},
 					{
-						flute: parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Lydian, 10) + ' ' + parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10),
+						flute: Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Lydian, 10) + ' ' + Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10),
 					},
 					{
-						flute: parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10) + ' ' + parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10),
+						flute: Style.parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10) + ' ' + Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10),
 					},
 					{
-						flute: parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10) + ' ' + parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10)
+						flute: Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10) + ' ' + Style.parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10)
 					}
 				];
 		}

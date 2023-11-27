@@ -81,7 +81,7 @@ function adjustMelodyToChordNote(instrumentSet, chord) {
     if (!newNote)
         return instrumentSet;
     for (const instrumentName in instrumentSet) {
-        const notes = parseSheet(instrumentSet[instrumentName], 0);
+        const notes = Style.parseSheet(instrumentSet[instrumentName], 0);
         if (!!notes[0])
             notes[0] = newNote + SampleSet.getInstrumentByName(instrumentName).centerOctave;
         instrumentSet[instrumentName] = notes.join(' ');
@@ -193,7 +193,7 @@ class Style {
             let maxHarmonySheet = 0;
             for (let instrumentName in harmonyInstrumentSet) {
                 let sheet = harmonyInstrumentSet[instrumentName];
-                const parsedSheet = parseSheet(sheet, 0);
+                const parsedSheet = Style.parseSheet(sheet, 0);
                 if (maxHarmonySheet < parsedSheet.length)
                     maxHarmonySheet = parsedSheet.length;
                 sequences.push({
@@ -218,7 +218,7 @@ class Style {
                 const rhythmInstrumentSet = Style.pickInstrumentSet(instrumentSetArray);
                 for (let instrumentName in rhythmInstrumentSet) {
                     let sheet = rhythmInstrumentSet[instrumentName];
-                    const parsedSheet = parseSheet(sheet, sheetPadding);
+                    const parsedSheet = Style.parseSheet(sheet, sheetPadding);
                     if (maxMeasureSheet < (parsedSheet === null || parsedSheet === void 0 ? void 0 : parsedSheet.length) - sheetPadding)
                         maxMeasureSheet = (parsedSheet === null || parsedSheet === void 0 ? void 0 : parsedSheet.length) - sheetPadding;
                     sequences.push({
@@ -232,11 +232,11 @@ class Style {
                 let melodyInstrumentSet = Style.pickInstrumentSet(instrumentSetArray);
                 ///Adaptar nota para encaixar com acorde
                 const bassSheet = findInstrumentWithLowestOctave(harmonyInstrumentSet);
-                const bassSheetNotes = parseSheet(bassSheet, 0);
+                const bassSheetNotes = Style.parseSheet(bassSheet, 0);
                 melodyInstrumentSet = adjustMelodyToChordNote(melodyInstrumentSet, bassSheetNotes[measure]);
                 for (let instrumentName in melodyInstrumentSet) {
                     let sheet = melodyInstrumentSet[instrumentName];
-                    const parsedSheet = parseSheet(sheet, sheetPadding);
+                    const parsedSheet = Style.parseSheet(sheet, sheetPadding);
                     if (maxMeasureSheet < parsedSheet.length - sheetPadding)
                         maxMeasureSheet = parsedSheet.length - sheetPadding;
                     sequences.push({
@@ -260,67 +260,67 @@ class Style {
         }
         return new Section(sectionType, progressions, bpm || this.defaultBpm, noteDuration || this.defaultNoteDuration);
     }
-}
-function parseSheet(sheet, sheetPadding) {
-    if (!sheet)
-        return null;
-    const count = sheet.length;
-    const notes = new Array(sheetPadding);
-    for (let i = notes.length - 1; i >= 0; i--)
-        notes[i] = null;
-    for (let i = 0; i < count; i++) {
-        let char = sheet.charAt(i);
-        if (char === ' ' || char === '\t')
-            continue;
-        if (char === '-') {
-            notes.push(null);
-            continue;
-        }
-        let note = char;
-        i++;
-        while (i < count) {
-            char = sheet.charAt(i);
-            i++;
-            if (char === ' ' || char === '\t') {
-                i--;
-                break;
+    static parseSheet(sheet, sheetPadding) {
+        if (!sheet)
+            return null;
+        const count = sheet.length;
+        const notes = new Array(sheetPadding);
+        for (let i = notes.length - 1; i >= 0; i--)
+            notes[i] = null;
+        for (let i = 0; i < count; i++) {
+            let char = sheet.charAt(i);
+            if (char === ' ' || char === '\t')
+                continue;
+            if (char === '-') {
+                notes.push(null);
+                continue;
             }
-            note += char;
+            let note = char;
+            i++;
+            while (i < count) {
+                char = sheet.charAt(i);
+                i++;
+                if (char === ' ' || char === '\t') {
+                    i--;
+                    break;
+                }
+                note += char;
+            }
+            notes.push(note.toLowerCase());
         }
-        notes.push(note.toLowerCase());
+        return notes;
     }
-    return notes;
-}
-function parseNumbers(sheet, instrument, scale, rootNote) {
-    sheet = sheet.map((note) => {
-        if (note == 0)
-            return undefined;
-        if (note < 0) {
-            note = Math.abs(note);
-            note = scale[note - 1];
-            return note - 12 + rootNote;
-        }
-        if (note > scale.length) {
-            note = scale[note - scale.length - 1];
-            return note + 12 + rootNote;
-        }
-        return scale[note - 1] + rootNote;
-    });
-    const parsedSheet = sheet.map((noteNumber) => {
-        if (noteNumber === undefined)
-            return "-";
-        let octaveShift = 0;
-        while (noteNumber < 0) {
-            noteNumber = noteNumber + noteNames.length;
-            octaveShift--;
-        }
-        while (noteNumber >= noteNames.length) {
-            noteNumber = noteNumber - noteNames.length;
-            octaveShift++;
-        }
-        return noteNames[noteNumber] + (instrument.centerOctave + octaveShift);
-    });
-    return parsedSheet.join(" ");
+    static parseNumbers(sheet, instrument, scale, rootNote) {
+        sheet = sheet.map((note) => {
+            if (note == 0)
+                return undefined;
+            if (note < 0) {
+                note = Math.abs(note);
+                note = scale[note - 1];
+                return note - 12 + rootNote;
+            }
+            if (note > scale.length) {
+                note = scale[note - scale.length - 1];
+                return note + 12 + rootNote;
+            }
+            return scale[note - 1] + rootNote;
+        });
+        const parsedSheet = sheet.map((noteNumber) => {
+            if (noteNumber === undefined)
+                return "-";
+            let octaveShift = 0;
+            while (noteNumber < 0) {
+                noteNumber = noteNumber + noteNames.length;
+                octaveShift--;
+            }
+            while (noteNumber >= noteNames.length) {
+                noteNumber = noteNumber - noteNames.length;
+                octaveShift++;
+            }
+            return noteNames[noteNumber] + (instrument.centerOctave + octaveShift);
+        });
+        return parsedSheet.join(" ");
+    }
 }
 function generateSheetGroove(measureLength) {
     const sheet = [];
@@ -458,8 +458,14 @@ function generateAxialMelodySheet(baseSheet, chordNote) {
 //remover atributos e metodos nao usados
 //TEXTO
 //mudar arquitetura de classes
-//revisar
-//?
+//DIAGRAMA DE classes
+/*
+sem visualizer
+SampleSet -> losango (contains) Instrument
+SampleSet -> losango (contains) Sample
+
+tirar getNextMeasureCount (e outras coisas que sairam)
+*/
 class Instrument {
     constructor(path, samples, centerOctave, color, role) {
         this.path = path;
@@ -519,33 +525,6 @@ const bass = new Instrument('bass', ["a2",
     "g4",
     "g#4",
     "a4"], 3, "#2E149A", MeasureCategory.Harmony);
-const brassStab = new Instrument('brass_stab', [
-    "c3",
-    "c#3",
-    "d3",
-    "d#3",
-    "e3",
-    "f3",
-    "f#3",
-    "g3",
-    "g#3",
-    "a3",
-    "a#3",
-    "b3",
-    "c4",
-    // "c#4",
-    // "d4",
-    // "d#4",
-    // "e4",
-    // "f4",
-    // "f#4",
-    // "g4",
-    // "g#4",
-    // "a4",
-    // "a#4",
-    // "b4",
-    // "c5",
-], 3, "#596ABD", MeasureCategory.Melody);
 const caixa = new Instrument('caixa', ["1",
     "2",
     "3",
@@ -655,6 +634,33 @@ const flute = new Instrument('flute', [
     "g#6",
     "a6"
 ], 5, "#E095E2", MeasureCategory.Harmony);
+const funkBrass = new Instrument('funk_brass', [
+    "c3",
+    "c#3",
+    "d3",
+    "d#3",
+    "e3",
+    "f3",
+    "f#3",
+    "g3",
+    "g#3",
+    "a3",
+    "a#3",
+    "b3",
+    "c4",
+    "c#4",
+    "d4",
+    "d#4",
+    "e4",
+    "f4",
+    "f#4",
+    "g4",
+    "g#4",
+    "a4",
+    "a#4",
+    "b4",
+    "c5",
+], 4, "#596ABD", MeasureCategory.Melody);
 const funkHighPercussion = new Instrument('funk_high_percussion', ["1",
     "2",
     "3",
@@ -924,11 +930,11 @@ class SampleSet {
 SampleSet.instruments = [
     accordion,
     bass,
-    brassStab,
     caixa,
     cuica,
     drop,
     funkHighPercussion,
+    funkBrass,
     funkKick,
     funkLoop,
     funkVoice,
@@ -1374,25 +1380,25 @@ class Forro extends Style {
             case SectionType.Intro:
                 return [
                     {
-                        accordion: parseNumbers(generateLinearPatternMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateLinearPatternMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove([1, 0, 1, 0, 1, 0, 1, 0,])), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove([1, 0, 1, 0, 1, 0, 1, 0,])), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(syncopations[roll(syncopations.length) - 1])), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove(syncopations[roll(syncopations.length) - 1])), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateAxialMelodySheet(mutateSheetGroove([1, 0, 1, 0, 1, 0, 1, 0,])), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove([1, 0, 1, 0, 1, 0, 1, 0,])), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateGapFillMelodySheet([1, 0, 1, 0, 1, 0, 1, 0,]), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateGapFillMelodySheet([1, 0, 1, 0, 1, 0, 1, 0,]), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
                     },
                     {
                         accordion: melodies8thNotes[roll(melodies8thNotes.length) - 1]
@@ -1404,25 +1410,25 @@ class Forro extends Style {
             case SectionType.Verso:
                 return [
                     {
-                        accordion: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateLinearPatternMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateLinearPatternMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateAxialMelodySheet([1, 0, 1, 0, 1, 0, 1, 0]), accordion, chosenScale, 5)
+                        accordion: Style.parseNumbers(generateAxialMelodySheet([1, 0, 1, 0, 1, 0, 1, 0]), accordion, chosenScale, 5)
                     },
                     {
-                        accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1] + ' ' + parseNumbers(generateAxialMelodySheet([1, 1, 1, 1,]), accordion, chosenScale, 5)
+                        accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1] + ' ' + Style.parseNumbers(generateAxialMelodySheet([1, 1, 1, 1,]), accordion, chosenScale, 5)
                     },
                     {
-                        accordion: parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5)
+                        accordion: Style.parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5)
                     },
                     {
-                        accordion: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(4)), accordion, chosenScale, 5) + ' ' + parseNumbers(generateAxialMelodySheet([1, 1, 1, 1]), accordion, chosenScale, 5)
+                        accordion: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(4)), accordion, chosenScale, 5) + ' ' + Style.parseNumbers(generateAxialMelodySheet([1, 1, 1, 1]), accordion, chosenScale, 5)
                     },
                     {
                         accordion: melodies8thNotes[roll(melodies8thNotes.length) - 1]
@@ -1431,16 +1437,16 @@ class Forro extends Style {
                         accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1] + ' ' + melodies4thNotes[roll(melodies4thNotes.length) - 1]
                     },
                     {
-                        accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
                     }
                 ];
             case SectionType.Refrao:
@@ -1451,31 +1457,31 @@ class Forro extends Style {
                         accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1] + ' ' + melodies4thNotes[roll(melodies4thNotes.length) - 1]
                     },
                     {
-                        accordion: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateLinearPatternMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateLinearPatternMelodySheet(syncopations[roll(syncopations.length) - 1]), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(syncopations[roll(syncopations.length) - 1])), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove(syncopations[roll(syncopations.length) - 1])), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(syncopations[roll(syncopations.length) - 1])), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(syncopations[roll(syncopations.length) - 1])), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateAxialMelodySheet([1, 0, 1, 0, 1, 0, 1, 0]), accordion, chosenScale, 5)
+                        accordion: Style.parseNumbers(generateAxialMelodySheet([1, 0, 1, 0, 1, 0, 1, 0]), accordion, chosenScale, 5)
                     },
                     {
-                        accordion: parseNumbers(generateAxialMelodySheet([1, 1, 1, 1, 1, 1, 1, 1]), accordion, chosenScale, 5)
+                        accordion: Style.parseNumbers(generateAxialMelodySheet([1, 1, 1, 1, 1, 1, 1, 1]), accordion, chosenScale, 5)
                     },
                     {
-                        accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
                     },
                     {
                         accordion: melodies8thNotes[roll(melodies8thNotes.length) - 1]
@@ -1495,22 +1501,22 @@ class Forro extends Style {
                         accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1]
                     },
                     {
-                        accordion: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(4)), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(4)), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(4)), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(4)), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(mutateSheetGroove(generateLinearPatternMelodySheet([1, 0, 1, 0])), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(mutateSheetGroove(generateLinearPatternMelodySheet([1, 0, 1, 0])), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateLinearPatternMelodySheet([1, 0, 0, 1]), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateLinearPatternMelodySheet([1, 0, 0, 1]), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateAxialMelodySheet([1, 1, 1, 1]), accordion, chosenScale, 5),
+                        accordion: Style.parseNumbers(generateAxialMelodySheet([1, 1, 1, 1]), accordion, chosenScale, 5),
                     },
                     {
-                        accordion: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(2)), accordion, chosenScale, 5) + ' ' + parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(2)), accordion, chosenScale, 5)
+                        accordion: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(2)), accordion, chosenScale, 5) + ' ' + Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(2)), accordion, chosenScale, 5)
                     },
                     {
                         accordion: "c4 - c4 - "
@@ -1558,9 +1564,6 @@ class Forro extends Style {
         }
     }
     getNextProgressionCount(sectionType) {
-        return 4;
-    }
-    getNextMeasureCount(sectionType, progressionIndex, progressionCount) {
         return 4;
     }
 }
@@ -1896,28 +1899,28 @@ class Jazz extends Style {
             case SectionType.Ponte:
                 return [
                     {
-                        piano: parseNumbers(generateRandomNotes(12), piano, Minor, 0)
+                        piano: Style.parseNumbers(generateRandomNotes(12), piano, Minor, 0)
                     },
                     {
-                        piano: jazzMelodies[roll(jazzMelodies.length - 1)] + ` ` + parseNumbers(generateRandomNotes(6), piano, Minor, 0)
+                        piano: jazzMelodies[roll(jazzMelodies.length - 1)] + ` ` + Style.parseNumbers(generateRandomNotes(6), piano, Minor, 0)
                     },
                     {
-                        piano: parseNumbers(generateRandomNotes(6), piano, Minor, 0) + ` ` + jazzMelodies[roll(jazzMelodies.length - 1)]
+                        piano: Style.parseNumbers(generateRandomNotes(6), piano, Minor, 0) + ` ` + jazzMelodies[roll(jazzMelodies.length - 1)]
                     },
                     {
-                        piano: jazzMelodies[roll(jazzMelodies.length - 1)] + ' ' + parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
+                        piano: jazzMelodies[roll(jazzMelodies.length - 1)] + ' ' + Style.parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
                     },
                     {
-                        piano: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + jazzMelodies[roll(jazzMelodies.length - 1)]
+                        piano: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + jazzMelodies[roll(jazzMelodies.length - 1)]
                     },
                     {
-                        piano: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(12)), piano, Minor, 0),
+                        piano: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(12)), piano, Minor, 0),
                     },
                     {
-                        piano: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
+                        piano: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
                     },
                     {
-                        piano: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
+                        piano: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + Style.parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
                     },
                     {
                         piano: 'a5 b5 c6 d6 b5 - g5 a5 - - - -'
@@ -1929,7 +1932,7 @@ class Jazz extends Style {
             default:
                 return [
                     {
-                        sax: parseNumbers(generateRandomNotes(6), sax, Minor, 0)
+                        sax: Style.parseNumbers(generateRandomNotes(6), sax, Minor, 0)
                     },
                     {
                         sax: jazzMelodies[roll(jazzMelodies.length - 1)]
@@ -1944,13 +1947,13 @@ class Jazz extends Style {
                         sax: jazzMelodies[roll(jazzMelodies.length - 1)]
                     },
                     {
-                        sax: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(6)), sax, Minor, 0),
+                        sax: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(6)), sax, Minor, 0),
                     },
                     {
-                        sax: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), sax, Minor, 0),
+                        sax: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), sax, Minor, 0),
                     },
                     {
-                        sax: parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), sax, Minor, 0),
+                        sax: Style.parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), sax, Minor, 0),
                     },
                 ];
         }
@@ -2343,37 +2346,37 @@ class Samba extends Style {
             default:
                 return [
                     {
-                        flute: parseNumbers(generateAxialMelodySheet(generateSheetGroove(16)), flute, Mixolydian, 10),
+                        flute: Style.parseNumbers(generateAxialMelodySheet(generateSheetGroove(16)), flute, Mixolydian, 10),
                     },
                     {
-                        flute: parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10) + ' ' + parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10)
+                        flute: Style.parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10) + ' ' + Style.parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10)
                     },
                     {
-                        flute: parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10) + ' ' + parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), flute, Mixolydian, 10)
+                        flute: Style.parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10) + ' ' + Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), flute, Mixolydian, 10)
                     },
                     {
-                        flute: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), flute, Lydian, 10) + ' ' + parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), flute, Mixolydian, 10)
+                        flute: Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), flute, Lydian, 10) + ' ' + Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), flute, Mixolydian, 10)
                     },
                     {
-                        flute: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(16)), flute, Mixolydian, 10),
+                        flute: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(16)), flute, Mixolydian, 10),
                     },
                     {
-                        flute: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), flute, Mixolydian, 10) + ' ' + parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), flute, Major, 10)
+                        flute: Style.parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(8)), flute, Mixolydian, 10) + ' ' + Style.parseNumbers(generateGapFillMelodySheet(generateSheetGroove(8)), flute, Major, 10)
                     },
                     {
-                        flute: parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10) + ' ' + parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10),
+                        flute: Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10) + ' ' + Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10),
                     },
                     {
-                        flute: parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Lydian, 10) + ' ' + parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Lydian, 10),
+                        flute: Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Lydian, 10) + ' ' + Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Lydian, 10),
                     },
                     {
-                        flute: parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Lydian, 10) + ' ' + parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10),
+                        flute: Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Lydian, 10) + ' ' + Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10),
                     },
                     {
-                        flute: parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10) + ' ' + parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10),
+                        flute: Style.parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10) + ' ' + Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10),
                     },
                     {
-                        flute: parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10) + ' ' + parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10)
+                        flute: Style.parseNumbers(sambaMelodies[roll(sambaMelodies.length - 1)], accordion, Mixolydian, 10) + ' ' + Style.parseNumbers(generateAxialMelodySheet(syncopations[roll(syncopations.length) - 1]), flute, Mixolydian, 10)
                     }
                 ];
         }
@@ -2507,7 +2510,8 @@ class Funk extends Style {
                         funk_kick: loop4thNote(),
                         funk_high_percussion: claveToSheet(),
                         funk_loop: funkLoop.samples[roll(funkLoop.samples.length) - 1].toString()
-                    }, {
+                    },
+                    {
                         funk_kick: loop4thNote(),
                         funk_high_percussion: claveToSheet(),
                     },
@@ -2591,7 +2595,7 @@ class Funk extends Style {
         const full8thNote = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0];
         const highRegisterPiano = piano;
         highRegisterPiano.centerOctave = 5;
-        const melodyFunkInstruments = [highRegisterPiano, stab, flute, harpsichord, dulcimer, brassStab];
+        const melodyFunkInstruments = [funkBrass, highRegisterPiano, stab, flute, harpsichord, dulcimer];
         const funkRaveSheets = [
             'c3 - - c3 - - c3 - - - d3 - d3 - - -',
             'c3 - - c3 - - c3 - - - d3 - - d3 - -',
@@ -2667,16 +2671,16 @@ class Funk extends Style {
                 if (roll(4) > 3)
                     return [{ [chosenInstrument.path]: funkRaveSheets[roll(funkRaveSheets.length - 1)] }];
                 return [{
-                        flute: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(clave)), flute, Minor, 3)
+                        flute: Style.parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(clave)), flute, Minor, 3)
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
+                        [chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Phrygian, 3),
+                        [chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Phrygian, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
+                        [chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
                     },
                     {
                         [chosenInstrument.path]: funkMelodySheets[roll(funkRaveSheets.length - 1)]
@@ -2696,31 +2700,31 @@ class Funk extends Style {
                 ];
             case SectionType.Refrao:
                 return [{
-                        [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
+                        [chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Phrygian, 3),
+                        [chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Phrygian, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
+                        [chosenInstrument.path]: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet([0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0,]), chosenInstrument, Minor, 3),
+                        [chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet([0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0,]), chosenInstrument, Minor, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
+                        [chosenInstrument.path]: Style.parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet([0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0]), chosenInstrument, Minor, 3),
+                        [chosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet([0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0]), chosenInstrument, Minor, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateRandomNotes(16), chosenInstrument, Minor, 3),
+                        [chosenInstrument.path]: Style.parseNumbers(generateRandomNotes(16), chosenInstrument, Minor, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
+                        [chosenInstrument.path]: Style.parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Phrygian, 3),
+                        [chosenInstrument.path]: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Phrygian, 3),
                     },
                     {
                         [chosenInstrument.path]: funkRaveSheets[roll(funkRaveSheets.length - 1)]
@@ -2767,9 +2771,9 @@ class Funk extends Style {
             case SectionType.Verso:
                 const verseChosenInstrument = melodyFunkInstruments[roll(melodyFunkInstruments.length) - 1];
                 return [
-                    { [verseChosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), verseChosenInstrument, Minor, 3) },
-                    { [verseChosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), verseChosenInstrument, Minor, 3) },
-                    { [verseChosenInstrument.path]: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(full8thNote)), verseChosenInstrument, Minor, 3) },
+                    { [verseChosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), verseChosenInstrument, Minor, 3) },
+                    { [verseChosenInstrument.path]: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), verseChosenInstrument, Minor, 3) },
+                    { [verseChosenInstrument.path]: Style.parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(full8thNote)), verseChosenInstrument, Minor, 3) },
                     { [verseChosenInstrument.path]: funkRaveSheets[roll(funkRaveSheets.length - 1)] },
                     { [verseChosenInstrument.path]: funkRaveSheets[roll(funkRaveSheets.length - 1)] },
                     { [verseChosenInstrument.path]: funkMelodySheets[roll(funkRaveSheets.length - 1)] },
@@ -2782,9 +2786,9 @@ class Funk extends Style {
             case SectionType.Ponte:
                 const bridgeChosenInstrument = melodyFunkInstruments[roll(melodyFunkInstruments.length) - 1];
                 return [
-                    { [bridgeChosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), bridgeChosenInstrument, Minor, 3) },
-                    { [bridgeChosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), bridgeChosenInstrument, Minor, 3) },
-                    { [bridgeChosenInstrument.path]: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(full8thNote)), bridgeChosenInstrument, Minor, 3) },
+                    { [bridgeChosenInstrument.path]: Style.parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), bridgeChosenInstrument, Minor, 3) },
+                    { [bridgeChosenInstrument.path]: Style.parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), bridgeChosenInstrument, Minor, 3) },
+                    { [bridgeChosenInstrument.path]: Style.parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(full8thNote)), bridgeChosenInstrument, Minor, 3) },
                     { [bridgeChosenInstrument.path]: funkMelodySheets[roll(funkRaveSheets.length - 1)] },
                     { [bridgeChosenInstrument.path]: funkMelodySheets[roll(funkRaveSheets.length - 1)] },
                     { [chosenInstrument.path]: funkMelodySheets[roll(funkRaveSheets.length - 1)] },
