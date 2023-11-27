@@ -1,6 +1,4 @@
 function parseSheet(sheet: string, sheetPadding: number): (string | null)[] {
-    // no prox semestre, no documento explicaremos a lógica de notação da sheet como ABNF
-    // "dm7 xyz8 a1 b3 c2c4c5"
     if (!sheet) return null
     const count = sheet.length;
     const notes: (string | null)[] = new Array(sheetPadding);

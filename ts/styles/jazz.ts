@@ -319,7 +319,7 @@ class Jazz extends Style {
 			default:
 				return [
 					{
-						sax: parseNumbers(randomNotes(6), sax, Minor, 0)
+						sax: parseNumbers(generateRandomNotes(6), sax, Minor, 0)
 					},
 					{
 						sax: saxMelodies[roll(saxMelodies.length - 1)]

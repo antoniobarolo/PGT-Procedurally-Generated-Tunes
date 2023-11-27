@@ -41,17 +41,6 @@ abstract class Style {
 	public generateSong(): Section[] { return }
 
 	private static pickInstrumentSet(instrumentSet: InstrumentSet[]): InstrumentSet {
-		// Math.trunc(Math.random() * 4)
-		// Saída 0 - Entrada 0 ... 0.99999999... (25%)
-		// Saída 1 - Entrada 1 ... 1.99999999... (25%)
-		// Saída 2 - Entrada 2 ... 2.99999999... (25%)
-		// Saída 3 - Entrada 3 ... 3.99999999... (25%)
-		//
-		// Math.trunc(Math.random() * 4000) % 4
-		// Saída 0 - 0, 4, 8, 12, 16 ... 3996
-		// Saída 1 - 1, 5, 9, 13, 17 ... 3997
-		// Saída 2 - 2, 6, 10, 14, 18 ... 3998
-		// Saída 3 - 3, 7, 11, 15, 19 ... 3999
 		const i = Math.trunc(Math.random() * instrumentSet.length * 1000) % instrumentSet.length;
 		return instrumentSet[i];
 	}
@@ -73,8 +62,6 @@ abstract class Style {
 
 			for (let instrumentName in harmonyInstrumentSet) {
 				let sheet = harmonyInstrumentSet[instrumentName];
-				// if (typeof sheet !== "string")
-				// 	sheet = sheet.generate(this.name, MeasureCategory.Harmony, progression, progressionCount, 0, 1);
 
 				const parsedSheet = parseSheet(sheet as string, 0);
 				if (maxHarmonySheet < parsedSheet.length)
@@ -110,8 +97,6 @@ abstract class Style {
 
 				for (let instrumentName in rhythmInstrumentSet) {
 					let sheet = rhythmInstrumentSet[instrumentName];
-					// if (typeof sheet !== "string")
-					// 	sheet = sheet.generate(this.name, MeasureCategory.Rhythm, progression, progressionCount, measure, measureCount);
 
 					const parsedSheet = parseSheet(sheet as string, sheetPadding);
 					if (maxMeasureSheet < parsedSheet?.length - sheetPadding)
@@ -129,15 +114,13 @@ abstract class Style {
 
 				let melodyInstrumentSet = Style.pickInstrumentSet(instrumentSetArray);
 
-				///adaptar nota para encaixar com acorde
+				///Adaptar nota para encaixar com acorde
 				const bassSheet = findInstrumentWithLowestOctave(harmonyInstrumentSet) as string
 				const bassSheetNotes = parseSheet(bassSheet, 0)
 				melodyInstrumentSet = adjustMelodyToChordNote(melodyInstrumentSet, bassSheetNotes[measure])
 
 				for (let instrumentName in melodyInstrumentSet) {
 					let sheet = melodyInstrumentSet[instrumentName];
-					// if (typeof sheet !== "string")
-					// 	sheet = sheet.generate(this.name, MeasureCategory.Melody, progression, progressionCount, measure, measureCount);
 
 					const parsedSheet = parseSheet(sheet as string, sheetPadding);
 					if (maxMeasureSheet < parsedSheet.length - sheetPadding)
@@ -155,7 +138,6 @@ abstract class Style {
 						paddingArray[i] = null;
 
 					// Insere elementos dentro do array da harmonia
-
 					for (let i = 0; i < harmonySequenceCount; i++)
 						sequences[i].sheet.splice(sheetPadding + 1, 0, ...paddingArray);
 

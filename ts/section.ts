@@ -7,7 +7,7 @@ class Section {
 	private progressions: Progression[];
 	private maxSheetLength: number[];
 
-	public constructor(type: SectionType, progressions: Progression[], bpm: number, noteDuration: number, fromScratch?: boolean) {
+	public constructor(type: SectionType, progressions: Progression[], bpm: number, noteDuration: number) {
 		this.bpm = bpm;
 		this.noteDuration = noteDuration / bpm * 60;
 
@@ -18,11 +18,6 @@ class Section {
 
 		let totalSheetLength = 0;
 
-		// if (!!fromScratch) {
-		// 	this.duration = this.noteDuration * totalSheetLength;
-		// 	return
-		// };
-
 		for (let p = progressions.length - 1; p >= 0; p--) {
 			let maxSheetLength = 0;
 
@@ -32,13 +27,10 @@ class Section {
 				const sheet = sequences[s].sheet;
 
 				for (let i = sheet.length - 1; i >= 0; i--) {
-					// Procura pela última entrada não-nula
-					if (true) {
-						i++;
-						if (maxSheetLength < i)
-							maxSheetLength = i;
-						break;
-					}
+					i++;
+					if (maxSheetLength < i)
+						maxSheetLength = i;
+					break;
 				}
 			}
 
@@ -69,20 +61,19 @@ class Section {
 
 				for (let i = 0; i < sheet.length; i++) {
 					if (sheet[i]) {
-						//const sampleName = instrumentNamePrefix + "_" + sheet[i];
 						const sampleName = instrumentNamePrefix + "/" + sheet[i];
 						let sample = SampleSet.getSample(sampleName);
 						if (!sample) {
-							//throw new Error("Missing sample: " + sampleName);
+
 							const instrument = SampleSet.getInstrumentByName(instrumentNamePrefix)
 							if (instrument?.role !== MeasureCategory.Rhythm) {
-								let secondChanceSampleName
+								let secondChanceSampleName = sampleName
 								try { secondChanceSampleName = sampleName.slice(0, -1) + instrument.centerOctave }
-								catch { console.log('BadInstrumentName: ' + instrument) }
+								catch { throw new Error('BadInstrumentName: ' + instrument) }
 								sample = SampleSet.getSample(secondChanceSampleName)
-								if (!sample) console.log("Missing sample on second chance: " + secondChanceSampleName)
+								if (!sample) throw new Error("Missing sample on second chance: " + secondChanceSampleName)
 							}
-							if (!sample) console.log("Missing sample: " + sampleName)
+							if (!sample) throw new Error("Missing sample: " + sampleName)
 						}
 						player.playSample(sample, startTime + ((totalSheetLength + i) * noteDuration));
 					}

@@ -1,10 +1,4 @@
-interface SheetGenerator {
-	generate(styleName?: StyleName, measureCategory?: MeasureCategory, progressionIndex?: number, progressionCount?: number, measureIndex?: number, measureCount?: number): string;
-}
-
-type Sheet = string | SheetGenerator;
-
-interface InstrumentSet { [instrumentName: string]: Sheet }
+interface InstrumentSet { [instrumentName: string]: string }
 
 interface Measure {
 	harmony: InstrumentSet;
@@ -19,4 +13,11 @@ interface Sequence {
 
 interface Progression {
 	sequences: Sequence[];
+}
+
+interface Sample {
+	index: number;
+	path: string;
+	color: string;
+	buffer: AudioBuffer;
 }

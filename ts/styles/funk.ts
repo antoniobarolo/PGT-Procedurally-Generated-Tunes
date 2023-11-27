@@ -227,7 +227,7 @@ class Funk extends Style {
 		const full8thNote = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
 		const highRegisterPiano = piano
 		highRegisterPiano.centerOctave = 5
-		const melodyFunkInstruments = [funkBrass, highRegisterPiano, stab, flute, harpsichord, dulcimer]
+		const melodyFunkInstruments = [funkBrass, highRegisterPiano, stab, flute, harpsichord, dulcimer, brassStab]
 
 		const funkRaveSheets = [
 			'c3 - - c3 - - c3 - - - d3 - d3 - - -',
@@ -354,7 +354,7 @@ class Funk extends Style {
 					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet([0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0]), chosenInstrument, Minor, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(randomNotes(16), chosenInstrument, Minor, 3),
+					[chosenInstrument.path]: parseNumbers(generateRandomNotes(16), chosenInstrument, Minor, 3),
 				},
 				{
 					[chosenInstrument.path]: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),

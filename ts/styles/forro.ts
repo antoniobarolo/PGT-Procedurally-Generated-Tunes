@@ -592,18 +592,11 @@ class Forro extends Style {
 						accordion: "d5 - - -"
 					},
 					{
-						accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
-					},
-					{
-						accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
-					},
-					{
 						accordion: melodies8thNotes[roll(melodies8thNotes.length) - 1]
 					},
 					{
-						accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1] + ' ' + melodies4thNotes[roll(melodies4thNotes.length) - 1]
-					},
-
+						accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1]
+					}
 				];
 
 			default:

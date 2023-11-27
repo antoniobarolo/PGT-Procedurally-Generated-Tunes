@@ -18,17 +18,6 @@ var SectionType;
     SectionType["Ponte"] = "Ponte";
     SectionType["Verso"] = "Verso";
 })(SectionType || (SectionType = {}));
-var ScaleDegree;
-(function (ScaleDegree) {
-    ScaleDegree[ScaleDegree["Root"] = 1] = "Root";
-    ScaleDegree[ScaleDegree["Second"] = 2] = "Second";
-    ScaleDegree[ScaleDegree["Third"] = 3] = "Third";
-    ScaleDegree[ScaleDegree["Fourth"] = 4] = "Fourth";
-    ScaleDegree[ScaleDegree["Fifth"] = 5] = "Fifth";
-    ScaleDegree[ScaleDegree["Sixth"] = 6] = "Sixth";
-    ScaleDegree[ScaleDegree["Seventh"] = 7] = "Seventh";
-    ScaleDegree[ScaleDegree["Silence"] = 0] = "Silence";
-})(ScaleDegree || (ScaleDegree = {}));
 var NoteNumber;
 (function (NoteNumber) {
     NoteNumber[NoteNumber["A"] = 0] = "A";
@@ -50,15 +39,6 @@ const Dorian = [0, 2, 3, 5, 7, 9, 10];
 const Major = [0, 2, 4, 5, 7, 9, 11];
 const Lydian = [0, 2, 4, 6, 7, 9, 11];
 const Mixolydian = [0, 2, 4, 5, 7, 9, 10];
-// const ExampleInstrument = {
-// 	centerOctave: 4,
-// 	samples: ['C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
-// 		'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
-// 		'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5',
-// 		'C6']
-// }
-// const exampleSheet = [1, -7, 1, 3, 1, 0, 8, 0];
-//const parsedSheet = parseNumbers(exampleSheet, ExampleInstrument, Minor, 0)
 function roll(size) {
     return Math.floor(Math.random() * size) + 1;
 }
@@ -108,30 +88,23 @@ function adjustMelodyToChordNote(instrumentSet, chord) {
     return instrumentSet;
 }
 class Section {
-    constructor(type, progressions, bpm, noteDuration, fromScratch) {
+    constructor(type, progressions, bpm, noteDuration) {
         this.bpm = bpm;
         this.noteDuration = noteDuration / bpm * 60;
         this.type = type;
         this.progressions = progressions;
         this.maxSheetLength = new Array(progressions.length);
         let totalSheetLength = 0;
-        // if (!!fromScratch) {
-        // 	this.duration = this.noteDuration * totalSheetLength;
-        // 	return
-        // };
         for (let p = progressions.length - 1; p >= 0; p--) {
             let maxSheetLength = 0;
             const sequences = progressions[p].sequences;
             for (let s = sequences.length - 1; s >= 0; s--) {
                 const sheet = sequences[s].sheet;
                 for (let i = sheet.length - 1; i >= 0; i--) {
-                    // Procura pela última entrada não-nula
-                    if (true) {
-                        i++;
-                        if (maxSheetLength < i)
-                            maxSheetLength = i;
-                        break;
-                    }
+                    i++;
+                    if (maxSheetLength < i)
+                        maxSheetLength = i;
+                    break;
                 }
             }
             totalSheetLength += maxSheetLength;
@@ -154,26 +127,24 @@ class Section {
                 const sheet = sequence.sheet;
                 for (let i = 0; i < sheet.length; i++) {
                     if (sheet[i]) {
-                        //const sampleName = instrumentNamePrefix + "_" + sheet[i];
                         const sampleName = instrumentNamePrefix + "/" + sheet[i];
                         let sample = SampleSet.getSample(sampleName);
                         if (!sample) {
-                            //throw new Error("Missing sample: " + sampleName);
                             const instrument = SampleSet.getInstrumentByName(instrumentNamePrefix);
                             if ((instrument === null || instrument === void 0 ? void 0 : instrument.role) !== MeasureCategory.Rhythm) {
-                                let secondChanceSampleName;
+                                let secondChanceSampleName = sampleName;
                                 try {
                                     secondChanceSampleName = sampleName.slice(0, -1) + instrument.centerOctave;
                                 }
                                 catch (_a) {
-                                    console.log('BadInstrumentName: ' + instrument);
+                                    throw new Error('BadInstrumentName: ' + instrument);
                                 }
                                 sample = SampleSet.getSample(secondChanceSampleName);
                                 if (!sample)
-                                    console.log("Missing sample on second chance: " + secondChanceSampleName);
+                                    throw new Error("Missing sample on second chance: " + secondChanceSampleName);
                             }
                             if (!sample)
-                                console.log("Missing sample: " + sampleName);
+                                throw new Error("Missing sample: " + sampleName);
                         }
                         player.playSample(sample, startTime + ((totalSheetLength + i) * noteDuration));
                     }
@@ -206,17 +177,6 @@ class Style {
     }
     generateSong() { return; }
     static pickInstrumentSet(instrumentSet) {
-        // Math.trunc(Math.random() * 4)
-        // Saída 0 - Entrada 0 ... 0.99999999... (25%)
-        // Saída 1 - Entrada 1 ... 1.99999999... (25%)
-        // Saída 2 - Entrada 2 ... 2.99999999... (25%)
-        // Saída 3 - Entrada 3 ... 3.99999999... (25%)
-        //
-        // Math.trunc(Math.random() * 4000) % 4
-        // Saída 0 - 0, 4, 8, 12, 16 ... 3996
-        // Saída 1 - 1, 5, 9, 13, 17 ... 3997
-        // Saída 2 - 2, 6, 10, 14, 18 ... 3998
-        // Saída 3 - 3, 7, 11, 15, 19 ... 3999
         const i = Math.trunc(Math.random() * instrumentSet.length * 1000) % instrumentSet.length;
         return instrumentSet[i];
     }
@@ -232,8 +192,6 @@ class Style {
             let maxHarmonySheet = 0;
             for (let instrumentName in harmonyInstrumentSet) {
                 let sheet = harmonyInstrumentSet[instrumentName];
-                // if (typeof sheet !== "string")
-                // 	sheet = sheet.generate(this.name, MeasureCategory.Harmony, progression, progressionCount, 0, 1);
                 const parsedSheet = parseSheet(sheet, 0);
                 if (maxHarmonySheet < parsedSheet.length)
                     maxHarmonySheet = parsedSheet.length;
@@ -259,8 +217,6 @@ class Style {
                 const rhythmInstrumentSet = Style.pickInstrumentSet(instrumentSetArray);
                 for (let instrumentName in rhythmInstrumentSet) {
                     let sheet = rhythmInstrumentSet[instrumentName];
-                    // if (typeof sheet !== "string")
-                    // 	sheet = sheet.generate(this.name, MeasureCategory.Rhythm, progression, progressionCount, measure, measureCount);
                     const parsedSheet = parseSheet(sheet, sheetPadding);
                     if (maxMeasureSheet < (parsedSheet === null || parsedSheet === void 0 ? void 0 : parsedSheet.length) - sheetPadding)
                         maxMeasureSheet = (parsedSheet === null || parsedSheet === void 0 ? void 0 : parsedSheet.length) - sheetPadding;
@@ -273,14 +229,12 @@ class Style {
                 if (!instrumentSetArray)
                     throw new Error("instrumentSetArray is null");
                 let melodyInstrumentSet = Style.pickInstrumentSet(instrumentSetArray);
-                ///adaptar nota para encaixar com acorde
+                ///Adaptar nota para encaixar com acorde
                 const bassSheet = findInstrumentWithLowestOctave(harmonyInstrumentSet);
                 const bassSheetNotes = parseSheet(bassSheet, 0);
                 melodyInstrumentSet = adjustMelodyToChordNote(melodyInstrumentSet, bassSheetNotes[measure]);
                 for (let instrumentName in melodyInstrumentSet) {
                     let sheet = melodyInstrumentSet[instrumentName];
-                    // if (typeof sheet !== "string")
-                    // 	sheet = sheet.generate(this.name, MeasureCategory.Melody, progression, progressionCount, measure, measureCount);
                     const parsedSheet = parseSheet(sheet, sheetPadding);
                     if (maxMeasureSheet < parsedSheet.length - sheetPadding)
                         maxMeasureSheet = parsedSheet.length - sheetPadding;
@@ -307,8 +261,6 @@ class Style {
     }
 }
 function parseSheet(sheet, sheetPadding) {
-    // no prox semestre, no documento explicaremos a lógica de notação da sheet como ABNF
-    // "dm7 xyz8 a1 b3 c2c4c5"
     if (!sheet)
         return null;
     const count = sheet.length;
@@ -369,62 +321,12 @@ function parseNumbers(sheet, instrument, scale, rootNote) {
     });
     return parsedSheet.join(" ");
 }
-function randomNotes(measureLength) {
+function generateRandomNotes(measureLength) {
     let sheet = [];
     for (let n = 0; n < measureLength; n++) {
         sheet.push(roll(9) - 1);
     }
     return sheet;
-}
-function generateRandomNote(instrument) {
-    return roll(9) - 1;
-}
-//samba:
-function generateSectionRhythm(progressionCount) {
-    progressionCount !== null && progressionCount !== void 0 ? progressionCount : 2 ** roll(3);
-    let progressions = [];
-    let baseProgression = generateProgressionRhythm(progressions);
-    for (let i = 0; i < progressionCount; i++) {
-        progressions.push(baseProgression);
-    }
-    for (let p in progressions) {
-        p = alterProgressionRhythm(p);
-        roll(2) > 1 ? setNewBaseProgression(progressions) : null;
-    }
-}
-function generateProgressionRhythm(progressions) {
-    const measureCount = 2 ** roll(3);
-    let measures = [];
-    for (let m = 0; m < measureCount; m++) {
-        progressions ?
-            measures.push(generateMeasureRhythm(8))
-            : measures.push(alterMeasureRhythm());
-    }
-    return measures.join();
-}
-function generateMeasureRhythm(measureLength) {
-    if (roll(2) > 1) {
-        //pickRandomMeasure()
-    }
-    if (roll(2) > 1) {
-        //alterRandomMeasure()
-    }
-    //for i in Instrument
-    //for n in timeSignature
-    //n = 1 | 0
-    let measure = '';
-    for (let index = 0; index < measureLength; index++) {
-        roll(2) > 1 ? measure += ' - ' :
-            measure += ` ${roll(4)} `;
-    }
-    return measure;
-}
-function alterMeasureRhythm() {
-    return "a";
-}
-function alterProgressionRhythm(progression) { return progression; }
-function setNewBaseProgression(progressions) {
-    generateProgressionRhythm(progressions);
 }
 function generateChordNotesForMelody(chord) {
     return Math.abs(chord) + roll(3) * 2;
@@ -549,16 +451,7 @@ function generateAxialMelodySheet(baseSheet, chordNote) {
     return baseSheet;
 }
 //TODO
-// DEPR se for pra fazer as funcoes que tao no texto tem que refazer a estrutura da sheets pra uma visao global a partir da section
-//  OK linear pattern: graus conjuntos entre notas de acorde
-//  OK gap fill: salto e dps preenchimento
-//  OK axial melodies: cobrinha
-// DEPR ou seja, generateSection tem que ir pro style (mentira)
-//  OK como nao vai ter linguagens formais ja podia fazer a funcao song que concatena tudo numa ordem especifica
-//OK arrumar contagem da progression - 	// Procura pela última entrada não-nula (section - MaxSheetLenght, nao pode eliminar as nao nulas)
 //bloqueio de clique pra esperar as samples carregarem
-//OK encadear linearmente as sections
-//avaliar a riqueza das partes
 //remover o cursor piscando no slider
 class Instrument {
     constructor(path, samples, centerOctave, color, role) {
@@ -1653,17 +1546,11 @@ class Forro extends Style {
                         accordion: "d5 - - -"
                     },
                     {
-                        accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
-                    },
-                    {
-                        accordion: parseNumbers(scaleMelodies[roll(scaleMelodies.length - 1)], accordion, chosenScale, 5),
-                    },
-                    {
                         accordion: melodies8thNotes[roll(melodies8thNotes.length) - 1]
                     },
                     {
-                        accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1] + ' ' + melodies4thNotes[roll(melodies4thNotes.length) - 1]
-                    },
+                        accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1]
+                    }
                 ];
             default:
                 return [
@@ -1992,7 +1879,7 @@ class Jazz extends Style {
             default:
                 return [
                     {
-                        sax: parseNumbers(randomNotes(6), sax, Minor, 0)
+                        sax: parseNumbers(generateRandomNotes(6), sax, Minor, 0)
                     },
                     {
                         sax: saxMelodies[roll(saxMelodies.length - 1)]
@@ -2654,7 +2541,7 @@ class Funk extends Style {
         const full8thNote = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0];
         const highRegisterPiano = piano;
         highRegisterPiano.centerOctave = 5;
-        const melodyFunkInstruments = [funkBrass, highRegisterPiano, stab, flute, harpsichord, dulcimer];
+        const melodyFunkInstruments = [funkBrass, highRegisterPiano, stab, flute, harpsichord, dulcimer, brassStab];
         const funkRaveSheets = [
             'c3 - - c3 - - c3 - - - d3 - d3 - - -',
             'c3 - - c3 - - c3 - - - d3 - - d3 - -',
@@ -2777,7 +2664,7 @@ class Funk extends Style {
                         [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet([0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0]), chosenInstrument, Minor, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(randomNotes(16), chosenInstrument, Minor, 3),
+                        [chosenInstrument.path]: parseNumbers(generateRandomNotes(16), chosenInstrument, Minor, 3),
                     },
                     {
                         [chosenInstrument.path]: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
@@ -3009,7 +2896,6 @@ class Visualizer {
             }
             const y = canvasHeight - (canvasHeight * (sample.time - currentTime) / 4);
             context.fillStyle = sample.sample.color;
-            //context.fillRect(sample.xIndex * 14, y - 28, 14, 28);
             context.fillRect(14 + (canvasWidth - 28) * (sample.xIndex / this.maxInstrumentCount), y - 28, 14, 28);
         }
     }

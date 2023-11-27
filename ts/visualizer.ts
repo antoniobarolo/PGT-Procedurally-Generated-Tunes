@@ -60,7 +60,6 @@ class Visualizer {
 
 			const y = canvasHeight - (canvasHeight * (sample.time - currentTime) / 4);
 			context.fillStyle = sample.sample.color;
-			//context.fillRect(sample.xIndex * 14, y - 28, 14, 28);
 			context.fillRect(14 + (canvasWidth - 28) * (sample.xIndex / this.maxInstrumentCount), y - 28, 14, 28);
 		}
 	}
