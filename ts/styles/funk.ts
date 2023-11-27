@@ -311,7 +311,7 @@ class Funk extends Style {
 					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
+					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Phrygian, 3),
 				},
 				{
 					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
@@ -339,7 +339,7 @@ class Funk extends Style {
 					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
+					[chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument,  Phrygian, 3),
 				},
 				{
 					[chosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
@@ -360,7 +360,7 @@ class Funk extends Style {
 					[chosenInstrument.path]: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
 				},
 				{
-					[chosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
+					[chosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(clave)), chosenInstrument,  Phrygian, 3),
 				},
 				{
 					[chosenInstrument.path]: funkRaveSheets[roll(funkRaveSheets.length - 1)]

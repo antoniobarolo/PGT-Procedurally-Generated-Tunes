@@ -2,7 +2,7 @@ function roll(size: number): number {
     return Math.floor(Math.random() * size) + 1;
 }
 
-function findInstrumentWithLowestOctave(instrumentSet: InstrumentSet): Sheet | null {
+function findInstrumentWithLowestOctave(instrumentSet: InstrumentSet): string | null {
     let minInstrument: string | null = null;
     let minOctave = Infinity;
 

@@ -36,6 +36,7 @@ enum NoteNumber {
 const noteNames = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
 
 const Minor = [0, 2, 3, 5, 7, 8, 10]
+const Phrygian = [0, 1, 3, 5, 7, 8, 10]
 const Dorian = [0, 2, 3, 5, 7, 9, 10]
 const Major = [0, 2, 4, 5, 7, 9, 11]
 const Lydian = [0, 2, 4, 6, 7, 9, 11]

@@ -170,6 +170,7 @@ class Forro extends Style {
 			"k1 k2 s k2 s s k1 k1",
 			"k1 k2 k1 k2 k1 k2 k1 k2",
 			"k1 k2 k2 k1 k2 k2 k1 k2",
+			"k1 - k1 - k1 - - s"
 		]
 
 		switch (sectionType) {
@@ -187,6 +188,7 @@ class Forro extends Style {
 				]
 				const triangleIntroGrooves = [
 					"1 2 3 2 1 2 3 2",
+					"1 - 2 - 3 - 2 - ",
 					"1 - - - 1 2 3 2",
 					"1 - - - 1 - 3 -",
 					"3 - - - - - 3 -",
@@ -314,6 +316,14 @@ class Forro extends Style {
 						zabumba: zabumbaGrooves[roll(zabumbaGrooves.length) - 1],
 						triangle: "1 - - - 2 - 2 - "
 					},
+					{
+						triangle: "1 - 2 - 3 - 2 - ",
+						zabumba: "k1 - k1 - k1 - - s"
+					},
+					{
+						triangle: "1 - 2 - 3 - 2 - ",
+						zabumba: "k2 - - k1 - - - s"
+					}
 				];
 
 			case SectionType.Refrao:
@@ -338,6 +348,14 @@ class Forro extends Style {
 						triangle: "1 2 3 2 1 2 3 2",
 						xylo: xyloChorusGrooves[roll(xyloChorusGrooves.length) - 1]
 					},
+					{
+						triangle: "1 - 2 - 3 - 2 - ",
+						zabumba: "k1 - k1 - k1 - - s"
+					},
+					{
+						triangle: "1 - 2 - 3 - 2 - ",
+						zabumba: "k2 - - k1 - - - s"
+					}
 				]
 
 			default:

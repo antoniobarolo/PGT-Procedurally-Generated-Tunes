@@ -12,35 +12,59 @@ class Jazz extends Style {
 					bass: 'a2'
 				}]
 			case SectionType.Verso:
-				return [
-					{
-						piano: 'c4 b3',
-						bass: 'a3 e3',
-					},
-					{
-						piano: 'e4 e4',
-						bass: 'a3 e3',
-					},
-					{
-						piano: 'g4 g4',
-						bass: 'a3 e3',
-					},
-					{
-						piano: 'd4 e4 a4 g4',
-						bass: 'b3 e3 a3 a3',
-					},
-					{
-						piano: 'd4 e4 d4 d4 c4 b3 c4 e4',
-						bass: 'b3 e3 g3 b3 a3 e3 f3 e3',
-					},
-					{
-						piano: 'g4 g4 g4 g4',
-						bass: 'a3 g3 f3 e3',
-					},
-				];
+				const progressionSize = roll(3)
+				switch (progressionSize) {
+					case 1:
+						return [
+							{
+								piano: 'c4 b3',
+								bass: 'a3 e3',
+							},
+							{
+								piano: 'e4 e4',
+								bass: 'a3 e3',
+							},
+							{
+								piano: 'g4 g4',
+								bass: 'a3 e3',
+							},
+						]
+
+					case 2:
+						return [
+							{
+								piano: 'd4 e4 a4 g4',
+								bass: 'b3 e3 a3 a3',
+							},
+							{
+								piano: 'g4 g4 g4 g4',
+								bass: 'a3 g3 f3 e3',
+							},
+							{
+								piano: 'g4 f4 e4 g4',
+								bass: 'e3 g3 a3 a3',
+							},
+						]
+
+					case 3:
+						return [
+							{
+								piano: 'd4 e4 d4 d4 c4 b3 c4 e4',
+								bass: 'b3 e3 g3 b3 a3 e3 f3 e3',
+							},
+							{
+								piano: 'd4 e4 d4 d4 c4 c4 b3 c4',
+								bass: 'b3 e3 g3 b3 a3 f3 g3 a3',
+							},
+							{
+								piano: 'd4 e4 d4 d4 c4 b3 e4 g#4',
+								bass: 'b3 e3 g3 b3 a3 e3 e3 e3',
+							},
+						];
+				}
 			case SectionType.Refrao:
-				return [
-					{
+				if (roll(2) > 1) {
+					return [{
 						piano: 'f5 e5 d5 d5 c5 b4 a4 g#4',
 						bass: 'g3 d3 g3 d3 a3 e3 a3 e4',
 					},
@@ -48,6 +72,12 @@ class Jazz extends Style {
 						piano: 'd5 e5 e5 f5 g5 g5 a5 b5',
 						bass: 'b3 e4 a3 d4 g3 c4 f3 g3',
 					},
+					{
+						piano:'c4 b3 c4 d4 e4 f#4 g4 g#4',
+						bass: 'a3 e3 a3 e3 a3 e3 a3 e3'
+					}]
+				}
+				return [
 					{
 						piano: 'b4 c5 d5 e5',
 						bass: 'g3 a3 g3 a3',
@@ -89,14 +119,6 @@ class Jazz extends Style {
 						bass: 'b3 e3 a3 a3',
 					},
 				];
-
-			default:
-				return [
-					{
-						piano: 'c4 b3',
-						bass: 'a3 e3',
-					},
-				];
 		}
 	}
 
@@ -104,75 +126,75 @@ class Jazz extends Style {
 		switch (sectionType) {
 			case SectionType.Intro:
 				return [
-				{
-					ride: '- 1 1 1 - -',
-					kick: '3 - - 3 - -'
-				},
-				{
-					ride: '- 2 2 2 - -',
-					kick: '3 - - 3 - -'
-				},
-				{
-					ride: '- 3 3 3 - -',
-					kick: '3 - - 3 - -'
-				},
-				{
-					ride: '- 4 4 4 - -',
-					kick: '3 - - 3 - -'
-				},
-				{
-					ride: '- 5 5 5 - -',
-					kick: '3 - - 3 - -'
-				},
-				{
-					ride: '- 3 3 3 - -'
-				},
-				{
-					ride: '- 4 4 4 - -'
-				},
-				{
-					ride: '- 5 5 5 - -'
-				},
-				{
-					ride: '1 - 2 - 3 -'
-				},
-				{
-					ride: '5 - - - - -'
-				},
-				{
-					ride: '- - - 5 - -'
-				},
-				{
-					ride: '3 - - - - -'
-				},
-				{
-					ride: '- - - 3 - -'
-				},
-				{
-					ride: '1 2 3 - 2 3'
-				},
-				{
-					ride: '5 5 5 5 5 5'
-				},
-				{
-					ride: '1 4 3 4 5 5'
-				},
-				{
-					shaker: '1 2 3 4 3 2'
-				},
-				{
-					shaker: '1 - 2 1 - 2'
-				},
-				{
-					shaker: '1 - - 1 - -'
-				},
-				{
-					ride: '2 - - 4 - -',
-					shaker: '1 2 3 4 3 2'
-				},
-				{
-					ride: '- - - - - - '
-				}
+					{
+						ride: '- 1 1 1 - -',
+						kick: '3 - - 3 - -'
+					},
+					{
+						ride: '- 2 2 2 - -',
+						kick: '3 - - 3 - -'
+					},
+					{
+						ride: '- 3 3 3 - -',
+						kick: '3 - - 3 - -'
+					},
+					{
+						ride: '- 4 4 4 - -',
+						kick: '3 - - 3 - -'
+					},
+					{
+						ride: '- 5 5 5 - -',
+						kick: '3 - - 3 - -'
+					},
+					{
+						ride: '- 3 3 3 - -'
+					},
+					{
+						ride: '- 4 4 4 - -'
+					},
+					{
+						ride: '- 5 5 5 - -'
+					},
+					{
+						ride: '1 - 2 - 3 -'
+					},
+					{
+						ride: '5 - - - - -'
+					},
+					{
+						ride: '- - - 5 - -'
+					},
+					{
+						ride: '3 - - - - -'
+					},
+					{
+						ride: '- - - 3 - -'
+					},
+					{
+						ride: '1 2 3 - 2 3'
+					},
+					{
+						ride: '5 5 5 5 5 5'
+					},
+					{
+						ride: '1 4 3 4 5 5'
+					},
+					{
+						shaker: '1 2 3 4 3 2'
+					},
+					{
+						shaker: '1 - 2 1 - 2'
+					},
+					{
+						shaker: '1 - - 1 - -'
+					},
+					{
+						ride: '2 - - 4 - -',
+						shaker: '1 2 3 4 3 2'
+					},
+					{
+						ride: '- - - - - - '
+					}
 				]
 			case SectionType.Verso:
 				return [
@@ -239,9 +261,9 @@ class Jazz extends Style {
 			case SectionType.Ponte:
 				return [
 					{
-						ride: '- 3 3 - 3 3',
-						kick: '1 - - - - -',
-						snare: '- - - 1 - 1'
+						ride: '- 1 2 - 3 3 - 4 4 - 4 5',
+						kick: '1 - - - - - 2 - - - - -',
+						snare: '- - - 1 - 2 - - - 3 - 2',
 					},
 				];
 
@@ -258,7 +280,7 @@ class Jazz extends Style {
 	}
 
 	protected generateMelody(sectionType: SectionType): InstrumentSet[] {
-		const saxMelodies = [
+		const jazzMelodies = [
 			'a4 b4 c5 e5 d5 -',
 			'e5 d5 - g4 a4 -',
 			'g4 a4 b4 g4 e4 -',
@@ -315,23 +337,55 @@ class Jazz extends Style {
 			'a4 - - a5 - -'
 		]
 		switch (sectionType) {
-			case SectionType.Intro:
+			case SectionType.Ponte:
+				return [
+					{
+						piano: parseNumbers(generateRandomNotes(12), piano, Minor, 0)
+					},
+					{
+						piano: jazzMelodies[roll(jazzMelodies.length - 1)] + ` ` + parseNumbers(generateRandomNotes(6), piano, Minor, 0)
+					},
+					{
+						piano: parseNumbers(generateRandomNotes(6), piano, Minor, 0) + ` ` + jazzMelodies[roll(jazzMelodies.length - 1)]
+					},
+					{
+						piano: jazzMelodies[roll(jazzMelodies.length - 1)] + ' ' + parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
+					},
+					{
+						piano: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + jazzMelodies[roll(jazzMelodies.length - 1)]
+					},
+					{
+						piano: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(12)), piano, Minor, 0),
+					},
+					{
+						piano: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
+					},
+					{
+						piano: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
+					},
+					{
+						piano: 'a5 b5 c6 d6 b5 - g5 a5 - - - -'
+					},
+					{
+						piano: '- - a5 b5 c6 d6 b5 - g5 a5 - -'
+					}
+				];
 			default:
 				return [
 					{
 						sax: parseNumbers(generateRandomNotes(6), sax, Minor, 0)
 					},
 					{
-						sax: saxMelodies[roll(saxMelodies.length - 1)]
+						sax: jazzMelodies[roll(jazzMelodies.length - 1)]
 					},
 					{
-						sax: (saxMelodies[roll(saxMelodies.length - 1)])
+						sax: (jazzMelodies[roll(jazzMelodies.length - 1)])
 					},
 					{
-						sax: saxMelodies[roll(saxMelodies.length - 1)]
+						sax: jazzMelodies[roll(jazzMelodies.length - 1)]
 					},
 					{
-						sax: saxMelodies[roll(saxMelodies.length - 1)]
+						sax: jazzMelodies[roll(jazzMelodies.length - 1)]
 					},
 					{
 						sax: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(6)), sax, Minor, 0),

@@ -1,19 +1,26 @@
-function generateRandomNotes(measureLength: number): number[] {
-    let sheet: number[] = []
-    for (let n = 0; n < measureLength; n++) {
-        sheet.push(roll(9) - 1)
-    }
-    return sheet
-}
-
-function generateChordNotesForMelody(chord: number) {
-    return Math.abs(chord) + roll(3) * 2
-}
-
 function generateSheetGroove(measureLength: number): number[] {
     const sheet = []
     for (let i = 0; i < measureLength; i++) {
         sheet.push(roll(2) - 1)
+    }
+    return sheet
+}
+
+function mutateSheetGroove(grooveSheet: number[]): number[] {
+    for (let i = 0; i < grooveSheet.length; i++) {
+        grooveSheet[i] = roll(3) > 2 ? grooveSheet[i] : grooveSheet[i] === 1 ? 0 : 1;
+    }
+    return grooveSheet;
+}
+
+
+function generateRhythmSheet(grooveSheet: number[], instrument: Instrument): string {
+    let sheet = ''
+    for (const note of grooveSheet) {
+        if (note === 0) { sheet += ' - ' }
+        if (note === 1) {
+            sheet += roll(instrument.samples.length) + ' '
+        }
     }
     return sheet
 }
@@ -29,22 +36,12 @@ function generateSkippingNoteRhythmSheet(grooveSheet: number[], instrument: Inst
     return sheet
 }
 
-function generateRhythmSheet(grooveSheet: number[], instrument: Instrument): string {
-    let sheet = ''
-    for (const note of grooveSheet) {
-        if (note === 0) { sheet += ' - ' }
-        if (note === 1) {
-            sheet += roll(instrument.samples.length) + ' '
-        }
+function generateRandomNotes(measureLength: number): number[] {
+    let sheet: number[] = []
+    for (let n = 0; n < measureLength; n++) {
+        sheet.push(roll(9) - 1)
     }
     return sheet
-}
-
-function mutateSheetGroove(grooveSheet: number[]): number[] {
-    for (let i = 0; i < grooveSheet.length; i++) {
-        grooveSheet[i] = roll(3) > 2 ? grooveSheet[i] : grooveSheet[i] === 1 ? 0 : 1;
-    }
-    return grooveSheet;
 }
 
 function generateLinearPatternMelodySheet(baseSheet: number[], firstNote?: number): number[] {
@@ -80,6 +77,10 @@ function generateLinearPatternMelodySheet(baseSheet: number[], firstNote?: numbe
         }
     }
     return baseSheet
+}
+
+function generateChordNotesForMelody(chord: number) {
+    return Math.abs(chord) + roll(3) * 2
 }
 
 function generateGapFillMelodySheet(baseSheet: number[], chordNote?: number): number[] {
@@ -126,6 +127,15 @@ function generateAxialMelodySheet(baseSheet: number[], chordNote?: number): numb
     return baseSheet
 }
 
+
 //TODO
+
+//CODIGO
 //bloqueio de clique pra esperar as samples carregarem
 //remover o cursor piscando no slider
+//remover atributos e metodos nao usados
+
+//TEXTO
+//mudar arquitetura de classes
+//revisar
+//?

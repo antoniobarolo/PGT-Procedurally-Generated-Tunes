@@ -35,6 +35,7 @@ var NoteNumber;
 })(NoteNumber || (NoteNumber = {}));
 const noteNames = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
 const Minor = [0, 2, 3, 5, 7, 8, 10];
+const Phrygian = [0, 1, 3, 5, 7, 8, 10];
 const Dorian = [0, 2, 3, 5, 7, 9, 10];
 const Major = [0, 2, 4, 5, 7, 9, 11];
 const Lydian = [0, 2, 4, 6, 7, 9, 11];
@@ -321,20 +322,28 @@ function parseNumbers(sheet, instrument, scale, rootNote) {
     });
     return parsedSheet.join(" ");
 }
-function generateRandomNotes(measureLength) {
-    let sheet = [];
-    for (let n = 0; n < measureLength; n++) {
-        sheet.push(roll(9) - 1);
-    }
-    return sheet;
-}
-function generateChordNotesForMelody(chord) {
-    return Math.abs(chord) + roll(3) * 2;
-}
 function generateSheetGroove(measureLength) {
     const sheet = [];
     for (let i = 0; i < measureLength; i++) {
         sheet.push(roll(2) - 1);
+    }
+    return sheet;
+}
+function mutateSheetGroove(grooveSheet) {
+    for (let i = 0; i < grooveSheet.length; i++) {
+        grooveSheet[i] = roll(3) > 2 ? grooveSheet[i] : grooveSheet[i] === 1 ? 0 : 1;
+    }
+    return grooveSheet;
+}
+function generateRhythmSheet(grooveSheet, instrument) {
+    let sheet = '';
+    for (const note of grooveSheet) {
+        if (note === 0) {
+            sheet += ' - ';
+        }
+        if (note === 1) {
+            sheet += roll(instrument.samples.length) + ' ';
+        }
     }
     return sheet;
 }
@@ -350,23 +359,12 @@ function generateSkippingNoteRhythmSheet(grooveSheet, instrument) {
     }
     return sheet;
 }
-function generateRhythmSheet(grooveSheet, instrument) {
-    let sheet = '';
-    for (const note of grooveSheet) {
-        if (note === 0) {
-            sheet += ' - ';
-        }
-        if (note === 1) {
-            sheet += roll(instrument.samples.length) + ' ';
-        }
+function generateRandomNotes(measureLength) {
+    let sheet = [];
+    for (let n = 0; n < measureLength; n++) {
+        sheet.push(roll(9) - 1);
     }
     return sheet;
-}
-function mutateSheetGroove(grooveSheet) {
-    for (let i = 0; i < grooveSheet.length; i++) {
-        grooveSheet[i] = roll(3) > 2 ? grooveSheet[i] : grooveSheet[i] === 1 ? 0 : 1;
-    }
-    return grooveSheet;
 }
 function generateLinearPatternMelodySheet(baseSheet, firstNote) {
     if (!baseSheet)
@@ -403,6 +401,9 @@ function generateLinearPatternMelodySheet(baseSheet, firstNote) {
         }
     }
     return baseSheet;
+}
+function generateChordNotesForMelody(chord) {
+    return Math.abs(chord) + roll(3) * 2;
 }
 function generateGapFillMelodySheet(baseSheet, chordNote) {
     if (!baseSheet)
@@ -451,8 +452,14 @@ function generateAxialMelodySheet(baseSheet, chordNote) {
     return baseSheet;
 }
 //TODO
+//CODIGO
 //bloqueio de clique pra esperar as samples carregarem
 //remover o cursor piscando no slider
+//remover atributos e metodos nao usados
+//TEXTO
+//mudar arquitetura de classes
+//revisar
+//?
 class Instrument {
     constructor(path, samples, centerOctave, color, role) {
         this.path = path;
@@ -648,33 +655,6 @@ const flute = new Instrument('flute', [
     "g#6",
     "a6"
 ], 5, "#E095E2", MeasureCategory.Harmony);
-const funkBrass = new Instrument('funk_brass', [
-    "c3",
-    "c#3",
-    "d3",
-    "d#3",
-    "e3",
-    "f3",
-    "f#3",
-    "g3",
-    "g#3",
-    "a3",
-    "a#3",
-    "b3",
-    "c4",
-    "c#4",
-    "d4",
-    "d#4",
-    "e4",
-    "f4",
-    "f#4",
-    "g4",
-    // "g#4",
-    // "a4",
-    // "a#4",
-    // "b4",
-    // "c5",
-], 3, "#13A821", MeasureCategory.Melody);
 const funkHighPercussion = new Instrument('funk_high_percussion', ["1",
     "2",
     "3",
@@ -948,7 +928,6 @@ SampleSet.instruments = [
     caixa,
     cuica,
     drop,
-    funkBrass,
     funkHighPercussion,
     funkKick,
     funkLoop,
@@ -1137,6 +1116,7 @@ class Forro extends Style {
             "k1 k2 s k2 s s k1 k1",
             "k1 k2 k1 k2 k1 k2 k1 k2",
             "k1 k2 k2 k1 k2 k2 k1 k2",
+            "k1 - k1 - k1 - - s"
         ];
         switch (sectionType) {
             case SectionType.Intro:
@@ -1153,6 +1133,7 @@ class Forro extends Style {
                 ];
                 const triangleIntroGrooves = [
                     "1 2 3 2 1 2 3 2",
+                    "1 - 2 - 3 - 2 - ",
                     "1 - - - 1 2 3 2",
                     "1 - - - 1 - 3 -",
                     "3 - - - - - 3 -",
@@ -1275,6 +1256,14 @@ class Forro extends Style {
                         zabumba: zabumbaGrooves[roll(zabumbaGrooves.length) - 1],
                         triangle: "1 - - - 2 - 2 - "
                     },
+                    {
+                        triangle: "1 - 2 - 3 - 2 - ",
+                        zabumba: "k1 - k1 - k1 - - s"
+                    },
+                    {
+                        triangle: "1 - 2 - 3 - 2 - ",
+                        zabumba: "k2 - - k1 - - - s"
+                    }
                 ];
             case SectionType.Refrao:
                 const xyloChorusGrooves = [
@@ -1298,6 +1287,14 @@ class Forro extends Style {
                         triangle: "1 2 3 2 1 2 3 2",
                         xylo: xyloChorusGrooves[roll(xyloChorusGrooves.length) - 1]
                     },
+                    {
+                        triangle: "1 - 2 - 3 - 2 - ",
+                        zabumba: "k1 - k1 - k1 - - s"
+                    },
+                    {
+                        triangle: "1 - 2 - 3 - 2 - ",
+                        zabumba: "k2 - - k1 - - - s"
+                    }
                 ];
             default:
                 return [
@@ -1579,42 +1576,70 @@ class Jazz extends Style {
                         bass: 'a2'
                     }];
             case SectionType.Verso:
-                return [
-                    {
-                        piano: 'c4 b3',
-                        bass: 'a3 e3',
-                    },
-                    {
-                        piano: 'e4 e4',
-                        bass: 'a3 e3',
-                    },
-                    {
-                        piano: 'g4 g4',
-                        bass: 'a3 e3',
-                    },
-                    {
-                        piano: 'd4 e4 a4 g4',
-                        bass: 'b3 e3 a3 a3',
-                    },
-                    {
-                        piano: 'd4 e4 d4 d4 c4 b3 c4 e4',
-                        bass: 'b3 e3 g3 b3 a3 e3 f3 e3',
-                    },
-                    {
-                        piano: 'g4 g4 g4 g4',
-                        bass: 'a3 g3 f3 e3',
-                    },
-                ];
+                const progressionSize = roll(3);
+                switch (progressionSize) {
+                    case 1:
+                        return [
+                            {
+                                piano: 'c4 b3',
+                                bass: 'a3 e3',
+                            },
+                            {
+                                piano: 'e4 e4',
+                                bass: 'a3 e3',
+                            },
+                            {
+                                piano: 'g4 g4',
+                                bass: 'a3 e3',
+                            },
+                        ];
+                    case 2:
+                        return [
+                            {
+                                piano: 'd4 e4 a4 g4',
+                                bass: 'b3 e3 a3 a3',
+                            },
+                            {
+                                piano: 'g4 g4 g4 g4',
+                                bass: 'a3 g3 f3 e3',
+                            },
+                            {
+                                piano: 'g4 f4 e4 g4',
+                                bass: 'e3 g3 a3 a3',
+                            },
+                        ];
+                    case 3:
+                        return [
+                            {
+                                piano: 'd4 e4 d4 d4 c4 b3 c4 e4',
+                                bass: 'b3 e3 g3 b3 a3 e3 f3 e3',
+                            },
+                            {
+                                piano: 'd4 e4 d4 d4 c4 c4 b3 c4',
+                                bass: 'b3 e3 g3 b3 a3 f3 g3 a3',
+                            },
+                            {
+                                piano: 'd4 e4 d4 d4 c4 b3 e4 g#4',
+                                bass: 'b3 e3 g3 b3 a3 e3 e3 e3',
+                            },
+                        ];
+                }
             case SectionType.Refrao:
+                if (roll(2) > 1) {
+                    return [{
+                            piano: 'f5 e5 d5 d5 c5 b4 a4 g#4',
+                            bass: 'g3 d3 g3 d3 a3 e3 a3 e4',
+                        },
+                        {
+                            piano: 'd5 e5 e5 f5 g5 g5 a5 b5',
+                            bass: 'b3 e4 a3 d4 g3 c4 f3 g3',
+                        },
+                        {
+                            piano: 'c4 b3 c4 d4 e4 f#4 g4 g#4',
+                            bass: 'a3 e3 a3 e3 a3 e3 a3 e3'
+                        }];
+                }
                 return [
-                    {
-                        piano: 'f5 e5 d5 d5 c5 b4 a4 g#4',
-                        bass: 'g3 d3 g3 d3 a3 e3 a3 e4',
-                    },
-                    {
-                        piano: 'd5 e5 e5 f5 g5 g5 a5 b5',
-                        bass: 'b3 e4 a3 d4 g3 c4 f3 g3',
-                    },
                     {
                         piano: 'b4 c5 d5 e5',
                         bass: 'g3 a3 g3 a3',
@@ -1653,13 +1678,6 @@ class Jazz extends Style {
                     {
                         piano: 'b4 b4 a4 e4',
                         bass: 'b3 e3 a3 a3',
-                    },
-                ];
-            default:
-                return [
-                    {
-                        piano: 'c4 b3',
-                        bass: 'a3 e3',
                     },
                 ];
         }
@@ -1802,9 +1820,9 @@ class Jazz extends Style {
             case SectionType.Ponte:
                 return [
                     {
-                        ride: '- 3 3 - 3 3',
-                        kick: '1 - - - - -',
-                        snare: '- - - 1 - 1'
+                        ride: '- 1 2 - 3 3 - 4 4 - 4 5',
+                        kick: '1 - - - - - 2 - - - - -',
+                        snare: '- - - 1 - 2 - - - 3 - 2',
                     },
                 ];
             default:
@@ -1818,7 +1836,7 @@ class Jazz extends Style {
         }
     }
     generateMelody(sectionType) {
-        const saxMelodies = [
+        const jazzMelodies = [
             'a4 b4 c5 e5 d5 -',
             'e5 d5 - g4 a4 -',
             'g4 a4 b4 g4 e4 -',
@@ -1875,23 +1893,55 @@ class Jazz extends Style {
             'a4 - - a5 - -'
         ];
         switch (sectionType) {
-            case SectionType.Intro:
+            case SectionType.Ponte:
+                return [
+                    {
+                        piano: parseNumbers(generateRandomNotes(12), piano, Minor, 0)
+                    },
+                    {
+                        piano: jazzMelodies[roll(jazzMelodies.length - 1)] + ` ` + parseNumbers(generateRandomNotes(6), piano, Minor, 0)
+                    },
+                    {
+                        piano: parseNumbers(generateRandomNotes(6), piano, Minor, 0) + ` ` + jazzMelodies[roll(jazzMelodies.length - 1)]
+                    },
+                    {
+                        piano: jazzMelodies[roll(jazzMelodies.length - 1)] + ' ' + parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
+                    },
+                    {
+                        piano: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + jazzMelodies[roll(jazzMelodies.length - 1)]
+                    },
+                    {
+                        piano: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(12)), piano, Minor, 0),
+                    },
+                    {
+                        piano: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
+                    },
+                    {
+                        piano: parseNumbers(generateGapFillMelodySheet(generateSheetGroove(6)), piano, Minor, 0) + ' ' + parseNumbers(generateAxialMelodySheet(generateSheetGroove(6)), piano, Minor, 0),
+                    },
+                    {
+                        piano: 'a5 b5 c6 d6 b5 - g5 a5 - - - -'
+                    },
+                    {
+                        piano: '- - a5 b5 c6 d6 b5 - g5 a5 - -'
+                    }
+                ];
             default:
                 return [
                     {
                         sax: parseNumbers(generateRandomNotes(6), sax, Minor, 0)
                     },
                     {
-                        sax: saxMelodies[roll(saxMelodies.length - 1)]
+                        sax: jazzMelodies[roll(jazzMelodies.length - 1)]
                     },
                     {
-                        sax: (saxMelodies[roll(saxMelodies.length - 1)])
+                        sax: (jazzMelodies[roll(jazzMelodies.length - 1)])
                     },
                     {
-                        sax: saxMelodies[roll(saxMelodies.length - 1)]
+                        sax: jazzMelodies[roll(jazzMelodies.length - 1)]
                     },
                     {
-                        sax: saxMelodies[roll(saxMelodies.length - 1)]
+                        sax: jazzMelodies[roll(jazzMelodies.length - 1)]
                     },
                     {
                         sax: parseNumbers(generateLinearPatternMelodySheet(generateSheetGroove(6)), sax, Minor, 0),
@@ -2541,7 +2591,7 @@ class Funk extends Style {
         const full8thNote = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0];
         const highRegisterPiano = piano;
         highRegisterPiano.centerOctave = 5;
-        const melodyFunkInstruments = [funkBrass, highRegisterPiano, stab, flute, harpsichord, dulcimer, brassStab];
+        const melodyFunkInstruments = [highRegisterPiano, stab, flute, harpsichord, dulcimer, brassStab];
         const funkRaveSheets = [
             'c3 - - c3 - - c3 - - - d3 - d3 - - -',
             'c3 - - c3 - - c3 - - - d3 - - d3 - -',
@@ -2623,7 +2673,7 @@ class Funk extends Style {
                         [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
+                        [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Phrygian, 3),
                     },
                     {
                         [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
@@ -2649,7 +2699,7 @@ class Funk extends Style {
                         [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
+                        [chosenInstrument.path]: parseNumbers(generateLinearPatternMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Phrygian, 3),
                     },
                     {
                         [chosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(full8thNote)), chosenInstrument, Minor, 3),
@@ -2670,7 +2720,7 @@ class Funk extends Style {
                         [chosenInstrument.path]: parseNumbers(generateGapFillMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
                     },
                     {
-                        [chosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Minor, 3),
+                        [chosenInstrument.path]: parseNumbers(generateAxialMelodySheet(mutateSheetGroove(clave)), chosenInstrument, Phrygian, 3),
                     },
                     {
                         [chosenInstrument.path]: funkRaveSheets[roll(funkRaveSheets.length - 1)]
