@@ -134,16 +134,3 @@ function generateAxialMelodySheet(baseSheet: number[], chordNote?: number): numb
 //bloqueio de clique pra esperar as samples carregarem
 //remover o cursor piscando no slider
 //remover atributos e metodos nao usados
-
-//TEXTO
-//mudar arquitetura de classes
-
-//DIAGRAMA DE classes
-/*
-sem visualizer
-SampleSet -> losango (contains) Instrument
-SampleSet -> losango (contains) Sample
-
-tirar getNextMeasureCount (e outras coisas que sairam)
-*/
-

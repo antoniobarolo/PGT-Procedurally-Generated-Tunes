@@ -2,8 +2,8 @@ class Section {
 	public bpm: number;
 	public noteDuration: number;
 	public duration: number;
-
-	type: SectionType;
+	public type: SectionType;
+	
 	private progressions: Progression[];
 	private maxSheetLength: number[];
 

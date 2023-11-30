@@ -1,6 +1,7 @@
 class Jazz extends Style {
 	readonly sections = [SectionType.Intro, SectionType.Refrao, SectionType.Verso, SectionType.Refrao, SectionType.Ponte, SectionType.Refrao, SectionType.Intro, SectionType.Intro]
-
+	readonly verseProgressionSize = roll(3)
+	readonly chorusProgressionSize = roll(2)
 	constructor() {
 		super(StyleName.Jazz, 115, 8 / 12);
 	}
@@ -9,11 +10,26 @@ class Jazz extends Style {
 		switch (sectionType) {
 			case SectionType.Intro:
 				return [{
-					bass: 'a2'
-				}]
+					bass: 'a2 e2'
+				},
+				{
+					bass: 'a2 -'
+				},
+				{
+					bass: '- a2'
+				},
+				{
+					bass: 'a2 e2',
+					piano: '- g#4'
+				},
+				{
+					bass: '- e2',
+					piano: '- g#4'
+				}
+				]
 			case SectionType.Verso:
-				const progressionSize = roll(3)
-				switch (progressionSize) {
+
+				switch (this.verseProgressionSize) {
 					case 1:
 						return [
 							{
@@ -63,7 +79,7 @@ class Jazz extends Style {
 						];
 				}
 			case SectionType.Refrao:
-				if (roll(2) > 1) {
+				if (this.chorusProgressionSize == 2) {
 					return [{
 						piano: 'f5 e5 d5 d5 c5 b4 a4 g#4',
 						bass: 'g3 d3 g3 d3 a3 e3 a3 e4',
@@ -73,7 +89,7 @@ class Jazz extends Style {
 						bass: 'b3 e4 a3 d4 g3 c4 f3 g3',
 					},
 					{
-						piano:'c4 b3 c4 d4 e4 f#4 g4 g#4',
+						piano: 'c4 b3 c4 d4 e4 f#4 g4 g#4',
 						bass: 'a3 e3 a3 e3 a3 e3 a3 e3'
 					}]
 				}
@@ -401,10 +417,22 @@ class Jazz extends Style {
 	}
 
 	protected getNextProgressionCount(sectionType: SectionType): number {
-		return 4;
+		switch (sectionType) {
+			case SectionType.Verso:
+				switch (this.verseProgressionSize) {
+					case 1:
+						return 4
+					case 2:
+						return 2
+					case 3:
+					default:
+						return 1
+				}
+			case SectionType.Refrao:
+				return 2
+			default:
+				return 2
+		}
 	}
 
-	protected getNextMeasureCount(sectionType: SectionType, progressionIndex: number, progressionCount: number): number {
-		return 4;
-	}
 }
