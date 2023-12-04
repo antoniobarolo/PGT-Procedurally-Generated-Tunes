@@ -109,3 +109,7 @@ new tune button
 #divLoading{
     padding: 50px;
 }
+
+#divLoading img{
+   margin-top: 20px;
+}

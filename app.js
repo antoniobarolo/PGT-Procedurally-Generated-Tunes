@@ -451,11 +451,6 @@ function generateAxialMelodySheet(baseSheet, chordNote) {
     }
     return baseSheet;
 }
-//TODO
-//CODIGO
-//bloqueio de clique pra esperar as samples carregarem
-//remover o cursor piscando no slider
-//remover atributos e metodos nao usados
 class Instrument {
     constructor(path, samples, centerOctave, color, role) {
         this.path = path;

@@ -126,9 +126,3 @@ function generateAxialMelodySheet(baseSheet: number[], chordNote?: number): numb
     }
     return baseSheet
 }
-
-
-//TODO
-
-//CODIGO
-
