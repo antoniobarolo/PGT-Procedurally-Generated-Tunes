@@ -9,13 +9,16 @@ class Player {
 		this.visualizer = null;
 	}
 
-	public playSample(sample: Sample, time: number): void {
+	public playSample(sample: Sample, time: number, onlyPreparePosition: boolean): void {
 		if (!sample) return
-		const source = audioContext.createBufferSource();
-		source.buffer = sample.buffer;
-		source.connect(gainNode);
-		gainNode.connect(audioContext.destination);
-		source.start(time);
+
+		if (!onlyPreparePosition) {
+			const source = audioContext.createBufferSource();
+			source.buffer = sample.buffer;
+			source.connect(gainNode);
+			gainNode.connect(audioContext.destination);
+			source.start(time);
+		}
 
 		if (this.visualizer) {
 			let xIndex = this.samplePosition.get(sample.index);
@@ -23,11 +26,18 @@ class Player {
 				xIndex = this.samplePosition.size;
 				this.samplePosition.set(sample.index, xIndex);
 			}
-			this.visualizer.playSample(sample, time, xIndex, this.samplePosition.size);
+
+			if (!onlyPreparePosition)
+				this.visualizer.playSample(sample, time, xIndex, this.samplePosition.size);
 		}
 	}
 
-	public playSection(section: Section): void {
+	public playSection(section: Section, onlyPreparePosition: boolean): void {
+		if (onlyPreparePosition) {
+			section.play(this, 0, onlyPreparePosition);
+			return;
+		}
+
 		const currentTime = audioContext.currentTime;
 
 		if (this.nextTime < 0)
@@ -37,6 +47,6 @@ class Player {
 
 		this.nextTime = startTime + section.duration;
 
-		section.play(this, startTime);
+		section.play(this, startTime, onlyPreparePosition);
 	}
 }

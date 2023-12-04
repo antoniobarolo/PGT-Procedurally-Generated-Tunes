@@ -42,7 +42,7 @@ class Section {
 		this.duration = this.noteDuration * totalSheetLength;
 	}
 
-	public play(player: Player, startTime: number): void {
+	public play(player: Player, startTime: number, onlyPreparePosition: boolean): void {
 		const noteDuration = this.noteDuration;
 		const progressions = this.progressions;
 		const maxSheetLength = this.maxSheetLength;
@@ -75,7 +75,7 @@ class Section {
 							}
 							if (!sample) throw new Error("Missing sample: " + sampleName)
 						}
-						player.playSample(sample, startTime + ((totalSheetLength + i) * noteDuration));
+						player.playSample(sample, startTime + ((totalSheetLength + i) * noteDuration), onlyPreparePosition);
 					}
 				}
 			}

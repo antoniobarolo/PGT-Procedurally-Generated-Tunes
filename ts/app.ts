@@ -71,22 +71,25 @@ async function setup(): Promise<void> {
 
 setup();
 
-function playStyle(style: Style, section: SectionType): Section {
-	const generatedSection = style.generateSection(section);
-	player.playSection(generatedSection);
-	return generatedSection
-}
-
-function playCurrentStyle() {
+async function playCurrentStyle() {
 	const generatedSections = [
 		currentStyle.generateSection(SectionType.Intro),
 		currentStyle.generateSection(SectionType.Verso),
 		currentStyle.generateSection(SectionType.Ponte),
 		currentStyle.generateSection(SectionType.Refrao)]
 
+	for (let index = 0; index < generatedSections.length; index++) {
+		player.playSection(generatedSections[index], true);
+	}
+
+	let remainingDelay = 0;
+
 	for (let index = 0; index < currentStyle.sections.length; index++) {
 		const currentSection = generatedSections.find(section => section.type === currentStyle.sections[index]);
-		player.playSection(currentSection)
+		player.playSection(currentSection, false);
+		const currentDelay = currentSection.duration * 0.7;
+		await delay(currentDelay + remainingDelay);
+		remainingDelay = currentSection.duration - currentDelay;
 	}
 
 }

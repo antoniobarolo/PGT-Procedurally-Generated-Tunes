@@ -88,6 +88,11 @@ function adjustMelodyToChordNote(instrumentSet, chord) {
     }
     return instrumentSet;
 }
+function delay(seconds) {
+    return new Promise(resolve => {
+        setTimeout(resolve, seconds * 1000);
+    });
+}
 class Section {
     constructor(type, progressions, bpm, noteDuration) {
         this.bpm = bpm;
@@ -113,7 +118,7 @@ class Section {
         }
         this.duration = this.noteDuration * totalSheetLength;
     }
-    play(player, startTime) {
+    play(player, startTime, onlyPreparePosition) {
         const noteDuration = this.noteDuration;
         const progressions = this.progressions;
         const maxSheetLength = this.maxSheetLength;
@@ -147,7 +152,7 @@ class Section {
                             if (!sample)
                                 throw new Error("Missing sample: " + sampleName);
                         }
-                        player.playSample(sample, startTime + ((totalSheetLength + i) * noteDuration));
+                        player.playSample(sample, startTime + ((totalSheetLength + i) * noteDuration), onlyPreparePosition);
                     }
                 }
             }
@@ -2824,30 +2829,37 @@ class Player {
         this.samplePosition = new Map();
         this.visualizer = null;
     }
-    playSample(sample, time) {
+    playSample(sample, time, onlyPreparePosition) {
         if (!sample)
             return;
-        const source = audioContext.createBufferSource();
-        source.buffer = sample.buffer;
-        source.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        source.start(time);
+        if (!onlyPreparePosition) {
+            const source = audioContext.createBufferSource();
+            source.buffer = sample.buffer;
+            source.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            source.start(time);
+        }
         if (this.visualizer) {
             let xIndex = this.samplePosition.get(sample.index);
             if (xIndex === undefined) {
                 xIndex = this.samplePosition.size;
                 this.samplePosition.set(sample.index, xIndex);
             }
-            this.visualizer.playSample(sample, time, xIndex, this.samplePosition.size);
+            if (!onlyPreparePosition)
+                this.visualizer.playSample(sample, time, xIndex, this.samplePosition.size);
         }
     }
-    playSection(section) {
+    playSection(section, onlyPreparePosition) {
+        if (onlyPreparePosition) {
+            section.play(this, 0, onlyPreparePosition);
+            return;
+        }
         const currentTime = audioContext.currentTime;
         if (this.nextTime < 0)
             audioContext.resume().catch(console.error);
         const startTime = ((this.nextTime < currentTime) ? (currentTime + 0.075) : this.nextTime);
         this.nextTime = startTime + section.duration;
-        section.play(this, startTime);
+        section.play(this, startTime, onlyPreparePosition);
     }
 }
 const audioContext = new AudioContext();
@@ -2912,21 +2924,23 @@ async function setup() {
     divControls.style.display = "";
 }
 setup();
-function playStyle(style, section) {
-    const generatedSection = style.generateSection(section);
-    player.playSection(generatedSection);
-    return generatedSection;
-}
-function playCurrentStyle() {
+async function playCurrentStyle() {
     const generatedSections = [
         currentStyle.generateSection(SectionType.Intro),
         currentStyle.generateSection(SectionType.Verso),
         currentStyle.generateSection(SectionType.Ponte),
         currentStyle.generateSection(SectionType.Refrao)
     ];
+    for (let index = 0; index < generatedSections.length; index++) {
+        player.playSection(generatedSections[index], true);
+    }
+    let remainingDelay = 0;
     for (let index = 0; index < currentStyle.sections.length; index++) {
         const currentSection = generatedSections.find(section => section.type === currentStyle.sections[index]);
-        player.playSection(currentSection);
+        player.playSection(currentSection, false);
+        const currentDelay = currentSection.duration * 0.7;
+        await delay(currentDelay + remainingDelay);
+        remainingDelay = currentSection.duration - currentDelay;
     }
 }
 class Visualizer {
