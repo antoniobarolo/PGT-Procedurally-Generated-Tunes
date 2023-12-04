@@ -456,17 +456,6 @@ function generateAxialMelodySheet(baseSheet, chordNote) {
 //bloqueio de clique pra esperar as samples carregarem
 //remover o cursor piscando no slider
 //remover atributos e metodos nao usados
-//TEXTO
-//mudar arquitetura de classes
-//resumo e agradecimentos
-//DIAGRAMA DE classes
-/*
-sem visualizer
-SampleSet -> losango (contains) Instrument
-SampleSet -> losango (contains) Sample
-
-tirar getNextMeasureCount (e outras coisas que sairam)
-*/
 class Instrument {
     constructor(path, samples, centerOctave, color, role) {
         this.path = path;
