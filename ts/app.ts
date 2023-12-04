@@ -62,6 +62,11 @@ async function setup(): Promise<void> {
 		console.error("Error loading the samples: " + (ex.message || ex));
 		return;
 	}
+
+	const divLoading = document.getElementById("divLoading");
+	const divControls = document.getElementById("divControls");
+	divLoading.parentNode.removeChild(divLoading);
+	divControls.style.display = "";
 }
 
 setup();

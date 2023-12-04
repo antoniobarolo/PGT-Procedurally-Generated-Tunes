@@ -37,10 +37,15 @@
                     <canvas id="canvas"></canvas>
                 </div>
 
-                <div class="play-buttons">
-                    <button class="new-tune-btn" onclick="playCurrentStyle()">Play</button>
+                <div id="divLoading" style="text-align: center;">
+                    <img src="./loading.gif" alt="Loading" width="50" height="50" />
                 </div>
-                <input class='slider' type="range" id="volumeSlider" min="-40" max="0" step="1" value="-6" onchange="updateVolume()">
+                <div id="divControls" style="display: none;">
+                    <div class="play-buttons">
+                        <button class="new-tune-btn" onclick="playCurrentStyle()">Play</button>
+                    </div>
+                    <input class='slider' type="range" id="volumeSlider" min="-40" max="0" step="1" value="-6" onchange="updateVolume()">
+                </div>
             </div>
             
         </main>

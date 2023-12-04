@@ -131,6 +131,4 @@ function generateAxialMelodySheet(baseSheet: number[], chordNote?: number): numb
 //TODO
 
 //CODIGO
-//bloqueio de clique pra esperar as samples carregarem
-//remover o cursor piscando no slider
-//remover atributos e metodos nao usados
+

@@ -906,8 +906,8 @@ class SampleSet {
         });
     }
     static async loadSamples() {
-        await Promise.all(SampleSet.instruments.map((instrument) => {
-            instrument.samples.map((sample) => SampleSet.loadSample(instrument, sample));
+        await Promise.all(SampleSet.instruments.map(async (instrument) => {
+            await Promise.all(instrument.samples.map((sample) => SampleSet.loadSample(instrument, sample)));
         }));
     }
     static getSample(name) {
@@ -2911,6 +2911,10 @@ async function setup() {
         console.error("Error loading the samples: " + (ex.message || ex));
         return;
     }
+    const divLoading = document.getElementById("divLoading");
+    const divControls = document.getElementById("divControls");
+    divLoading.parentNode.removeChild(divLoading);
+    divControls.style.display = "";
 }
 setup();
 function playStyle(style, section) {

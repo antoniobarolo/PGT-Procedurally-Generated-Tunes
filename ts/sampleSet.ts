@@ -46,8 +46,8 @@ class SampleSet {
 	}
 
 	public static async loadSamples(): Promise<void> {
-		await Promise.all(SampleSet.instruments.map((instrument) => {
-			instrument.samples.map((sample) => SampleSet.loadSample(instrument, sample))
+		await Promise.all(SampleSet.instruments.map(async (instrument) => {
+			await Promise.all(instrument.samples.map((sample) => SampleSet.loadSample(instrument, sample)));
 		}))
 	}
 
