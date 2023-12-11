@@ -13,43 +13,68 @@
     <div class="sidebar">
 
         <div class="logo">
-            <h1>PGT</h1>
-            <h2>Procedurally Generated Tunes</h2>
-        </div>
-        <ul>
-            <div class="new-tune">
-                <button class="new-tune-btn" onclick="location.reload()">New Tune</button>
+            <!--
+            <div class="sidebar-icon">
+                <div id="toggle-btn" onclick="toggleSidebar()">☰</div>
             </div>
+            --->
+            <div class="sidebar-content">
+                <h2>PGT</h2>
+                <h3>Procedurally Generated Tunes</h3>
+            </div>
+            <ul>
+                <div class="new-tune">
+                    <button class="new-tune-btn" onclick="location.reload()">New Tune</button>
+                </div>
 
-            <li id="itemForro"><a href="./">Forró</a></li>
-            <li id="itemJazz"><a href="./?style=jazz">Jazz</a></li>
-            <li id="itemFunk"><a href="./?style=funk">Funk</a></li>
-            <li id="itemSamba"><a href="./?style=samba">Samba</a></li>
-        </ul>
+                <li id="itemForro"><a href="./">Forró</a></li>
+                <li id="itemJazz"><a href="./?style=jazz">Jazz</a></li>
+                <li id="itemFunk"><a href="./?style=funk">Funk</a></li>
+                <li id="itemSamba"><a href="./?style=samba">Samba</a></li>
+            </ul>
+        </div>
     </div>
 
     <div class="content">
         <main>
             <div class="inner-div">
-                <h3 id="headingStyle"></h3>
+                <h1>Procedurally<br>Generated Tunes</h1>
 
                 <div id="visuals">
                     <canvas id="canvas"></canvas>
                 </div>
+                <div class="under-canvas">
+                    <p id="headingStyle"></p>
 
-                <div id="divLoading" style="text-align: center;">
-                    Loading samples... <br>
-                    <img src="./loading.gif" alt="Loading" width="50" height="50" />
-                </div>
-                <div id="divControls" style="display: none;">
-                    <div class="play-buttons">
-                        <button class="new-tune-btn" onclick="playCurrentStyle()">Play</button>
+                    <div id="divLoading" style="text-align: center;">
+                        Loading samples... <br>
+                        <img src="./loading.gif" alt="Loading" width="50" height="50" />
                     </div>
-                    <input class='slider' type="range" id="volumeSlider" min="-40" max="0" step="1" value="-6" onchange="updateVolume()">
+                    <div id="divControls" style="display: none;">
+
+                        <div class="play-buttons">
+                            <button class="new-tune-btn" onclick="playCurrentStyle()">Play</button>
+                        </div>
+                        <input class='slider' type="range" id="volumeSlider" min="-40" max="0" step="1" value="-6"
+                            onchange="updateVolume()">
+                    </div>
                 </div>
             </div>
-            
+
         </main>
+
+        <footer>
+            <ul>
+                <li id="itemForro"><a href="./">Forró</a></li>
+                <li id="itemJazz"><a href="./?style=jazz">Jazz</a></li>
+                <li id="itemFunk"><a href="./?style=funk">Funk</a></li>
+                <li id="itemSamba"><a href="./?style=samba">Samba</a></li>
+            </ul>
+            <div class="new-tune">
+                <button class="new-tune-btn" onclick="location.reload()">New Tune</button>
+            </div>
+
+        </footer>
 
     </div>
     <script src="app.js"></script>

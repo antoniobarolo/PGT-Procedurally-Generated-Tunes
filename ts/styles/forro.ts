@@ -147,14 +147,6 @@ class Forro extends Style {
 					},
 
 				];
-
-
-			default:
-				return [
-					{
-						bass: "d3 - - a2"
-					},
-				];
 		}
 	}
 
@@ -357,14 +349,6 @@ class Forro extends Style {
 						zabumba: "k2 - - k1 - - - s"
 					}
 				]
-
-			default:
-				return [
-					{
-						zabumba: "k1 - s k2 - - - k1",
-						triangle: "1 2 3 2 1 2 3 2"
-					},
-				];
 		}
 	}
 
@@ -616,17 +600,10 @@ class Forro extends Style {
 						accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1]
 					}
 				];
-
-			default:
-				return [
-					{
-						accordion: melodies4thNotes[roll(melodies4thNotes.length) - 1]
-					},
-				];
 		}
 	}
 
 	protected getNextProgressionCount(sectionType: SectionType): number {
-		return 4;
+		return 2 * roll(2);
 	}
 }

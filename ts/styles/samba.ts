@@ -426,10 +426,6 @@ class Samba extends Style {
 	}
 
 	protected getNextProgressionCount(sectionType: SectionType): number {
-		return 4;
-	}
-
-	protected getNextMeasureCount(sectionType: SectionType, progressionIndex: number, progressionCount: number): number {
-		return 16;
+		return Math.pow(2, roll(4) - 1);
 	}
 }

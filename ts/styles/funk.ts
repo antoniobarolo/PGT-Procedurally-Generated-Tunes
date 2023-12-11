@@ -10,10 +10,34 @@ class Funk extends Style {
 			case SectionType.Intro:
 				return [
 					{
-						bass: 'c1'
+						bass: 'c1 c1'
+					},
+					{
+						bass: 'c1 g1'
+					},
+					{
+						bass: 'c1 d1'
+					},
+					{
+						bass: 'c1 d1'
 					},
 				];
 			case SectionType.Ponte:
+				return [
+					{ bass: 'c1 g1 g#1 g1' },
+					{ bass: 'c1 g1 g#1 c1' },
+					{ bass: 'c1 g1 g#1 a#1' },
+					{ bass: 'c1 g1 g#1 f1' },
+					{ bass: 'c1 g1 g#1 c#1' },
+					{ bass: 'c1 d#1 g1 g#1' },
+					{ bass: 'c1 g#1 f1 g1' },
+					{ bass: 'g#1 a#1 c2 c1' },
+					{ bass: 'g#1 d#1 f1 c1' },
+					{ bass: 'c1 c1 c1 g1' },
+					{ bass: 'f1 c1 f1 g1' },
+					{ bass: 'f1 c1 f1 c1' },
+					{ bass: 'g#1 g1 f1 c1' },
+				]
 			case SectionType.Verso:
 				if (roll(2) > 1) {
 					return [
@@ -256,7 +280,10 @@ class Funk extends Style {
 			'- - - c3 - - c3 - - - - - b3 - - -',
 			`c3 - - - - - - - - - c3 - c3 - c3 -`,
 			`c4 - - - - - - - - - c4 - c4 - c4 -`,
-			`c4 - - - - - - - a3 - a3 - a3 - a3 -`,
+			`c4 - - - - - - - g3 - g3 - g3 - g3 -`,
+			`c4 - - - - - - - a#3 - a#3 - a#3 - a#3 -`,
+			`c4 - - - - - - d#4 d3 - d3 - c#3 - c#3 -`,
+			`c4 - - - - - - d#4 d3 - d3 - - - d#3 -`,
 			'c3 - - c#3 - - d#3 - - - c#3 - c3 - - -',
 			'c3 - - c#3 - - d#3 - - - c#3 - c#3 - - -',
 			'c4 - - c#4 - - c4 - - - c4 - b3 - - -',
@@ -299,6 +326,12 @@ class Funk extends Style {
 			'- - - - g4 - - - g4 - - - - - - -',
 			'- - - - d#4 - - - d4 - - - d#4 - - -',
 			'- - - - d4 - - - d#4 - - - d4 - - -',
+			'c4 - d#4 - g4 - g#4 - a4 - g#4 - g4 - - -',
+			'c5 - - - g#4 - - - g4 - - - - - - -',
+			'c5 - c5 - d#4 - f4 - g4 - - - - - - -',
+			'c5 - c5 - g#4 - g#4 - g4 - g4 - g#4 - - -',
+			'g4 - - - - - - - g4 - g#4 - g4 - f4 -',
+			'c4 - - - - - - - c#4 - c#4 - - - - -',
 		]
 		const chosenInstrument = melodyFunkInstruments[roll(melodyFunkInstruments.length) - 1]
 		switch (sectionType) {
@@ -447,10 +480,17 @@ class Funk extends Style {
 	}
 
 	protected getNextProgressionCount(sectionType: SectionType): number {
-		return 4;
-	}
+		switch (sectionType) {
+			case SectionType.Intro:
+				return (roll(2) - 1) * 2 + (roll(2) - 1) * 2
+			case SectionType.Ponte:
+				return roll(2)
 
-	protected getNextMeasureCount(sectionType: SectionType, progressionIndex: number, progressionCount: number): number {
-		return 4;
+			case SectionType.Refrao:
+				return Math.pow(2, roll(3))
+
+			case SectionType.Verso:
+				return roll(3) + roll(3) - 2
+		}
 	}
 }
