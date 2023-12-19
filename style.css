@@ -146,6 +146,10 @@ footer {
     display: none;
 }
 
+.sidebar-footer{
+    margin-top: 46vh;
+}
+
 @media only screen and (max-width: 767px) {
     .sidebar {
         display: none;
@@ -192,6 +196,7 @@ footer {
         border: 1px solid #777777;
         border-radius: 3px;
         padding: 15px;
+        
     }
 
     li:hover {
@@ -205,6 +210,14 @@ footer {
     button {
         letter-spacing: 5px;
         font-weight: 700;
+    }
+
+    .sidebar-footer {
+        margin-top: 50px;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        letter-spacing: 3px;
     }
 
 }
